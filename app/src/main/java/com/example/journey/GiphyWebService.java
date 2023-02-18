@@ -57,6 +57,8 @@ public class GiphyWebService extends AppCompatActivity {
       }
     });
 
+
+
   }
 
   public void setUpRetrofit() {
