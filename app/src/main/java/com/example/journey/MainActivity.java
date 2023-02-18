@@ -1,6 +1,8 @@
 package com.example.journey;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        Retrofit retrofit = new Retrofit.Builder()
+        /*Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -47,6 +50,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+         */
+
+    }
+
+    /**
+     * The startGiphyService() method opens up a new activity.
+     */
+    public void startGiphyService(View view) {
+        startActivity(new Intent(MainActivity.this, GiphyWebService.class));
     }
 
 }
