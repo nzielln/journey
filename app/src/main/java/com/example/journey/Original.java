@@ -1,5 +1,7 @@
 package com.example.journey;
 
+// This is just an object to prepresent a reponse from the API - the image
+
 public class Original {
     String height;
     String url;

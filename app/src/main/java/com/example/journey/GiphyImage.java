@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Map;
 
+// This is just an object to prepresent a reponse from the API - the image and we're only taking the original image
+
 public class GiphyImage {
     Original original;
 
