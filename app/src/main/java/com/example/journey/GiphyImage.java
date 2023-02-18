@@ -5,17 +5,16 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Map;
 
 public class GiphyImage {
-    @SerializedName("preview_gif")
-    Map<String, Preview> preview;
+    Original original;
 
-    public Preview getPreview() {
-        return (Preview) preview;
+    public Original getOriginal() {
+        return original;
     }
 
     @Override
     public String toString() {
         return "GiphyImage{" +
-                "preview=" + preview +
+                "preview=" + original +
                 '}';
     }
 }
