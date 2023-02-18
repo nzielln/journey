@@ -11,7 +11,7 @@ public interface Retro {
 
     // GET requests to get date from API. https://developers.giphy.com/docs/api/schema/#gif-object has more info on what exaclty is happening
     // I'm too tired to type it all out :_ /
-    @GET("gifs/trending")
+    @GET("gifs/trending?")
     Call<Data> trendingGiphyResponse(@Query("limit") int limit, @Query("api_key") String api_key);
 
     // Might need to rewrite these to take in queries instead of concatenating them into the URL
