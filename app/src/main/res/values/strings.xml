@@ -11,4 +11,16 @@
 
     
     <string name="giphy">Giphy</string>
+    <string name="trending">Trending</string>
+    <string name="gws_title">Giphy Web Service</string>
+    <string name="tinashe_mazaiwana">Tinashe Mazaiwana</string>
+    <string name="ellah_nzikoba">Ellah Nzikoba</string>
+    <string name="netti_welsh">Netti Welsh</string>
+    <string name="binita_shakya">Binita Shakya</string>
+    <string name="journey">Journey</string>
+    <string name="random">Random</string>
+    <string name="gift_hint">Search a Gif</string>
+    <string name="gif_title">Gif Title</string>
+    <string name="gif_desc">Description</string>
+    <string name="or">Or</string>
 </resources>
