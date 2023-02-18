@@ -1,77 +1,52 @@
 package com.example.journey;
 
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
+import java.util.List;
 
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-import com.example.journey.databinding.ActivityMainBinding;
-
-import android.view.Menu;
-import android.view.MenuItem;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
-
-    private AppBarConfiguration appBarConfiguration;
-    private ActivityMainBinding binding;
+    private String BASE_URL = "https://jsonplaceholder.typicode.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        setSupportActionBar(binding.toolbar);
+        Retro retro = retrofit.create(Retro.class);
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        Call<List<Todo>> todoCall = retro.listTodos();
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        todoCall.enqueue(new Callback<List<Todo>>() {
             @Override
-            public void onClick(View view) {
-            Snackbar.make(view, "Replace everything everything with your own something action", Snackbar.LENGTH_LONG)
+            public void onResponse(Call<List<Todo>> call, Response<List<Todo>> response) {
+                List<Todo> todos = response.body();
+                System.out.println(todos.size());
 
-                        .setAction("Action", null).show();
+                for (int i = 0; i < todos.size(); i++) {
+                    System.out.println(todos.get(i));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Todo>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG)
+                        .show();
             }
         });
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, appBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
 }
