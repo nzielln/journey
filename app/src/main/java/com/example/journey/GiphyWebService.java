@@ -2,6 +2,7 @@ package com.example.journey;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -59,27 +60,32 @@ public class GiphyWebService extends AppCompatActivity {
   }
 
   public void setUpRetrofit() {
-    OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-    retrofit = new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(httpClient.build())
-            .build();
 
-    client = retrofit.create(Retro.class);
   }
 
   public void getTrendingGifTest() {
-    Call<GiphyResponse> retroCall = client.trendingGiphyResponse( 1, API_KEY);
+    retrofit = new Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 
-    retroCall.enqueue(new Callback<GiphyResponse>() {
+    client = retrofit.create(Retro.class);
+
+    Call<Data> retroCall = client.trendingGiphyResponse( 1, API_KEY);
+
+    retroCall.enqueue(new Callback<Data>() {
       @Override
-      public void onResponse(Call<GiphyResponse> call, Response<GiphyResponse> response) {
-        System.out.println("Something");
+      public void onResponse(Call<Data> call, Response<Data> response) {
+        Data data = response.body();
+        GiphyResponse res = data.data.get(0);
+
+        gifTitle.setText(res.getTitle());
+        image.setImageURI(Uri.parse(res.getImages().getOriginal().url));
+
       }
 
       @Override
-      public void onFailure(Call<GiphyResponse> call, Throwable t) {
+      public void onFailure(Call<Data> call, Throwable t) {
         t.printStackTrace();
       }
     });

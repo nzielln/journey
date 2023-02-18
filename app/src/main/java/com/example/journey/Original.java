@@ -1,9 +1,9 @@
 package com.example.journey;
 
-public class Preview {
+public class Original {
+    String height;
     String url;
     String width;
-    String height;
 
     public String getHeight() {
         return height;

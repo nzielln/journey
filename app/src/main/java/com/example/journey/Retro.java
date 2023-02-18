@@ -7,20 +7,21 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface Retro {
+    String API_KEY = "RiTJ6mX1xCqlaxGegDowwZpJWAnaoVWL";
 
     @GET("gifs/trending")
-    Call<GiphyResponse> trendingGiphyResponse(@Query("limit") int limit, @Query("api_key") String api_key);
+    Call<Data> trendingGiphyResponse(@Query("limit") int limit, @Query("api_key") String api_key);
 
-    @GET("gifs/random")
-    Call<GiphyResponse> randomGiphyResponseWithId();
+    @GET("gifs/random?api_key=" + API_KEY + "&random_id={random_id}")
+    Call<Data> randomGiphyResponseWithId();
 
-    @GET("gifs/random")
-    Call<GiphyResponse> randomGiphyResponseNoId();
+    @GET("gifs/random?api_key=" + API_KEY)
+    Call<Data> randomGiphyResponseNoId();
 
-    @GET("randomid")
-    Call<GiphyResponse> randomIdResponse();
+    @GET("randomid?api_key=" + API_KEY)
+    Call<Data> randomIdResponse();
 
-    @GET("gifs/search")
-    Call<GiphyResponse> searchGiphyResponse(String query);
+    @GET("gifs/search?q={query}&api_key=" + API_KEY + "&limit=1")
+    Call<Data> searchGiphyResponse(String query);
 
 }

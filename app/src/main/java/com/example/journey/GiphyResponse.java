@@ -10,7 +10,7 @@ public class GiphyResponse {
     @SerializedName("alt_text")
     String description;
     @SerializedName("images")
-    Map<String, GiphyImage> images;
+    GiphyImage images;
 
 
     public String getTitle() {
@@ -22,7 +22,7 @@ public class GiphyResponse {
     }
 
     public GiphyImage getImages() {
-        return (GiphyImage) images;
+        return images;
     }
 
     @Override
