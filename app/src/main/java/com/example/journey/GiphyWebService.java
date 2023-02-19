@@ -57,6 +57,7 @@ public class GiphyWebService extends AppCompatActivity {
     setContentView(R.layout.activity_giphy_web_service);
 
     Button random = findViewById(R.id.random_button);
+    Button searchButton = findViewById(R.id.search_button);
     Button trending = findViewById(R.id.trending_button);
     TextInputLayout searchInput = findViewById(R.id.gif_search);
     //TextInputEditText searchInput = findViewById(R.id.gif_search);
@@ -95,43 +96,30 @@ public class GiphyWebService extends AppCompatActivity {
     });
     */
 
-    searchInput.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+    searchButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        generateGifFromQuery(v, String.valueOf(searchInput.getEditText().getText()));
+      }
+    });
+
+    searchInput.getEditText().setOnEditorActionListener(new EditText.OnEditorActionListener() {
+
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-          String query = searchInput.getEditText().getText().toString();
-         // generateGifFromQuery(getWindow().getDecorView().getRootView(), query);
-          generateGifFromQuery(v, query);
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+          searchButton.performClick();
           return true;
         }
         return false;
       }
-    });
 
-    searchInput.getEditText().addTextChangedListener(new TextWatcher() {
-      @Override
-      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        // This method is called to notify you that, within s, the count characters beginning
-        // at start are about to be replaced by new text with length after.
-      }
-
-      @Override
-      public void onTextChanged(CharSequence s, int start, int before, int count) {
-        // This method is called to notify you that, within s, the count characters beginning
-        // at start have just replaced old text that had length before.
-      }
-
-      @Override
-      public void afterTextChanged(Editable s) {
-        // This method is called to notify you that, somewhere within s, the text has been changed.
-        String searchQuery = s.toString().trim();
-        // Now you can use searchQuery to perform a search
-        // e.g., you could call a method to initiate a search with this query
-        // performSearch(searchQuery);
-      }
-    });
   }
+    );
 
+
+
+}
   /**
    * Retrofit Builder - A HTTP client for Android
    */
