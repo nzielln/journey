@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.Collection;
 
-
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 
