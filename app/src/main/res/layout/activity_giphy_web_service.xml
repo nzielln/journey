@@ -84,9 +84,7 @@
             android:hint="@string/gift_hint"
             android:paddingStart="48dp"
             android:paddingEnd="48dp"
-
             >
-
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/gif_query"
                 android:layout_width="match_parent"

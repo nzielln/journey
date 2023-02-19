@@ -2,6 +2,9 @@ package com.example.journey;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -58,6 +61,7 @@ public class GiphyWebService extends AppCompatActivity {
     Button trending = findViewById(R.id.trending_button);
     TextInputLayout searchInput = findViewById(R.id.gif_search);
     //TextInputEditText searchInput = findViewById(R.id.gif_search);
+    //EditText searchInput = findViewById(R.id.gif_search);
 
     image = findViewById(R.id.gif_image);
     gifTitle = findViewById(R.id.gif_title);
@@ -97,10 +101,34 @@ public class GiphyWebService extends AppCompatActivity {
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_SEARCH) {
           String query = searchInput.getEditText().getText().toString();
+         // generateGifFromQuery(getWindow().getDecorView().getRootView(), query);
           generateGifFromQuery(v, query);
           return true;
         }
         return false;
+      }
+    });
+
+    searchInput.getEditText().addTextChangedListener(new TextWatcher() {
+      @Override
+      public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        // This method is called to notify you that, within s, the count characters beginning
+        // at start are about to be replaced by new text with length after.
+      }
+
+      @Override
+      public void onTextChanged(CharSequence s, int start, int before, int count) {
+        // This method is called to notify you that, within s, the count characters beginning
+        // at start have just replaced old text that had length before.
+      }
+
+      @Override
+      public void afterTextChanged(Editable s) {
+        // This method is called to notify you that, somewhere within s, the text has been changed.
+        String searchQuery = s.toString().trim();
+        // Now you can use searchQuery to perform a search
+        // e.g., you could call a method to initiate a search with this query
+        // performSearch(searchQuery);
       }
     });
   }
@@ -184,7 +212,7 @@ public class GiphyWebService extends AppCompatActivity {
       public void onResponse(Call<GiphyResponseSearch> call, Response<GiphyResponseSearch> response) {
         GiphyResponseSearch data = response.body();
         if (data == null || data.data.isEmpty()) {
-       // if (data == null || data.data.size() == 0) {
+          // if (data == null || data.data.size() == 0) {
           runOnUiThread(new Runnable() {
             @Override
             public void run() {
