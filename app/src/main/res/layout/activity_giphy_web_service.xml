@@ -93,7 +93,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
 
-                />
+                android:hint="@string/action_settings"
+                android:textColorHint="#757575"
+                tools:ignore="TouchTargetSizeCheck" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
