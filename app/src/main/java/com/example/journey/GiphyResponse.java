@@ -10,6 +10,9 @@ public class GiphyResponse {
     String title;
     @SerializedName("alt_text")
     String description;
+
+    @SerializedName("username")
+    String username;
     @SerializedName("images")
     GiphyImage images;
 
@@ -24,6 +27,10 @@ public class GiphyResponse {
 
     public GiphyImage getImages() {
         return images;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     @Override

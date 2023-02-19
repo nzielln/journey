@@ -26,4 +26,17 @@ public interface Retro {
     @GET("gifs/search?q={query}&api_key=" + API_KEY + "&limit=1")
     Call<GiphyResponseTrending> searchGiphyResponse(String query);
 
+    @GET("v1/gifs/search")
+    Call<GiphyResponseSearch> searchGiphyResponse(@Query("api_key") String apiKey,
+                                                  @Query("q") String searchQuery,
+                                                  @Query("limit") int limit);
+
+    /*@GET("gifs/search")
+    Call<GiphyResponseSearch> searchGifs(
+            @Query("api_key") String apiKey,
+            @Query("q") String query,
+            @Query("limit") int limit
+    );
+     */
+
 }
