@@ -59,7 +59,7 @@ public class GiphyWebService extends AppCompatActivity {
     Button random = findViewById(R.id.random_button);
     Button searchButton = findViewById(R.id.search_button);
     Button trending = findViewById(R.id.trending_button);
-    TextInputLayout searchInput = findViewById(R.id.gif_search);
+
 
     //TextInputEditText searchInput = findViewById(R.id.gif_search);
     //EditText searchInput = findViewById(R.id.gif_search);
@@ -78,11 +78,8 @@ public class GiphyWebService extends AppCompatActivity {
     trending.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        try {
-          generateTrendingGif(v);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+
+        generateTrendingGif(v);
 
       }
     });
@@ -90,11 +87,7 @@ public class GiphyWebService extends AppCompatActivity {
     random.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        try {
           generateRandomGif(v);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
       }
     });
 
@@ -135,35 +128,6 @@ public class GiphyWebService extends AppCompatActivity {
    * generateRandomGif - Gets a giphy response for a Random gif
    * @param view
    */
-  public void generateRandomGif(View view) throws InterruptedException {
-    Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
-    //Log.d("RetroCall", retroCall.toString());
-    image.setImageDrawable(null);
-    loadingBar.setVisibility(View.VISIBLE);
-    Thread.sleep(3000);
-
-    retroCall.enqueue(new Callback<GiphyResponseRandom>() {
-      @Override
-      public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
-        GiphyResponse data = response.body().data;
-        //Log.d("data",data.toString());
-
-        GiphyResponse res = data;
-        if(res.getTitle() != null) {
-          loadingBar.setVisibility(View.GONE);
-        }
-        //Log.d("GiphyResponse", res.getImages().getOriginal().getUrl());
-        gifTitle.setText(res.getTitle());
-        gifDescription.setText(res.getDescription());
-        String url = res.getImages().getOriginal().getUrl();
-        //Log.d("URL",url.toString());
-        Glide.with(g).load(url).into(image);
-      }
-      @Override
-      public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
-        t.printStackTrace();
-      }
-    });
   public void generateRandomGif(View view) {
     RandomThread thread = new RandomThread();
     new Thread(thread).start();
@@ -172,33 +136,132 @@ public class GiphyWebService extends AppCompatActivity {
   class RandomThread implements Runnable {
     @Override
     public void run() {
-        Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
-        retroCall.enqueue(new Callback<GiphyResponseRandom>() {
-          @Override
-          public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
-            GiphyResponse data = response.body().data;
-            GiphyResponse res = data;
+      Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
+      image.setImageDrawable(null);
+      loadingBar.setVisibility(View.VISIBLE);
 
-            GIPHY_HANDLER.post(new Runnable() {
-              @Override
-              public void run() {
-                try {
-                  Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                  e.printStackTrace();
-                }
-                setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+      retroCall.enqueue(new Callback<GiphyResponseRandom>() {
+        @Override
+        public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
+          GiphyResponse data = response.body().data;
+          GiphyResponse res = data;
+
+          GIPHY_HANDLER.post(new Runnable() {
+            @Override
+            public void run() {
+              if(res.getTitle() != null) {
+                loadingBar.setVisibility(View.GONE);
               }
-            });
-          }
-          @Override
-          public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
-            t.printStackTrace();
-          }
-        });
-      }
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+              setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+            }
+          });
+        }
+        @Override
+        public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
+          t.printStackTrace();
+        }
+      });
+    }
 
   }
+
+  /**
+   * generateRandomGif - Gets a giphy response for a Random gif
+   * @param view
+   */
+  public void generateTrendingGif(View view) {
+    TrendingThread thread = new TrendingThread();
+    new Thread(thread).start();
+  }
+
+  class TrendingThread implements Runnable {
+    @Override
+    public void run() {
+      Call<GiphyResponseTrending> retroCall = client.trendingGiphyResponse(API_KEY,"pg");
+      image.setImageDrawable(null);
+      loadingBar.setVisibility(View.VISIBLE);
+
+      retroCall.enqueue(new Callback<GiphyResponseRandom>() {
+        @Override
+        public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
+          GiphyResponse data = response.body().data;
+          GiphyResponse res = data;
+
+          GIPHY_HANDLER.post(new Runnable() {
+            @Override
+            public void run() {
+              if(res.getTitle() != null) {
+                loadingBar.setVisibility(View.GONE);
+              }
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+              setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+            }
+          });
+        }
+        @Override
+        public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
+          t.printStackTrace();
+        }
+      });
+    }
+
+  }
+
+  /**
+   * generateRandomGif - Gets a giphy response for a Random gif
+   * @param view
+   */
+  public void generateSearchingGif(View view) {
+    RandomThread thread = new RandomThread();
+    new Thread(thread).start();
+  }
+
+  class RandomThread implements Runnable {
+    @Override
+    public void run() {
+      Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
+      image.setImageDrawable(null);
+      loadingBar.setVisibility(View.VISIBLE);
+
+      retroCall.enqueue(new Callback<GiphyResponseRandom>() {
+        @Override
+        public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
+          GiphyResponse data = response.body().data;
+          GiphyResponse res = data;
+
+          GIPHY_HANDLER.post(new Runnable() {
+            @Override
+            public void run() {
+              if(res.getTitle() != null) {
+                loadingBar.setVisibility(View.GONE);
+              }
+              try {
+                Thread.sleep(1000);
+              } catch (InterruptedException e) {
+                e.printStackTrace();
+              }
+              setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+            }
+          });
+        }
+        @Override
+        public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
+          t.printStackTrace();
+        }
+      });
+    }
+
+  }
+
 
   /**
    * generateTrendingGif - Gets a giphy response for the Top trending gif
