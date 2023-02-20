@@ -27,10 +27,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GiphyWebService extends AppCompatActivity {
   String API_KEY = "RiTJ6mX1xCqlaxGegDowwZpJWAnaoVWL";
-  String defaultDescriptionUsername = "No description or username provided";
+  String defaultusername = "No username provided";
   ImageView image;
   TextView gifTitle;
-  TextView gifDescriptionUsername;
+  TextView gifUsername;
   Retrofit retrofit;
   Retro client;
   GiphyWebService g = this;
@@ -49,7 +49,7 @@ public class GiphyWebService extends AppCompatActivity {
 
     image = findViewById(R.id.gif_image);
     gifTitle = findViewById(R.id.gif_title);
-    gifDescriptionUsername = findViewById(R.id.gif_desc);
+    gifUsername = findViewById(R.id.gif_desc);
 
     setUpRetrofit();
 
@@ -108,15 +108,12 @@ public class GiphyWebService extends AppCompatActivity {
    */
   public void generateRandomGif(View view) {
     Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
-    //Log.d("RetroCall", retroCall.toString());
     retroCall.enqueue(new Callback<GiphyResponseRandom>() {
       @Override
       public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
         GiphyResponse data = response.body().data;
-        //Log.d("data",data.toString());
-
         GiphyResponse res = data;
-        setViewComponents(res.getTitle(), res.getDescription(), res.getImages().getOriginal().getUrl());
+        setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
 
       }
 
@@ -125,7 +122,6 @@ public class GiphyWebService extends AppCompatActivity {
         t.printStackTrace();
       }
     });
-
   }
 
   /**
@@ -134,7 +130,6 @@ public class GiphyWebService extends AppCompatActivity {
    */
   public void generateTrendingGif(View view) {
     Call<GiphyResponseTrending> retroCall = client.trendingGiphyResponse( 1, API_KEY);
-    //Log.d("RetroCall", retroCall.toString());
     retroCall.enqueue(new Callback<GiphyResponseTrending>() {
       @Override
       public void onResponse(Call<GiphyResponseTrending> call, Response<GiphyResponseTrending> response) {
@@ -142,7 +137,7 @@ public class GiphyWebService extends AppCompatActivity {
         GiphyResponseTrending data = response.body();
         GiphyResponse res = data.data.get(0);
 
-        setViewComponents(res.getTitle(), res.getDescription(), res.getImages().getOriginal().getUrl());
+        setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
       }
       @Override
       public void onFailure(Call<GiphyResponseTrending> call, Throwable t) {
@@ -152,13 +147,11 @@ public class GiphyWebService extends AppCompatActivity {
   }
 
 
-  // Search test url: https:api.giphy.com/v1/gifs/search?q=happy&api_key=RiTJ6mX1xCqlaxGegDowwZpJWAnaoVWL
   public void generateGifFromQuery(View view, String search) {
     Objects.requireNonNull(searchInput.getEditText()).clearFocus();
     InputMethodManager imm =(InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-    //Call<Put Something Here> retroCall = client.searchGiphyResponse(searchInput);
     Call<GiphyResponseSearch> retroCall = client.searchGiphyResponse(API_KEY, search, 1);
     retroCall.enqueue(new Callback<GiphyResponseSearch>() {
       @Override
@@ -185,9 +178,9 @@ public class GiphyWebService extends AppCompatActivity {
     });
   }
 
-  public void setViewComponents(String title, String descriptionUsername, String url) {
+  public void setViewComponents(String title, String username, String url) {
     gifTitle.setText(title);
-    gifDescriptionUsername.setText(descriptionUsername != null ? descriptionUsername : defaultDescriptionUsername);
+    gifUsername.setText(username != null && username.length() > 0 ? username : defaultusername);
     Glide.with(g).load(url).into(image);
   }
 
