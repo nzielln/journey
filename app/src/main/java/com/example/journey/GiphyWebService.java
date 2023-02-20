@@ -3,6 +3,7 @@ package com.example.journey;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.view.KeyEvent;
@@ -35,8 +36,10 @@ public class GiphyWebService extends AppCompatActivity {
   Retro client;
   GiphyWebService g = this;
   TextInputLayout searchInput;
-
+  final Handler GIPHY_HANDLER = new Handler();
   String BASE_URL = "https:api.giphy.com/v1/";   // changed http to https because of cleartext error
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -45,8 +48,8 @@ public class GiphyWebService extends AppCompatActivity {
     Button random = findViewById(R.id.random_button);
     Button searchButton = findViewById(R.id.search_button);
     Button trending = findViewById(R.id.trending_button);
-    searchInput = findViewById(R.id.gif_search);
 
+    searchInput = findViewById(R.id.gif_search);
     image = findViewById(R.id.gif_image);
     gifTitle = findViewById(R.id.gif_title);
     gifUsername = findViewById(R.id.gif_desc);
@@ -77,7 +80,6 @@ public class GiphyWebService extends AppCompatActivity {
     });
 
     searchInput.getEditText().setOnEditorActionListener(new EditText.OnEditorActionListener() {
-
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -89,6 +91,7 @@ public class GiphyWebService extends AppCompatActivity {
   }
     );
 }
+
   /**
    * Retrofit Builder - A HTTP client for Android
    */
@@ -107,21 +110,39 @@ public class GiphyWebService extends AppCompatActivity {
    * @param view
    */
   public void generateRandomGif(View view) {
-    Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
-    retroCall.enqueue(new Callback<GiphyResponseRandom>() {
-      @Override
-      public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
-        GiphyResponse data = response.body().data;
-        GiphyResponse res = data;
-        setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+    RandomThread thread = new RandomThread();
+    new Thread(thread).start();
+  }
 
+  class RandomThread implements Runnable {
+    @Override
+    public void run() {
+        Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
+        retroCall.enqueue(new Callback<GiphyResponseRandom>() {
+          @Override
+          public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
+            GiphyResponse data = response.body().data;
+            GiphyResponse res = data;
+
+            GIPHY_HANDLER.post(new Runnable() {
+              @Override
+              public void run() {
+                try {
+                  Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+                setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+              }
+            });
+          }
+          @Override
+          public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
+            t.printStackTrace();
+          }
+        });
       }
 
-      @Override
-      public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
-        t.printStackTrace();
-      }
-    });
   }
 
   /**
@@ -145,7 +166,6 @@ public class GiphyWebService extends AppCompatActivity {
       }
     });
   }
-
 
   public void generateGifFromQuery(View view, String search) {
     Objects.requireNonNull(searchInput.getEditText()).clearFocus();
@@ -183,6 +203,4 @@ public class GiphyWebService extends AppCompatActivity {
     gifUsername.setText(username != null && username.length() > 0 ? username : defaultusername);
     Glide.with(g).load(url).into(image);
   }
-
-
 }
