@@ -2,9 +2,11 @@ package com.example.journey;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -47,6 +49,8 @@ public class GiphyWebService extends AppCompatActivity {
   Retro client;
   GiphyWebService g = this;
 
+  ProgressBar loadingBar;
+
   // Base url for accessing the API --> we pass this to retrofit
   //String BASE_URL = "http://api.giphy.com/v1/";
 
@@ -59,20 +63,28 @@ public class GiphyWebService extends AppCompatActivity {
     Button random = findViewById(R.id.random_button);
     Button trending = findViewById(R.id.trending_button);
     TextInputLayout searchInput = findViewById(R.id.gif_search);
+
     //TextInputEditText searchInput = findViewById(R.id.gif_search);
     //EditText searchInput = findViewById(R.id.gif_search);
+
+    //final Loading loadingAlert = new Loading(GiphyWebService.this);
 
     image = findViewById(R.id.gif_image);
     gifTitle = findViewById(R.id.gif_title);
     gifDescription = findViewById(R.id.gif_desc);
 
-    setUpRetrofit();
+    loadingBar = findViewById(R.id.loadingCircle);
 
+    setUpRetrofit();
 
     trending.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        generateTrendingGif(v);
+        try {
+          generateTrendingGif(v);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
 
       }
     });
@@ -80,8 +92,11 @@ public class GiphyWebService extends AppCompatActivity {
     random.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        generateRandomGif(v);
-
+        try {
+          generateRandomGif(v);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
     });
 
@@ -149,9 +164,13 @@ public class GiphyWebService extends AppCompatActivity {
    * generateRandomGif - Gets a giphy response for a Random gif
    * @param view
    */
-  public void generateRandomGif(View view) {
+  public void generateRandomGif(View view) throws InterruptedException {
     Call<GiphyResponseRandom> retroCall = client.randomGiphyResponseWithId(API_KEY,"pg");
     //Log.d("RetroCall", retroCall.toString());
+    image.setImageDrawable(null);
+    loadingBar.setVisibility(View.VISIBLE);
+    Thread.sleep(3000);
+
     retroCall.enqueue(new Callback<GiphyResponseRandom>() {
       @Override
       public void onResponse(Call<GiphyResponseRandom> call, Response<GiphyResponseRandom> response) {
@@ -159,6 +178,9 @@ public class GiphyWebService extends AppCompatActivity {
         //Log.d("data",data.toString());
 
         GiphyResponse res = data;
+        if(res.getTitle() != null) {
+          loadingBar.setVisibility(View.GONE);
+        }
         //Log.d("GiphyResponse", res.getImages().getOriginal().getUrl());
         gifTitle.setText(res.getTitle());
         gifDescription.setText(res.getDescription());
@@ -166,29 +188,32 @@ public class GiphyWebService extends AppCompatActivity {
         //Log.d("URL",url.toString());
         Glide.with(g).load(url).into(image);
       }
-
       @Override
       public void onFailure(Call<GiphyResponseRandom> call, Throwable t) {
         t.printStackTrace();
       }
     });
-
   }
   /**
    * generateTrendingGif - Gets a giphy response for the Top trending gif
    * @param view
    */
-
-  public void generateTrendingGif(View view) {
+  public void generateTrendingGif(View view) throws InterruptedException {
     Call<GiphyResponseTrending> retroCall = client.trendingGiphyResponse( 1, API_KEY);
     //Log.d("RetroCall", retroCall.toString());
+    image.setImageDrawable(null);
+    loadingBar.setVisibility(View.VISIBLE);
+    Thread.sleep(3000);
+
     retroCall.enqueue(new Callback<GiphyResponseTrending>() {
       @Override
       public void onResponse(Call<GiphyResponseTrending> call, Response<GiphyResponseTrending> response) {
-
         GiphyResponseTrending data = response.body();
-        GiphyResponse res = data.data.get(0);
 
+        GiphyResponse res = data.data.get(0);
+        if(res.getTitle() != null) {
+          loadingBar.setVisibility(View.GONE);
+        }
         //Log.d("GiphyResponseTrending", res.getImages().getOriginal().getUrl());
         gifTitle.setText(res.getTitle());
         gifDescription.setText(res.getDescription());
@@ -201,6 +226,7 @@ public class GiphyWebService extends AppCompatActivity {
         t.printStackTrace();
       }
     });
+    //return true;
   }
 
   public void generateGifFromQuery(View view, String search) {
