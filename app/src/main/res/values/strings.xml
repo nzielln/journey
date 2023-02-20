@@ -19,9 +19,9 @@
     <string name="binita_shakya">Binita Shakya</string>
     <string name="journey">Journey</string>
     <string name="random">Random</string>
-    <string name="gift_hint">Search a Gif</string>
+    <string name="gift_hint">Search for a Gif</string>
     <string name="gif_title">Gif Title</string>
-    <string name="gif_desc">Description</string>
+    <string name="gif_desc">Description/Username</string>
     <string name="or">Or</string>
     <string name="search">Search</string>
 </resources>

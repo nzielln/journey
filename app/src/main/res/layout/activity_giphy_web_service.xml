@@ -13,83 +13,85 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/roboto_bold"
-        android:gravity="center"
-        android:paddingBottom="32dp"
-        android:text="@string/gws_title"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.057">
-
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="32dp"
-
-            >
-
-            <Button
-                android:id="@+id/trending_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/trending"
-
-                />
-
-            <Space
-                android:layout_width="16dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/random_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/random"
-
-                />
-        </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/gif_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/gift_hint"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/gif_query"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/roboto_bold"
+                android:gravity="center"
+                android:paddingBottom="32dp"
+                android:text="@string/gws_title"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:orientation="vertical"
+
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                app:layout_constraintVertical_bias="0.057">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="32dp"
+
+                    >
+
+                    <Button
+                        android:id="@+id/trending_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/trending"
+
+                        />
+
+                    <Space
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/random_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/random"
+
+                        />
+                </LinearLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/gif_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/gift_hint"
+                    android:paddingStart="48dp"
+                    android:paddingEnd="48dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/gif_query"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:imeOptions="actionDone"
+                        android:inputType="text"
 
                 android:hint="@string/action_settings"
                 android:textColorHint="#757575"
@@ -97,72 +99,78 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <Button
-            android:id="@+id/search_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/search"
-            android:textColor="@android:color/white"
-            android:paddingStart="24dp"
-            android:paddingEnd="24dp"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal"/>
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:text="@string/search"
+                    android:textColor="@android:color/white" />
 
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
-
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.297"
-
-        tools:layout_editor_absoluteX="0dp"
-
-        >
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingVertical="12dp"
-
-            >
-
-            <TextView
-                android:id="@+id/gif_title_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:paddingHorizontal="8sp"
-                android:text="@string/gif_title"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                android:gravity="center"
+                android:orientation="vertical"
 
-                />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                app:layout_constraintVertical_bias="0.297"
 
-            <TextView
-                android:id="@+id/gif_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:paddingVertical="8dp"
+                tools:layout_editor_absoluteX="0dp"
 
-                />
-        </LinearLayout>
+                >
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            android:layout_gravity="center"
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingVertical="8dp"
 
-            >
+                    >
+
+                    <TextView
+                        android:id="@+id/gif_title_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingHorizontal="4dp"
+                        android:text="@string/gif_title"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:gravity="center"
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/gif_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingVertical="4dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:gravity="center"
+
+
+                        />
+                </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center"
+
+                    >
 
             <ProgressBar
                 android:id="@+id/loadingCircle"
@@ -193,28 +201,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
 
-            >
+                    >
 
-            <TextView
-                android:id="@+id/gif_desc_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:paddingVertical="8sp"
-                android:text="@string/gif_desc"
-                android:textColor="@color/black"
-                android:textSize="16sp"
+                    <TextView
+                        android:id="@+id/gif_desc_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingVertical="4dp"
+                        android:text="@string/gif_desc"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:gravity="center"
 
-                />
 
-            <TextView
-                android:id="@+id/gif_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_medium"
-                android:textColor="@color/black"
-                android:textSize="14sp"
-                android:paddingVertical="8dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/gif_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingVertical="4dp"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:gravity="center"
 
                 />
         </LinearLayout>
@@ -225,6 +238,10 @@
 </LinearLayout>
 
 
+                        />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
