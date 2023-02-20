@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +47,7 @@ public class GiphyWebService extends AppCompatActivity {
   TextInputLayout searchInput;
   final Handler GIPHY_HANDLER = new Handler();
   String BASE_URL = "https:api.giphy.com/v1/";   // changed http to https because of cleartext error
+  Boolean RUN_THREAD = true;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +168,7 @@ public class GiphyWebService extends AppCompatActivity {
    * @param view
    */
   public void generateTrendingGif(View view) {
+    RUN_THREAD = true;
     showLoadingView();
 
     TrendingThread thread = new TrendingThread();
@@ -175,36 +178,43 @@ public class GiphyWebService extends AppCompatActivity {
   class TrendingThread implements Runnable {
     @Override
     public void run() {
-      Call<GiphyResponseTrending> retroCall = client.trendingGiphyResponse(1, API_KEY);
+      while (RUN_THREAD) {
+        Call<GiphyResponseTrending> retroCall = client.trendingGiphyResponse(1, API_KEY, getOffset());
 
-      retroCall.enqueue(new Callback<GiphyResponseTrending>() {
-        @Override
-        public void onResponse(Call<GiphyResponseTrending> call, Response<GiphyResponseTrending> response) {
-          GiphyResponseTrending data = response.body();
-
-          GiphyResponse res = data.data.get(0);
-
-          GIPHY_HANDLER.post(new Runnable() {
-            @Override
-            public void run() {
-              if(res.getTitle() != null) {
-                loadingBar.setVisibility(View.GONE);
-              }
-              try {
-                Thread.sleep(1000
-                );
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
-              setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+        retroCall.enqueue(new Callback<GiphyResponseTrending>() {
+          @Override
+          public void onResponse(Call<GiphyResponseTrending> call, Response<GiphyResponseTrending> response) {
+            GiphyResponseTrending data = response.body();
+            if (data.data.size() <= 0) {
+              return;
             }
-          });
-        }
-        @Override
-        public void onFailure(Call<GiphyResponseTrending> call, Throwable t) {
-          t.printStackTrace();
-        }
-      });
+
+            GiphyResponse res = data.data.get(0);
+
+            GIPHY_HANDLER.post(new Runnable() {
+              @Override
+              public void run() {
+                if(res.getTitle() != null) {
+                  loadingBar.setVisibility(View.GONE);
+                }
+                try {
+                  Thread.sleep(1000
+                  );
+                } catch (InterruptedException e) {
+                  e.printStackTrace();
+                }
+                setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+              }
+            });
+
+          }
+          @Override
+          public void onFailure(Call<GiphyResponseTrending> call, Throwable t) {
+            t.printStackTrace();
+          }
+        });
+        RUN_THREAD = false;
+      }
     }
   }
 
@@ -236,45 +246,52 @@ public class GiphyWebService extends AppCompatActivity {
     }
     @Override
     public void run() {
-      Call<GiphyResponseSearch> retroCall = client.searchGiphyResponse(API_KEY, search, 1);
+       Call<GiphyResponseSearch> retroCall = client.searchGiphyResponse(API_KEY, search, 1, getOffset());
 
-      retroCall.enqueue(new Callback<GiphyResponseSearch>() {
-        @Override
-        public void onResponse(Call<GiphyResponseSearch> call, Response<GiphyResponseSearch> response) {
-          GiphyResponseSearch data = response.body();
-          if (data == null || data.data.isEmpty()) {
-            runOnUiThread(new Runnable() {
-              @Override
-              public void run() {
-                Toast.makeText(getApplicationContext(), "No GIFs found for the search query: " + search, Toast.LENGTH_SHORT).show();
-              }
-            });
-            return;
-          }
-          GiphyResponse res = data.data.get(0);
+       retroCall.enqueue(new Callback<GiphyResponseSearch>() {
+         @Override
+         public void onResponse(Call<GiphyResponseSearch> call, Response<GiphyResponseSearch> response) {
+           GiphyResponseSearch data = response.body();
+           if (data == null || data.data.isEmpty()) {
+             runOnUiThread(new Runnable() {
+               @Override
+               public void run() {
+                 Toast.makeText(getApplicationContext(), "No GIFs found for the search query: " + search, Toast.LENGTH_SHORT).show();
+               }
+             });
+             return;
+           }
+           GiphyResponse res = data.data.get(0);
 
-          GIPHY_HANDLER.post(new Runnable() {
-            @Override
-            public void run() {
-              if(res.getTitle() != null) {
-                loadingBar.setVisibility(View.GONE);
-              }
-              try {
-                Thread.sleep(1000
-                );
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
-              setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
-            }
-          });
-        }
-        @Override
-        public void onFailure(Call<GiphyResponseSearch> call, Throwable t) {
-          t.printStackTrace();
-        }
-      });
+           GIPHY_HANDLER.post(new Runnable() {
+             @Override
+             public void run() {
+               if(res.getTitle() != null) {
+                 loadingBar.setVisibility(View.GONE);
+               }
+               try {
+                 Thread.sleep(1000
+                 );
+               } catch (InterruptedException e) {
+                 e.printStackTrace();
+               }
+               setViewComponents(res.getTitle(), res.getUsername(), res.getImages().getOriginal().getUrl());
+             }
+           });
+         }
+         @Override
+         public void onFailure(Call<GiphyResponseSearch> call, Throwable t) {
+           t.printStackTrace();
+         }
+       });
+
     }
+  }
+
+  public int getOffset() {
+    Random rand = new Random();
+    return rand.nextInt(4999);
+
   }
 
   public void setViewComponents(String title, String username, String url) {
