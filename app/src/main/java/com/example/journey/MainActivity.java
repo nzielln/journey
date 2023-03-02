@@ -3,17 +3,8 @@ package com.example.journey;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "https://jsonplaceholder.typicode.com/";
@@ -59,6 +50,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void startGiphyService(View view) {
         startActivity(new Intent(MainActivity.this, GiphyWebService.class));
+    }
+
+    /**
+     * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
+     */
+    public void startRealtimeDatabase(View view) {
+        startActivity(new Intent(MainActivity.this, SigninAuthenticate.class));
     }
 
 }
