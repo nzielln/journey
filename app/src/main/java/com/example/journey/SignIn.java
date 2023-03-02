@@ -1,5 +1,6 @@
 package com.example.journey;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -68,9 +69,11 @@ public class SignIn extends Fragment {
     signInButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        System.out.println("CLICK!");
+        //System.out.println("CLICK!");
         logInData.getEmail().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
         logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(passwordTextInput.getEditText()).getText()));
+        //Intent intent = new Intent(getActivity(), ProfileMessage.class);
+        SignIn.this.startActivity(new Intent(getActivity(), ProfileMessage.class));
       }
     });
 
@@ -81,4 +84,5 @@ public class SignIn extends Fragment {
       }
     });
   }
+
 }

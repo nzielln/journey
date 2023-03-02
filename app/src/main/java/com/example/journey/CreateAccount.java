@@ -1,5 +1,6 @@
 package com.example.journey;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,7 @@ public class CreateAccount extends Fragment {
       public void onClick(View v) {
         logInData.getEmail().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
         logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
+        CreateAccount.this.startActivity(new Intent(getActivity(), ProfileMessage.class));
       }
     });
 
