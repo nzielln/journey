@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
+
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
@@ -21,6 +21,9 @@ import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import android.util.Log;
+import android.widget.Toast;
 
 import android.util.Log;
 import android.widget.Toast;
@@ -149,11 +152,6 @@ public class SigninAuthenticate extends AppCompatActivity {
         if (user != null) {
             openProfileActivity();
         }
-    }
-
-    public void cleanStack() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction().setReorderingAllowed(true);
-        transaction.replace(R.id.fragment_container, SignIn.class, null).commit();
     }
 
     public void openProfileActivity() {
