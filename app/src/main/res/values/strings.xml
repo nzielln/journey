@@ -9,7 +9,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
-    
+
     <string name="giphy">Giphy</string>
     <string name="trending">Trending</string>
     <string name="gws_title">Giphy Web Service</string>
@@ -24,4 +24,13 @@
     <string name="gif_desc">Description/Username</string>
     <string name="or">Or</string>
     <string name="search">Search</string>
+    <string name="sign_in_page">Sign In Page</string>
+    <string name="button">Button</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="sign_in">Sign In</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="create">Create</string>
 </resources>
