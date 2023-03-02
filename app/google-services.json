@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "489446488189",
+    "project_id": "a8-stickittoem",
+    "storage_bucket": "a8-stickittoem.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489446488189:android:a3baa55294587d37945914",
+        "android_client_info": {
+          "package_name": "com.example.journey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "489446488189-pu1uo4vjcha160tjvp8ne57voe6uo6i9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8EJiB1YfVrRHipnhTltfyBnxlVTSFsh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "489446488189-pu1uo4vjcha160tjvp8ne57voe6uo6i9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
