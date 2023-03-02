@@ -9,12 +9,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileMessage extends AppCompatActivity {
   private static final String TAG = "ProfileMessageActivity";
 
   private TextView logoutText;
   private Button messengerButton;
+  private  FirebaseAuth myAuthentication;
+  FirebaseUser fbUser;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -22,6 +26,9 @@ public class ProfileMessage extends AppCompatActivity {
 
     logoutText = findViewById(R.id.logout_text);
     messengerButton = findViewById(R.id.send_messege);
+
+    myAuthentication = FirebaseAuth.getInstance();
+    fbUser = myAuthentication.getCurrentUser();
 
     messengerButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -33,7 +40,8 @@ public class ProfileMessage extends AppCompatActivity {
     logoutText.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        FirebaseAuth.getInstance().signOut();
+        myAuthentication.signOut();
+        //FirebaseAuth.getInstance().signOut();
         finish();
       }
     });
