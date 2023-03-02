@@ -1,6 +1,5 @@
 package com.example.journey;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,9 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.Objects;
 
 public class CreateAccount extends Fragment {
-  private UserViewModel logInData;
+  private static final String TAG = "CreateAccountFragment";
+
+  private AuthenticationViewModel logInData;
   private FragmentCreateAccountBinding binding;
   private TextView signInText;
   private Button createAccountButton;
@@ -44,9 +46,8 @@ public class CreateAccount extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
     binding = FragmentCreateAccountBinding.inflate(inflater, container, false);
-    logInData = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+    logInData = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
 
     return binding.getRoot();
   }
@@ -63,17 +64,38 @@ public class CreateAccount extends Fragment {
       @Override
       public void onClick(View v) {
         logInData.getEmail().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
-        logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
-        CreateAccount.this.startActivity(new Intent(getActivity(), ProfileMessage.class));
+        logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(passwordTextInput.getEditText()).getText()));
+
+        logInData.getShouldCreateNewAccount().setValue(true);
+        Log.i(TAG, "CREATE ACCOUNT BUTTON CLICKED");
+
       }
     });
+
+
 
     signInText.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Log.i(TAG, "ALREADY HAVE ACCOUNT TEXT CLICKED");
+
         logInData.getShowCreateAccount().setValue(false);
       }
     });
 
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    clearTextEdit();
+  }
+
+  public void clearTextEdit() {
+    emailTextInput.getEditText().getText().clear();
+    passwordTextInput.getEditText().getText().clear();
+
+    emailTextInput.getEditText().clearFocus();
+    passwordTextInput.getEditText().clearFocus();
   }
 }

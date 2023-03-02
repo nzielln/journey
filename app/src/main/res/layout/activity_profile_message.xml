@@ -34,7 +34,8 @@
             android:paddingRight="20dp"
             android:text="Logout"
             android:textColor="@color/purple_700"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            />
 
         <TextView
             android:id="@+id/SignInPage"
@@ -61,6 +62,18 @@
             android:orientation="vertical"
 
             >
+
+            <Button
+                android:id="@+id/send_messege"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="45dp"
+                android:text="@string/send_a_new_message"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </LinearLayout>
 

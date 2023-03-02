@@ -1,6 +1,5 @@
 package com.example.journey;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +24,8 @@ import java.util.Objects;
  * The SignIn() method represents a sign in in button.
  */
 public class SignIn extends Fragment {
-  private UserViewModel logInData;
-
+  private static final String TAG = "SignInFragment";
+  private AuthenticationViewModel logInData;
   private FragmentSignInBinding binding;
   private Button signInButton;
   private TextView createAccountText;
@@ -52,7 +52,7 @@ public class SignIn extends Fragment {
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     binding = FragmentSignInBinding.inflate(inflater, container, false);
-    logInData = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+    logInData = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
 
     return binding.getRoot();
   }
@@ -69,20 +69,34 @@ public class SignIn extends Fragment {
     signInButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //System.out.println("CLICK!");
         logInData.getEmail().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
         logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(passwordTextInput.getEditText()).getText()));
-        //Intent intent = new Intent(getActivity(), ProfileMessage.class);
-        SignIn.this.startActivity(new Intent(getActivity(), ProfileMessage.class));
+        logInData.getShouldCreateNewAccount().setValue(false);
+        Log.i(TAG, "SIGN IN BUTTON CLICKED");
       }
     });
 
     createAccountText.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        Log.i(TAG, "CREATE NEW ACCOUNT TEXT CLICKED");
        logInData.getShowCreateAccount().setValue(true);
       }
     });
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    clearTextEdit();
+  }
+
+  public void clearTextEdit() {
+    emailTextInput.getEditText().getText().clear();
+    passwordTextInput.getEditText().getText().clear();
+
+    emailTextInput.getEditText().clearFocus();
+    passwordTextInput.getEditText().clearFocus();
   }
 
 }
