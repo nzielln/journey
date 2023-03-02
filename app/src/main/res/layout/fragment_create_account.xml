@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/create_account_fragment"
-    tools:context=".SigninAuthenticate">
+    tools:context=".SigninAuthenticate"
+    android:paddingHorizontal="48dp"
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -45,9 +47,7 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp">
+            android:hint="@string/email">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/email_query"
@@ -58,12 +58,10 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Password"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:paddingStart="48dp"
-            android:paddingEnd="48dp">
+            android:hint="@string/password">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/password_query"
@@ -75,17 +73,39 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <Button
-            android:id="@+id/create"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="45dp"
-            android:text="@string/create"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:paddingTop="32dp"
+            android:orientation="vertical"
+
+            >
+
+            <Button
+                android:id="@+id/create_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="45dp"
+                android:text="@string/create_account"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/have_an_account_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="center"
+                android:text="@string/already_have_an_account_sign_in_here"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:clickable="true" />
+        </LinearLayout>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
