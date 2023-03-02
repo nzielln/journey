@@ -59,12 +59,12 @@ public class SigninAuthenticate extends AppCompatActivity {
     logInData.getPassword().observe(this, password -> {
       results.put(Constants.PASSWORD_KEY, password);
       signInUser(results.get(Constants.EMAIL_KEY), results.get(Constants.PASSWORD_KEY));
+      //createNewUser(results.get(Constants.EMAIL_REQUEST_KEY), results.get(Constants.PASSWORD_REQUEST_KEY));
     });
 
     logInData.getEmail().observe(this, email -> {
       results.put(Constants.EMAIL_KEY, email); // hOW TO LISTEN TO MULTIPLE THINGS AT ONCE
-
-
+      //results.put(Constants.EMAIL_REQUEST_KEY, email);
     });
 
     myAuthentication = FirebaseAuth.getInstance();
@@ -118,7 +118,7 @@ public class SigninAuthenticate extends AppCompatActivity {
   }
 
   public void createNewUser(String email, String password) {
-    myAuthentication.signInWithEmailAndPassword(email, password) //change this
+    myAuthentication.createUserWithEmailAndPassword(email, password) //change this
             .addOnCompleteListener(SigninAuthenticate.this, new OnCompleteListener<AuthResult>() {
               @Override
               public void onComplete(@NonNull Task<AuthResult> task) {
@@ -126,6 +126,7 @@ public class SigninAuthenticate extends AppCompatActivity {
                   FirebaseUser user = myAuthentication.getCurrentUser();
                   updateInterface(user);
                 } else { // If the signin fails
+                  System.out.println("FAILED TO AUTHENTICATE EMAIL AND PASSWORD.");
                   updateInterface(null);
                 }
               }
