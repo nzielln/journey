@@ -59,4 +59,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, SigninAuthenticate.class));
     }
 
+    /**
+     * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
+     */
+    public void onAbout(View view) {
+        startActivity(new Intent(MainActivity.this, About.class));
+    }
+
 }

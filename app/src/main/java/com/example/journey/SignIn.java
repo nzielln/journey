@@ -20,7 +20,7 @@ import java.util.Objects;
 
 
 /**
- * The SignIn() method represents
+ * The SignIn() method represents a sign in in button.
  */
 public class SignIn extends Fragment {
   private UserViewModel logInData;
@@ -31,8 +31,9 @@ public class SignIn extends Fragment {
   private TextInputLayout emailTextInput;
   private TextInputLayout passwordTextInput;
 
-
-
+  /**
+   * The constructor for the SignIn class.
+   */
   public SignIn() {
     super(R.layout.fragment_sign_in);
     // Required empty public constructor

@@ -26,6 +26,9 @@ public class CreateAccount extends Fragment {
   private TextInputLayout emailTextInput;
   private TextInputLayout passwordTextInput;
 
+  /**
+   * The constructor for the CreateAccount class.
+   */
   public CreateAccount() {
     super(R.layout.fragment_create_account);
   }
@@ -44,7 +47,8 @@ public class CreateAccount extends Fragment {
     binding = FragmentCreateAccountBinding.inflate(inflater, container, false);
     logInData = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
-    return binding.getRoot();  }
+    return binding.getRoot();
+  }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

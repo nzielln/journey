@@ -15,6 +15,20 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
+            android:name=".About"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ProfileMessage"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".SigninAuthenticate"
             android:exported="false">
             <meta-data

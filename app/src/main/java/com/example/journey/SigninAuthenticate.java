@@ -69,8 +69,6 @@ public class SigninAuthenticate extends AppCompatActivity {
 
     myAuthentication = FirebaseAuth.getInstance();
 
-    //binding.
-
 
 
     //FirebaseAuth.getInstance().signOut();
