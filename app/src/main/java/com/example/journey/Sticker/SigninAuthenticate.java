@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,12 +9,15 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.journey.Framents.CreateAccount;
+import com.example.journey.Framents.SignIn;
+import com.example.journey.R;
+import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -118,6 +121,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
 
                             FirebaseUser user = myAuthentication.getCurrentUser();
                             reloadViewWithUser(user);
+                            signInUserView();
                         } else {
                             Log.e(TAG, "FAILED TO CREATE NEW USER", task.getException());
                             showErrorCreatingAccountToast();

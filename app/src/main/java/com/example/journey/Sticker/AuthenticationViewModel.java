@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

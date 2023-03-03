@@ -6,6 +6,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.journey.Giphy.GiphyWebService;
+import com.example.journey.Sticker.About;
+import com.example.journey.Sticker.SigninAuthenticate;
+
 public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "https://jsonplaceholder.typicode.com/";
 

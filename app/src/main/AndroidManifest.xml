@@ -15,35 +15,35 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
-            android:name=".MessengerActivity"
+            android:name=".Sticker.MessengerActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".About"
+            android:name=".Sticker.About"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ProfileMessage"
+            android:name=".Sticker.ProfileMessage"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".SigninAuthenticate"
+            android:name=".Sticker.SigninAuthenticate"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".GiphyWebService"
+            android:name=".Giphy.GiphyWebService"
             android:exported="false"
             android:theme="@style/Theme.Journey.NoActionBar">
             <meta-data

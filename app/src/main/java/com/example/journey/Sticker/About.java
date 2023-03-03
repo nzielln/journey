@@ -1,8 +1,10 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.journey.R;
 
 public class About extends AppCompatActivity {
 

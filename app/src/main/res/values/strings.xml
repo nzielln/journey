@@ -38,4 +38,8 @@
     <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here.</string>
     <string name="messenger_page">Messenger Page</string>
     <string name="send_a_new_message">Send a new message</string>
+    <string name="welcome">Welcome</string>
+    <string name="logout">Logout</string>
+    <string name="count_goes_here">Count goes here</string>
+    <string name="confirm_and_send">Confirm and send</string>
 </resources>
