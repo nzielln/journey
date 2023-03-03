@@ -1,12 +1,14 @@
 package com.example.journey.Sticker.Models;
 
+import com.example.journey.Sticker.Constants;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class StickerUser {
 
     String email;
-    Map<Integer, Integer> stickers;
+    Map<String, Integer> stickers;
 
     public StickerUser(String email) {
         this.email = email;
@@ -18,12 +20,13 @@ public class StickerUser {
     }
 
     public void addSticker(int sticker) {
-        stickers.compute(sticker, (key, value) -> value == null ? 1: value + 1);
+
+        stickers.compute(Constants.getStickerKey(sticker), (key, value) -> value == null ? 1: value + 1);
     }
 
     public Integer getCountForSticker(int sticker) {
-        if (stickers.containsKey(sticker)) {
-            return stickers.get(sticker);
+        if (stickers.containsKey(Constants.getStickerKey(sticker))) {
+            return stickers.get(Constants.getStickerKey(sticker));
         }
 
         return 0;
@@ -33,7 +36,7 @@ public class StickerUser {
         return email;
     }
 
-    public Map<Integer, Integer> getStickers() {
+    public Map<String, Integer> getStickers() {
         return stickers;
     }
 }

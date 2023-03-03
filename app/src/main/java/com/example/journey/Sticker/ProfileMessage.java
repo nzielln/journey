@@ -56,7 +56,7 @@ public class ProfileMessage extends AppCompatActivity {
     sample.addSticker(Constants.TIRED);
     sample.addSticker(Constants.SHOCKED);
 
-    databaseReference.child("users").child(Objects.requireNonNull(fbUser.getEmail())).setValue(sample);
+    databaseReference.child("users").child("sample").setValue(sample);
 
     stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
     StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);

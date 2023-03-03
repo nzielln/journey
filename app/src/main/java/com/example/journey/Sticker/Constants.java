@@ -19,22 +19,52 @@ public class Constants {
     public static String ERROR_CREATING_ACCOUNT_MESSAGE = "There was an error creating your account. Please try again.";
     public static String SIGN_OUT_MESSAGE = "You've successfully been loggeg out.";
 
-    public static String STICKER_ANGRY = "angry";
-    public static String STICKER_BORING = "boring";
-    public static String STICKER_TIRED = "tired";
-    public static String STICKER_SHOCKED = "shocked";
-    public static String STICKER_SAD = "sad";
-    public static String STICKER_OK = "ok";
-    public static String STICKER_LOL = "laugh";
-    public static String STICKER_LOVE = "love";
+    public final static String STICKER_ANGRY = "angry";
+    public final static String STICKER_BORING = "boring";
+    public final static String STICKER_TIRED = "tired";
+    public final static String STICKER_SHOCKED = "shocked";
+    public final static String STICKER_SAD = "sad";
+    public final static String STICKER_OK = "ok";
+    public final static String STICKER_LOL = "laugh";
+    public final static String STICKER_LOVE = "love";
 
-    public static int ANGRY = R.drawable.angry;
-    public static int BORING = R.drawable.boring;
-    public static int TIRED = R.drawable.tired;
-    public static int SHOCKED = R.drawable.shocked;
-    public static int SAD = R.drawable.sad;
-    public static int OK = R.drawable.ok;
-    public static int LOL = R.drawable.laugh;
-    public static int LOVE = R.drawable.love;
+    public final static int ANGRY = R.drawable.angry;
+    public final static int BORING = R.drawable.boring;
+    public final static int TIRED = R.drawable.tired;
+    public final static int SHOCKED = R.drawable.shocked;
+    public final static int SAD = R.drawable.sad;
+    public final static int OK = R.drawable.ok;
+    public final static int LOL = R.drawable.laugh;
+    public final static int LOVE = R.drawable.love;
+
+    public static String getStickerKey(int sticker) {
+        switch (sticker) {
+            case SHOCKED: return STICKER_SHOCKED;
+            case ANGRY: return STICKER_ANGRY;
+            case SAD: return STICKER_SAD;
+            case TIRED: return STICKER_TIRED;
+            case BORING: return STICKER_BORING;
+            case OK: return STICKER_OK;
+            case LOL: return STICKER_LOL;
+            case LOVE: return STICKER_LOVE;
+
+        }
+    return null;
+    }
+
+    public static Integer getIDForStickerKey(String sticker) {
+        switch (sticker) {
+            case STICKER_SHOCKED: return SHOCKED;
+            case STICKER_ANGRY: return ANGRY;
+            case STICKER_SAD: return SAD;
+            case STICKER_TIRED: return TIRED;
+            case STICKER_BORING: return BORING;
+            case STICKER_OK: return OK;
+            case STICKER_LOL: return LOL;
+            case STICKER_LOVE: return LOVE;
+
+        }
+        return null;
+    }
 
 }

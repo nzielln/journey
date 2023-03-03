@@ -64,13 +64,12 @@ public class StickerGridAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.sticker_image_view, null); // inflate the layout
         }
 
-
         ImageView imageView = (ImageView) convertView.findViewById(R.id.sticker_history_image);
         imageView.setImageDrawable(ContextCompat.getDrawable(context, stickers[position]));
-        TextView count = convertView.findViewById(R.id.count);
+        TextView count = (TextView) convertView.findViewById(R.id.count);
 
         if (!showCount) {
-            ViewGroup viewParent = (ViewGroup) count.getParent();
+            ViewGroup viewParent = (ViewGroup) imageView.getParent();
             viewParent.removeView(count);
 
         } else {
