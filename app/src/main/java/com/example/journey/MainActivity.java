@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     /**
      * The startGiphyService() method opens up a new activity.
      */
@@ -52,11 +53,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, GiphyWebService.class));
     }
 
+
+
+    /**
+     * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
+     */
+    public void startSignIn(View view) {
+        startActivity(new Intent(MainActivity.this, SigninAuthenticate.class));
+    }
+
     /**
      * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
      */
     public void startRealtimeDatabase(View view) {
-        startActivity(new Intent(MainActivity.this, SigninAuthenticate.class));
+        startActivity(new Intent(MainActivity.this, RealtimeDatabaseActivity.class));
     }
 
     /**
@@ -65,5 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public void onAbout(View view) {
         startActivity(new Intent(MainActivity.this, About.class));
     }
+
+
 
 }

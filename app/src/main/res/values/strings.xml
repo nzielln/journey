@@ -38,4 +38,6 @@
     <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here.</string>
     <string name="messenger_page">Messenger Page</string>
     <string name="send_a_new_message">Send a new message</string>
+    <string name="title_textview">Realtime_Database</string>
+    <string name="send_sticker_button">Send Sticker</string>
 </resources>
