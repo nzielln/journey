@@ -1,11 +1,10 @@
-package com.example.journey;
+package com.example.journey.Framents;
 
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.journey.Sticker.AuthenticationViewModel;
+import com.example.journey.Sticker.Constants;
+import com.example.journey.R;
+import com.example.journey.Sticker.StickerAppDelegate;
 import com.example.journey.databinding.FragmentCreateAccountBinding;
 import com.google.android.material.textfield.TextInputLayout;
 

@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Giphy;
 
 // This is just an object to represent a response from the API - the image
 

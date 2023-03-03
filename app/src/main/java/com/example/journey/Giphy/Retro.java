@@ -1,4 +1,8 @@
-package com.example.journey;
+package com.example.journey.Giphy;
+
+import com.example.journey.Giphy.GiphyResponseRandom;
+import com.example.journey.Giphy.GiphyResponseSearch;
+import com.example.journey.Giphy.GiphyResponseTrending;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

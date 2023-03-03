@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Scratch;
 import com.google.gson.annotations.SerializedName;
 
 public class Todo {

@@ -1,16 +1,12 @@
-package com.example.journey;
+package com.example.journey.Giphy;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.content.Context;
-import android.os.Handler;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.os.Bundle;
@@ -21,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.journey.R;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;

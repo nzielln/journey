@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Framents;
 
 import android.os.Bundle;
 
@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.journey.Sticker.AuthenticationViewModel;
+import com.example.journey.Sticker.Constants;
+import com.example.journey.R;
+import com.example.journey.Sticker.StickerAppDelegate;
 import com.example.journey.databinding.FragmentSignInBinding;
 import com.google.android.material.textfield.TextInputLayout;
-
-import java.util.Objects;
 
 
 /**

@@ -1,8 +1,10 @@
-package com.example.journey;
+package com.example.journey.Giphy;
 
 import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
+
+import com.example.journey.R;
 
 public class LoadingAlert {
 

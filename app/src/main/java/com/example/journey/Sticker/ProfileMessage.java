@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,16 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import com.example.journey.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.w3c.dom.Text;
 
 public class ProfileMessage extends AppCompatActivity {
   private static final String TAG = "ProfileMessageActivity";
 
   private TextView logoutText;
   private Button messengerButton;
+  TextView email;
+  GridView stickerHistoryGrid;
   private  FirebaseAuth myAuthentication;
   FirebaseUser fbUser;
 
@@ -29,6 +35,10 @@ public class ProfileMessage extends AppCompatActivity {
 
     myAuthentication = FirebaseAuth.getInstance();
     fbUser = myAuthentication.getCurrentUser();
+
+    stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
+    StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext());
+    stickerHistoryGrid.setAdapter(adapter);
 
     messengerButton.setOnClickListener(new View.OnClickListener() {
       @Override

@@ -1,14 +1,12 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+
+import com.example.journey.R;
 
 public class MessengerActivity extends AppCompatActivity {
   private static final String TAG = "MessengerActivity";
