@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -37,16 +38,22 @@ public class ProfileMessage extends AppCompatActivity {
 
     logoutText = findViewById(R.id.logout_text);
     messengerButton = findViewById(R.id.send_messege);
+    email = findViewById(R.id.email_text);
+
+
+
 
     myAuthentication = FirebaseAuth.getInstance();
     fbUser = myAuthentication.getCurrentUser();
+    email.setText(fbUser.getEmail());
+
     reference = FirebaseDatabase.getInstance().getReference();
 
     sample = new StickerUser(fbUser.getEmail());
     sample.addSticker(Constants.ANGRY);
     sample.addSticker(Constants.ANGRY);
     sample.addSticker(Constants.TIRED);
-    sample.addSticker(Constants.SHOCKED);
+    //sample.addSticker(Constants.SHOCKED);
 
     reference.child("users").child("sample").setValue(sample);
 
