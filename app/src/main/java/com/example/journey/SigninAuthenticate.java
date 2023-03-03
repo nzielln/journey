@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,25 +16,35 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
-import android.util.Log;
-import android.widget.Toast;
-
-public class SigninAuthenticate extends AppCompatActivity {
-    private AuthenticationViewModel logInData;
-    private final Map<String, String> results = new HashMap<>();
+public class SigninAuthenticate extends AppCompatActivity implements StickerAppDelegate, Parcelable {
 
     private FirebaseAuth myAuthentication;
     private ActivitySigninAuthenticateBinding binding;
     private FragmentManager fragmentManager;
     private static final String TAG = "SigninAuthenticate";
 
+    protected SigninAuthenticate(Parcel in) {
+    }
+
+    public SigninAuthenticate() {
+    }
+
+    public static final Creator<SigninAuthenticate> CREATOR = new Creator<SigninAuthenticate>() {
+        @Override
+        public SigninAuthenticate createFromParcel(Parcel in) {
+            return new SigninAuthenticate(in);
+        }
+
+        @Override
+        public SigninAuthenticate[] newArray(int size) {
+            return new SigninAuthenticate[size];
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,24 +52,14 @@ public class SigninAuthenticate extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         myAuthentication = FirebaseAuth.getInstance();
         binding = ActivitySigninAuthenticateBinding.inflate(getLayoutInflater());
-        logInData = new ViewModelProvider(this).get(AuthenticationViewModel.class);
 
         setContentView(binding.getRoot());
 
         if (checkIsUserSignedIn()) {
             openProfileActivity();
         } else {
-            logInData.getShowCreateAccount().observe(this, state -> {
-                if (state) {
-                    createNewAccountView();
-                } else {
-                    signInUserView();
-                }
-            });
+            signInUserView();
         }
-
-        getCredentials();
-        authenticateUser();
     }
 
     public Boolean checkIsUserSignedIn() {
@@ -71,41 +69,24 @@ public class SigninAuthenticate extends AppCompatActivity {
 
     public void signInUserView() {
         FragmentTransaction transaction = fragmentManager.beginTransaction().setReorderingAllowed(true);
-        transaction.replace(R.id.fragment_container, SignIn.class, null).commit();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.DELEGATE, this);
+        SignIn signInFragment = new SignIn();
+        signInFragment.setArguments(bundle);
+
+        transaction.replace(R.id.fragment_container, signInFragment).commit();
 
     }
 
     public void createNewAccountView() {
         FragmentTransaction transaction = fragmentManager.beginTransaction().setReorderingAllowed(true);
-        transaction.replace(R.id.fragment_container, CreateAccount.class, null).commit();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.DELEGATE, this);
+        CreateAccount createAccountFragment = new CreateAccount();
+        createAccountFragment.setArguments(bundle);
+        transaction.replace(R.id.fragment_container, createAccountFragment, null).commit();
 
-    }
-
-    public void getCredentials() {
-        logInData.getEmail().observe(this, email -> {
-            results.put(Constants.EMAIL_KEY, email);
-        });
-
-        logInData.getPassword().observe(this, password -> {
-            results.put(Constants.PASSWORD_KEY, password);
-            authenticateUser();
-        });
-    }
-
-    public void authenticateUser() {
-
-        logInData.getShouldCreateNewAccount().observe(this, shouldCreateNewAccount -> {
-            if (shouldCreateNewAccount != null) {
-                String email = results.get(Constants.EMAIL_KEY);
-                String password = results.get(Constants.PASSWORD_KEY);
-                if (shouldCreateNewAccount) {
-                    createNewUser(email, password);
-                } else {
-                    signInUser(email, password);
-                }
-            }
-
-        });
     }
 
     public void signInUser(String email, String password) {
@@ -124,7 +105,6 @@ public class SigninAuthenticate extends AppCompatActivity {
                             reloadViewWithUser(null);
                         }
                     }
-
                 });
     }
 
@@ -147,7 +127,6 @@ public class SigninAuthenticate extends AppCompatActivity {
                 });
     }
 
-
     private void reloadViewWithUser(@Nullable FirebaseUser user) {
         if (user != null) {
             openProfileActivity();
@@ -166,5 +145,53 @@ public class SigninAuthenticate extends AppCompatActivity {
     public void showErrorCreatingAccountToast() {
         Toast.makeText(SigninAuthenticate.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+    }
+
+
+    // Delegate Methods
+    @Override
+    public void signInUserWith(String email, String password) {
+        Log.i(TAG, "SIGN IN USER REQUEST WAS RECEIVED FOR EMAIL: " + email + "AND PASSWORD: " + password);
+        signInUser(email, password);
+    }
+
+    @Override
+    public void createNewUserWith(String email, String password) {
+        Log.i(TAG, "CREATE ACCOUNT REQUEST WAS RECEIVED FOR EMAIL: " + email + "AND PASSWORD: " + password);
+
+        createNewUser(email, password);
+    }
+
+    @Override
+    public void createNewAccountWasClicked() {
+        Log.i(TAG, "CREATE ACCOUNT VIEW REQUEST WAS RECEIVED");
+
+        createNewAccountView();
+    }
+
+    @Override
+    public void alreadyHaveAnAccountWasClicked() {
+        Log.i(TAG, "SIGN IN VIEW REQUEST WAS RECEIVED");
+
+        signInUserView();
+    }
+
+    @Override
+    public void signInWasClicked() {
+
+    }
+
+    @Override
+    public void createAccountWasClicked() {
+
     }
 }

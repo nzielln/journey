@@ -9,6 +9,7 @@ public class Constants {
     public static String SHOW_CREATE_REQUEST_KEY = "SHOW_CREATE_REQUEST_KEY";
     public static String PASSWORD_KEY = "PASSWORD_KEY";
     public static String EMAIL_KEY = "EMAIL_KEY";
+    public static String DELEGATE = "DELEGATE";
 
     public static String ERROR_SIGNING_IN_MESSAGE = "There was an error signing you in. Please try again.";
     public static String ERROR_CREATING_ACCOUNT_MESSAGE = "There was an error creating your account. Please try again.";

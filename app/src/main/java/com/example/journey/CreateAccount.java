@@ -28,6 +28,7 @@ public class CreateAccount extends Fragment {
   private Button createAccountButton;
   private TextInputLayout emailTextInput;
   private TextInputLayout passwordTextInput;
+  StickerAppDelegate delegate;
 
   /**
    * The constructor for the CreateAccount class.
@@ -40,6 +41,9 @@ public class CreateAccount extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Bundle bundle = this.getArguments();
+    assert bundle != null;
+    delegate = bundle.getParcelable(Constants.DELEGATE);
 
   }
 
@@ -47,7 +51,6 @@ public class CreateAccount extends Fragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     binding = FragmentCreateAccountBinding.inflate(inflater, container, false);
-    logInData = new ViewModelProvider(requireActivity()).get(AuthenticationViewModel.class);
 
     return binding.getRoot();
   }
@@ -63,10 +66,10 @@ public class CreateAccount extends Fragment {
     createAccountButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        logInData.getEmail().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
-        logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(passwordTextInput.getEditText()).getText()));
+        String email = String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText());
+        String password = String.valueOf(Objects.requireNonNull(passwordTextInput.getEditText()).getText());
 
-        logInData.getShouldCreateNewAccount().setValue(true);
+        delegate.createNewUserWith(email, password);
         Log.i(TAG, "CREATE ACCOUNT BUTTON CLICKED");
 
       }
@@ -77,9 +80,8 @@ public class CreateAccount extends Fragment {
     signInText.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        delegate.alreadyHaveAnAccountWasClicked();
         Log.i(TAG, "ALREADY HAVE ACCOUNT TEXT CLICKED");
-
-        logInData.getShowCreateAccount().setValue(false);
       }
     });
 

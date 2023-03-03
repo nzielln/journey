@@ -40,10 +40,15 @@ public class SignIn extends Fragment {
     // Required empty public constructor
   }
 
+  StickerAppDelegate delegate;
+
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    Bundle bundle = this.getArguments();
+    assert bundle != null;
+    delegate = bundle.getParcelable(Constants.DELEGATE);
 
   }
 
@@ -69,18 +74,19 @@ public class SignIn extends Fragment {
     signInButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        logInData.getEmail().setValue(String.valueOf(Objects.requireNonNull(emailTextInput.getEditText()).getText()));
-        logInData.getPassword().setValue(String.valueOf(Objects.requireNonNull(passwordTextInput.getEditText()).getText()));
-        logInData.getShouldCreateNewAccount().setValue(false);
+        String email = String.valueOf(emailTextInput.getEditText().getText());
+        String password = String.valueOf(passwordTextInput.getEditText().getText());
+        delegate.signInUserWith(email, password);
         Log.i(TAG, "SIGN IN BUTTON CLICKED");
+
       }
     });
 
     createAccountText.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
+        delegate.createNewAccountWasClicked();
         Log.i(TAG, "CREATE NEW ACCOUNT TEXT CLICKED");
-       logInData.getShowCreateAccount().setValue(true);
       }
     });
   }
