@@ -15,6 +15,13 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
+            android:name=".MessengerChatView"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Sticker.MessengerActivity"
             android:exported="false">
             <meta-data

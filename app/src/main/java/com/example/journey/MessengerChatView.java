@@ -1,52 +1,46 @@
 package com.example.journey;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Bundle;
+import android.widget.RadioButton;
+
+import com.example.journey.databinding.ActivityMessengerChatViewBinding;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class JRealtimeDatabase extends AppCompatActivity {
+public class MessengerChatView extends AppCompatActivity {
 
   private static final String TAG = JRealtimeDatabase.class.getSimpleName();
 
-  private DatabaseReference myDatabase;
-  private TextView user1;
-  private TextView image_user1;
+  ActivityMessengerChatViewBinding bind;
+  DatabaseReference myDatabase; //database reference
+  private String userReceiver;
 
-  private TextView user2;
-  private TextView image_user2;
+  private RadioButton user;
 
-  private ImageView sendImage;
-  private int imageCounter = 0;
 
-  @SuppressLint("RestrictedApi")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_messenger);
+    //setContentView(R.layout.activity_messenger_chat_view);
+    bind = ActivityMessengerChatViewBinding.inflate(getLayoutInflater());
+    setContentView(bind.getRoot());
 
+    user = (RadioButton) findViewById(R.id.user1);
 
-    // myDatabase connects with Firebase
     myDatabase = FirebaseDatabase.getInstance().getReference();
 
-
-    // This updates the images "stickers"
+    // Update image here
     myDatabase.child("user").addChildEventListener(new ChildEventListener() {
       @Override
       public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        //showNumberOfImages(snapshot);
-        Log.e(TAG, "another child added, AKA another image added" + snapshot.getValue().toString());
+        //addSticker(snapshot);
       }
 
       @Override
@@ -69,7 +63,12 @@ public class JRealtimeDatabase extends AppCompatActivity {
 
       }
     });
+  }
 
+  /**
+   * This method adds/send a sticker to user.
+   */
+  public void addSticker() {
 
   }
 }
