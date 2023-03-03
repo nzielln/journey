@@ -1,18 +1,39 @@
 package com.example.journey;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "https://jsonplaceholder.typicode.com/";
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        // Check if the user is signed in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // User is not signed in, go to SignInActivity
+            startActivity(new Intent(MainActivity.this, SignInActivity.class));
+            finish();
+        }
+
+    //    });
 
         /*Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -40,9 +61,7 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
-
          */
-
     }
 
 
@@ -52,8 +71,6 @@ public class MainActivity extends AppCompatActivity {
     public void startGiphyService(View view) {
         startActivity(new Intent(MainActivity.this, GiphyWebService.class));
     }
-
-
 
     /**
      * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
@@ -75,7 +92,5 @@ public class MainActivity extends AppCompatActivity {
     public void onAbout(View view) {
         startActivity(new Intent(MainActivity.this, About.class));
     }
-
-
 
 }

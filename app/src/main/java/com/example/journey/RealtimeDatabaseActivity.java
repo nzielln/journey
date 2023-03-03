@@ -48,25 +48,28 @@ public class RealtimeDatabaseActivity extends AppCompatActivity {
         sendStickerButton = findViewById(R.id.send_sticker_button);
 
         // Set an OnClickListener for the "Send Sticker" button
-       // Button sendStickerButton = findViewById(R.id.send_sticker_button);
+        // Button sendStickerButton = findViewById(R.id.send_sticker_button);
         sendStickerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create a new sticker object
-                Sticker sticker = new Sticker("https://example.com/sticker.png", "Happy face");
-
-                // Add the sticker data to the Realtime Database
-                String stickerId = stickersRef.push().getKey();
-                stickersRef.child(stickerId).setValue(sticker);
-
-                // If the user is signed in, send the sticker to the user
-                if (userStickersRef != null) {
-                    userStickersRef.child(stickerId).setValue(true);
-                }
-
-                // Show a message to the user indicating that the sticker was sent
-                Toast.makeText(RealtimeDatabaseActivity.this, "Sticker sent!", Toast.LENGTH_SHORT).show();
+                startRealtimeDatabase(v);
             }
         });
+    }
+    public void startRealtimeDatabase(View view) {
+        // Create a new sticker object
+        Sticker sticker = new Sticker("https://example.com/sticker.png", "Happy face");
+
+        // Add the sticker data to the Realtime Database
+        String stickerId = stickersRef.push().getKey();
+        stickersRef.child(stickerId).setValue(sticker);
+
+        // If the user is signed in, send the sticker to the user
+        if (userStickersRef != null) {
+            userStickersRef.child(stickerId).setValue(true);
+        }
+
+        // Show a message to the user indicating that the sticker was sent
+        Toast.makeText(RealtimeDatabaseActivity.this, "Sticker sent!", Toast.LENGTH_SHORT).show();
     }
 }
