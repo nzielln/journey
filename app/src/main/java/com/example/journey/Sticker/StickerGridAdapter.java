@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
@@ -28,7 +29,14 @@ public class StickerGridAdapter extends BaseAdapter {
     };
     LayoutInflater layoutInflater;
     Context context;
+    Boolean showCount = false;
 
+    public StickerGridAdapter(Context context, Boolean showCount) {
+        this.context = context;
+        layoutInflater = (LayoutInflater.from(context)) ;
+        this.showCount = showCount;
+
+    }
     public StickerGridAdapter(Context context) {
         this.context = context;
         layoutInflater = (LayoutInflater.from(context)) ;
@@ -56,9 +64,20 @@ public class StickerGridAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.sticker_image_view, null); // inflate the layout
         }
 
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.sticker_history_image);
 
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.sticker_history_image);
         imageView.setImageDrawable(ContextCompat.getDrawable(context, stickers[position]));
+        TextView count = convertView.findViewById(R.id.count);
+
+        if (!showCount) {
+            ViewGroup viewParent = (ViewGroup) count.getParent();
+            viewParent.removeView(count);
+
+        } else {
+
+        }
+
+
 
         return convertView;
     }
