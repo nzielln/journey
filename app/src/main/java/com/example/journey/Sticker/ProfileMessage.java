@@ -42,12 +42,12 @@ public class ProfileMessage extends AppCompatActivity {
 
 
 
-
     myAuthentication = FirebaseAuth.getInstance();
     fbUser = myAuthentication.getCurrentUser();
     email.setText(fbUser.getEmail());
 
     reference = FirebaseDatabase.getInstance().getReference();
+    //reference.child("users").
 
     sample = new StickerUser(fbUser.getEmail());
     sample.addSticker(Constants.ANGRY);
@@ -55,7 +55,7 @@ public class ProfileMessage extends AppCompatActivity {
     sample.addSticker(Constants.TIRED);
     //sample.addSticker(Constants.SHOCKED);
 
-    reference.child("users").child("sample").setValue(sample);
+    reference.child("users").child(fbUser.getUid()).setValue(sample);
 
     stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
     StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
