@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -20,6 +21,8 @@ import com.example.journey.Sticker.Models.StickerUser;
 import com.example.journey.databinding.ActivityMessengerChatViewBinding;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +32,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class MessengerChatView extends AppCompatActivity {
 
@@ -37,6 +41,8 @@ public class MessengerChatView extends AppCompatActivity {
   ActivityMessengerChatViewBinding bind;
   DatabaseReference myDatabase; //database reference
   private String userReceiver;
+  private FirebaseAuth userAuthentication;
+  FirebaseUser fbUser;
 
   //private RadioButton user;
 
@@ -64,7 +70,8 @@ public class MessengerChatView extends AppCompatActivity {
     setContentView(bind.getRoot());
 
     ListView1 = (ListView) findViewById(R.id.ListView1);
-
+    userAuthentication = FirebaseAuth.getInstance();
+    fbUser = userAuthentication.getCurrentUser();
     myDatabase = FirebaseDatabase.getInstance().getReference();
     DatabaseReference allUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
@@ -80,7 +87,9 @@ public class MessengerChatView extends AppCompatActivity {
       @Override
       protected void populateView(View view, StickerUser person, int position) {
         Log.d("list populate", person.getEmail() + " " + position);
-        ((TextView) view.findViewById(android.R.id.text1)).setText(person.getEmail());
+        if (!Objects.equals(person.getEmail(), fbUser.getEmail())) {
+          ((TextView) view.findViewById(android.R.id.text1)).setText(person.getEmail());
+        }
       }
     };
 

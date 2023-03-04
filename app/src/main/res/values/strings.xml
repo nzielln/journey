@@ -45,4 +45,5 @@
     <string name="send_message">Send Message</string>
     <string name="chat_messenger_heading">Chat Messenger</string>
     <string name="type_message_here">Type Message Here</string>
+    <string name="history">History</string>
 </resources>

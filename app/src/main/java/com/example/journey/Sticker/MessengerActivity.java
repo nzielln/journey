@@ -51,7 +51,6 @@ public class MessengerActivity extends AppCompatActivity {
 
     confirmSend = findViewById(R.id.confirm_and_send);
 
-
   }
 
   /**
@@ -62,6 +61,5 @@ public class MessengerActivity extends AppCompatActivity {
   public void openBackToProfile(View view) {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
-
 
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
+import com.example.journey.StickerHistory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,6 +27,7 @@ public class ProfileMessage extends AppCompatActivity {
 
   private TextView logoutText;
   private Button messengerButton;
+  private Button historyButton;
   TextView email;
   GridView stickerHistoryGrid;
   private  FirebaseAuth userAuthentication;
@@ -39,6 +41,7 @@ public class ProfileMessage extends AppCompatActivity {
 
     logoutText = findViewById(R.id.logout_text);
     messengerButton = findViewById(R.id.send_message);
+    messengerButton = findViewById(R.id.history);
     email = findViewById(R.id.email_text);
 
     userAuthentication = FirebaseAuth.getInstance();
@@ -79,11 +82,22 @@ public class ProfileMessage extends AppCompatActivity {
         finish();
       }
     });
+
+    historyButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        openHistoryActivity();
+      }
+    });
   }
 
   public void openMessengerActivity(View view) {
          Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
          startActivity(intent1);
+  }
+
+  public void openHistoryActivity() {
+    startActivity(new Intent(ProfileMessage.this, StickerHistory.class));
   }
 
 }

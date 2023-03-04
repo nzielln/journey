@@ -49,6 +49,20 @@ public class StickerGridAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /*
+    _____________
+    Sender:
+    Time:
+    Sticker: []
+    _____________
+    Sender:
+    Time:
+    Sticker: []
+    _____________
+    Sender:
+    Time:
+    Sticker: []
+    */
     @Override
     public int getCount() {
         return stickers.length;
