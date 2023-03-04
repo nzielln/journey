@@ -10,9 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.journey.JRealtimeDatabase;
@@ -32,6 +35,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MessengerChatView extends AppCompatActivity {
@@ -47,20 +51,7 @@ public class MessengerChatView extends AppCompatActivity {
   //private RadioButton user;
 
   ArrayList<String> loggedInUsers = new ArrayList<>();
-  private ListView ListView1;
-  private FirebaseListAdapter<StickerUser> firebaseAdapter;
-
-  @Override
-  protected void onStart() {
-    super.onStart();
-    firebaseAdapter.startListening();
-  }
-
-  @Override
-  protected void onStop() {
-    super.onStop();
-    firebaseAdapter.stopListening();
-  }
+  private ListView user_list_view;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -69,36 +60,56 @@ public class MessengerChatView extends AppCompatActivity {
     bind = ActivityMessengerChatViewBinding.inflate(getLayoutInflater());
     setContentView(bind.getRoot());
 
-    ListView1 = (ListView) findViewById(R.id.ListView1);
+    user_list_view = (ListView) findViewById(R.id.user_list_view);
     userAuthentication = FirebaseAuth.getInstance();
     fbUser = userAuthentication.getCurrentUser();
     myDatabase = FirebaseDatabase.getInstance().getReference();
     DatabaseReference allUsers = FirebaseDatabase.getInstance().getReference().child("users");
 
-    Query query = myDatabase.child("users");
-
-    FirebaseListOptions<StickerUser> options =
-            new FirebaseListOptions.Builder<StickerUser>()
-                    .setQuery(query, StickerUser.class)
-                    .setLayout(android.R.layout.simple_list_item_1)
-                    .build();
-    firebaseAdapter = new FirebaseListAdapter<StickerUser>(options){
-      // Populate the view with all logged users.
+    ArrayList<StickerUser> users = new ArrayList<>();
+    allUsers.addValueEventListener(new ValueEventListener() {
       @Override
-      protected void populateView(View view, StickerUser person, int position) {
-        Log.d("list populate", person.getEmail() + " " + position);
-        if (!Objects.equals(person.getEmail(), fbUser.getEmail())) {
-          ((TextView) view.findViewById(android.R.id.text1)).setText(person.getEmail());
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        for(DataSnapshot dbUser: snapshot.getChildren()) {
+          StickerUser user = dbUser.getValue(StickerUser.class);
+          assert user != null;
+          if (!Objects.equals(user.getEmail(), fbUser.getEmail())) {
+            users.add(user);
+          }
         }
+        UserAdapter adapter = new UserAdapter(getApplicationContext(), users);
+        user_list_view.setAdapter(adapter);
+
       }
-    };
 
-    ListView1.setAdapter(firebaseAdapter);
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.e(TAG, "FAILED TO RETRIEVE ALL USERS FROM DATABASE WITH ERROR: " + error.toException());
+      }
+    });
 
-    ListView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//    Query query = myDatabase.child("users");
+//    FirebaseListOptions<StickerUser> options =
+//            new FirebaseListOptions.Builder<StickerUser>()
+//                    .setQuery(query, StickerUser.class)
+//                    .setLayout(android.R.layout.simple_list_item_1)
+//                    .build();
+//
+//    firebaseAdapter = new FirebaseListAdapter<StickerUser>(options){
+//      @Override
+//      protected void populateView(View view, StickerUser person, int position) {
+//        Log.d("list populate", person.getEmail() + " " + position);
+//        if (!Objects.equals(person.getEmail(), fbUser.getEmail())) {
+//          ((TextView) view.findViewById(android.R.id.text1)).setText(person.getEmail());
+//        } else {
+//        }
+//      }
+//    };
+
+    user_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TextView tview = view.findViewById(android.R.id.text1);
+        TextView tview = view.findViewById(R.id.active_users_text);
         openMessengerActivityToUser(tview.getText().toString());
       }
     });

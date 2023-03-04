@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".StickerHistory"
             android:exported="false">
             <meta-data
