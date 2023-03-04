@@ -48,11 +48,12 @@ public class ProfileMessage extends AppCompatActivity {
     reference = FirebaseDatabase.getInstance().getReference();
     StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
 
-    reference.addValueEventListener(new ValueEventListener() {
+    reference.child(Constants.USERS_DATABASE_ROOT).child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         StickerUser stickers = snapshot.getValue(StickerUser.class);
         stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
+        adapter.updateUser(stickers);
         stickerHistoryGrid.setAdapter(adapter);
       }
 
