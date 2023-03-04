@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.example.journey.R;
+import com.example.journey.Sticker.Models.StickerUser;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class StickerGridAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     Context context;
     Boolean showCount = false;
+    StickerUser user;
 
     public StickerGridAdapter(Context context, Boolean showCount) {
         this.context = context;
@@ -40,6 +42,11 @@ public class StickerGridAdapter extends BaseAdapter {
     public StickerGridAdapter(Context context) {
         this.context = context;
         layoutInflater = (LayoutInflater.from(context)) ;
+    }
+
+    public void updateUser(StickerUser user) {
+        this.user = user;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -72,6 +79,7 @@ public class StickerGridAdapter extends BaseAdapter {
             viewParent.removeView(count);
 
         } else {
+            count.setText(String.valueOf("SENT: " + user.getCountForSticker(stickers[position]) + " stickers"));
 
         }
         return convertView;
