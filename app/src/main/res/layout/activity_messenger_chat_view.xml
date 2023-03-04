@@ -69,30 +69,33 @@
 <!--        </RadioGroup>-->
     </LinearLayout>
 
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/ChatMessenger_Layout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:padding="20dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent">-->
+<!-- Please leave this section in for now. Need it for sending messages -->
+    <RelativeLayout
+        android:id="@+id/ChatMessenger_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
 
-<!--        <EditText-->
-<!--            android:id="@+id/sendMessage"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="48dp"-->
-<!--            android:inputType="text"-->
-<!--            android:hint="Type Message Here"></EditText>-->
+        <EditText
+            android:id="@+id/sendMessage"
+           android:layout_width="match_parent"
+           android:layout_height="48dp"
+            android:inputType="text"
+            android:hint="@string/type_message_here">
 
-<!--        <ImageView-->
-<!--            android:id="@+id/send_button"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_alignParentRight="true"-->
-<!--            app:srcCompat="@android:drawable/ic_menu_send" />-->
-<!--    </RelativeLayout>-->
+        </EditText>
 
+       <ImageView
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            app:srcCompat="@android:drawable/ic_menu_send" />
+    </RelativeLayout>
+<!-- Please leave this section in for now. Need it for sending messages -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
