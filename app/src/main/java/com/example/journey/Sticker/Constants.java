@@ -45,6 +45,20 @@ public class Constants {
     return null;
     }
 
+    public static Integer getStickerForPostion(int position) {
+        switch(position) {
+            case 0: return Constants.ANGRY;
+            case 1: return Constants.OK;
+            case 2: return  Constants.LOL;
+            case 3: return  Constants.LOVE;
+            case 4: return  Constants.SAD;
+            case 5: return  Constants.BORING;
+            case 6: return  Constants.SHOCKED;
+            case 7: return  Constants.TIRED;
+        }
+        return null;
+
+    }
     public static Integer getIDForStickerKey(String sticker) {
         switch (sticker) {
             case STICKER_SHOCKED: return SHOCKED;
