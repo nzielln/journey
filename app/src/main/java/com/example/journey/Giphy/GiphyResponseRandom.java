@@ -1,12 +1,12 @@
-package com.example.journey;
-
-import java.util.List;
+package com.example.journey.Giphy;
 
 // This is just an object to prepresent a reponse from the API
 
-public class GiphyResponseTrending {
+import com.example.journey.Giphy.GiphyResponse;
 
-    public List<GiphyResponse> data;
+public class GiphyResponseRandom {
+
+    public GiphyResponse data;
 
     @Override
     public String toString() {

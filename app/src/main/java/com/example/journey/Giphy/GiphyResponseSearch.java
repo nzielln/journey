@@ -1,4 +1,6 @@
-package com.example.journey;
+package com.example.journey.Giphy;
+
+import com.example.journey.Giphy.GiphyResponse;
 
 import java.util.List;
 

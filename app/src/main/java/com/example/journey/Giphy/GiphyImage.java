@@ -1,8 +1,6 @@
-package com.example.journey;
+package com.example.journey.Giphy;
 
-import com.google.gson.annotations.SerializedName;
-
-import java.util.Map;
+import com.example.journey.Giphy.Original;
 
 // This is just an object to prepresent a reponse from the API - the image and we're only taking the original image
 

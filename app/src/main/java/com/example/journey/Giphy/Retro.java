@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Giphy;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

@@ -1,39 +1,70 @@
 package com.example.journey;
 
+/*
+Reference/Source: Simple Chat App In Android Studio Using Firebase Realtime Database
+Android Studio | Code The World - Develop with Ishfaq
+ */
+
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.journey.Giphy.GiphyWebService;
+import com.example.journey.databinding.ActivityChatBinding;
+import com.example.journey.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "https://jsonplaceholder.typicode.com/";
-    private FirebaseAuth mAuth;
+    ActivityChatBinding binding;
+    DatabaseReference databaseReference;
+
+    UserAdapter userAdapter;
+    String users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding= ActivityChatBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        mAuth = FirebaseAuth.getInstance();
+        userAdapter=new UserAdapter(this);
+        binding.recycler.setAdapter(userAdapter);
+        binding.recycler.setLayoutManager(new LinearLayoutManager(this));
 
-        // Check if the user is signed in
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser == null) {
-            // User is not signed in, go to SignInActivity
-            startActivity(new Intent(MainActivity.this, SignInActivity.class));
-            finish();
-        }
+        databaseReference = FirebaseDatabase.getInstance().getReference(users);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Object clear = userAdapter.clear;
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    String uid=dataSnapshot.getKey();
+                    if(!uid.equals(FirebaseAuth.getInstance().getUid())){
+                        UserModel userModel =dataSnapshot.child(uid).getValue(UserModel.class);
+                        userAdapter.add(userModel);
 
-    //    });
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
         /*Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -64,6 +95,27 @@ public class MainActivity extends AppCompatActivity {
          */
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+       /* MainInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);*/
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+
+        if (item.getItemId()==R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(MainActivity.this, AuthenticationActivity.class));
+            finish();
+            return true;
+        }
+        return false;
+    }
+
+
 
     /**
      * The startGiphyService() method opens up a new activity.
@@ -72,19 +124,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, GiphyWebService.class));
     }
 
-    /**
-     * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
-     */
-    public void startSignIn(View view) {
-        startActivity(new Intent(MainActivity.this, SigninAuthenticate.class));
-    }
-
-    /**
-     * The startRealtimeDatabase() method opens up the RealtimeDatabase Activity.
-     */
-    public void startRealtimeDatabase(View view) {
-        startActivity(new Intent(MainActivity.this, RealtimeDatabaseActivity.class));
-    }
 
     /**
      * The onAbout() method opens up the About Activity.
