@@ -5,19 +5,12 @@ import android.graphics.drawable.Drawable;
 import com.example.journey.R;
 
 public class Constants {
-    public static String PASSWORD_RESULT_KEY = "PASSWORD_RESULT_KEY";
-    public static String EMAIL_RESULT_KEY = "EMAIL_RESULT_KEY";
-    public static String SHOW_CREATE_RESULT_KEY = "SHOW_CREATE_RESULT_KEY";
-    public static String PASSWORD_REQUEST_KEY = "PASSWORD_REQUEST_KEY";
-    public static String EMAIL_REQUEST_KEY = "EMAIL_REQUEST_KEY";
-    public static String SHOW_CREATE_REQUEST_KEY = "SHOW_CREATE_REQUEST_KEY";
-    public static String PASSWORD_KEY = "PASSWORD_KEY";
-    public static String EMAIL_KEY = "EMAIL_KEY";
     public static String DELEGATE = "DELEGATE";
+    public static String RECIPIENT = "RECIPIENT";
 
     public static String ERROR_SIGNING_IN_MESSAGE = "There was an error signing you in. Please try again.";
     public static String ERROR_CREATING_ACCOUNT_MESSAGE = "There was an error creating your account. Please try again.";
-    public static String SIGN_OUT_MESSAGE = "You've successfully been loggeg out.";
+    public static String USERS_DATABASE_ROOT = "users";
 
     public final static String STICKER_ANGRY = "angry";
     public final static String STICKER_BORING = "boring";
@@ -52,6 +45,20 @@ public class Constants {
     return null;
     }
 
+    public static Integer getStickerForPostion(int position) {
+        switch(position) {
+            case 0: return Constants.ANGRY;
+            case 1: return Constants.OK;
+            case 2: return  Constants.LOL;
+            case 3: return  Constants.LOVE;
+            case 4: return  Constants.SAD;
+            case 5: return  Constants.BORING;
+            case 6: return  Constants.SHOCKED;
+            case 7: return  Constants.TIRED;
+        }
+        return null;
+
+    }
     public static Integer getIDForStickerKey(String sticker) {
         switch (sticker) {
             case STICKER_SHOCKED: return SHOCKED;

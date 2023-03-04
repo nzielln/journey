@@ -12,12 +12,15 @@ import android.os.Bundle;
 import com.example.journey.Framents.CreateAccount;
 import com.example.journey.Framents.SignIn;
 import com.example.journey.R;
+import com.example.journey.Sticker.Models.StickerUser;
 import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -30,12 +33,11 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     private ActivitySigninAuthenticateBinding binding;
     private FragmentManager fragmentManager;
     private static final String TAG = "SigninAuthenticate";
+    DatabaseReference reference; //database reference
 
-    protected SigninAuthenticate(Parcel in) {
-    }
+    protected SigninAuthenticate(Parcel in) {}
 
-    public SigninAuthenticate() {
-    }
+    public SigninAuthenticate() {}
 
     public static final Creator<SigninAuthenticate> CREATOR = new Creator<SigninAuthenticate>() {
         @Override
@@ -55,6 +57,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
         fragmentManager = getSupportFragmentManager();
         myAuthentication = FirebaseAuth.getInstance();
         binding = ActivitySigninAuthenticateBinding.inflate(getLayoutInflater());
+        reference = FirebaseDatabase.getInstance().getReference();
 
         setContentView(binding.getRoot());
 
@@ -100,7 +103,6 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
                         if (task.isSuccessful()) {
                             Log.i(TAG, "SUCCESSFULLY SIGNED IN USER");
                             FirebaseUser user = myAuthentication.getCurrentUser();
-
                             reloadViewWithUser(user);
                         } else {
                             Log.e(TAG, "ERROR SIGNING IN", task.getException());
@@ -120,6 +122,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
                             Log.i(TAG, "SUCCESSFULLY CREATED NEW USER");
 
                             FirebaseUser user = myAuthentication.getCurrentUser();
+                            addNewUserToDatabase(user);
                             reloadViewWithUser(user);
                             signInUserView();
                         } else {
@@ -151,6 +154,19 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
                 Toast.LENGTH_SHORT).show();
     }
 
+    public void addNewUserToDatabase(FirebaseUser user) {
+        StickerUser stickerUser = new StickerUser(user.getEmail());
+        Task taskAddUserTodB = reference.child(Constants.USERS_DATABASE_ROOT).child(user.getUid()).setValue(stickerUser);
+
+        if (taskAddUserTodB.isSuccessful()) {
+            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH ID: " + user.getEmail() + " TO DATABASE");
+        } else if (taskAddUserTodB.isCanceled()) {
+            Log.e(TAG, "FAILED TO ADD NEW USER WITH ID: " + user.getEmail() + " TO DATABASE");
+        }
+    }
+
+
+    // Parcelable Implementations
     @Override
     public int describeContents() {
         return 0;
@@ -159,7 +175,6 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
     }
-
 
     // Delegate Methods
     @Override

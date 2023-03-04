@@ -44,4 +44,9 @@
     <string name="confirm_and_send">Confirm and send</string>
     <string name="send_message">Send Message</string>
     <string name="chat_messenger_heading">Chat Messenger</string>
+    <string name="type_message_here">Type Message Here</string>
+    <string name="history">History</string>
+    <string name="history_title">History</string>
+    <string name="sender">Sender</string>
+    <string name="time_sent">Time Sent</string>
 </resources>

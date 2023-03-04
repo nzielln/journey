@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Sticker.MessengerActivity"
     android:padding="8dp"
+
     >
 
         <LinearLayout
@@ -13,12 +14,24 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:gravity="center"
+            android:layout_gravity="top"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
             >
+            <TextView
+                android:id="@+id/recipient_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto_medium"
+                android:textSize="16sp"
+                android:text="Recipient"
+                android:padding="8dp"
+                />
 
             <ImageView
                 android:id="@+id/selected_sticker"
