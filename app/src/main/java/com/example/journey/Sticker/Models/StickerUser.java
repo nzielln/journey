@@ -32,6 +32,7 @@ public class StickerUser {
         return 0;
     }
 
+
     public String getEmail() {
         return email;
     }
