@@ -35,11 +35,9 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     private static final String TAG = "SigninAuthenticate";
     DatabaseReference reference; //database reference
 
-    protected SigninAuthenticate(Parcel in) {
-    }
+    protected SigninAuthenticate(Parcel in) {}
 
-    public SigninAuthenticate() {
-    }
+    public SigninAuthenticate() {}
 
     public static final Creator<SigninAuthenticate> CREATOR = new Creator<SigninAuthenticate>() {
         @Override
@@ -177,7 +175,6 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
     }
-
 
     // Delegate Methods
     @Override

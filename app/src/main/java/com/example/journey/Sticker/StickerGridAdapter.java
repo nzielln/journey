@@ -40,7 +40,6 @@ public class StickerGridAdapter extends BaseAdapter {
     public StickerGridAdapter(Context context) {
         this.context = context;
         layoutInflater = (LayoutInflater.from(context)) ;
-
     }
 
     @Override

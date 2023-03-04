@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 public class ProfileMessage extends AppCompatActivity {
   private static final String TAG = "ProfileMessageActivity";
 
-  StickerUser sample;
   private TextView logoutText;
   private Button messengerButton;
   TextView email;
@@ -32,8 +31,6 @@ public class ProfileMessage extends AppCompatActivity {
   private  FirebaseAuth userAuthentication;
   FirebaseUser fbUser;
   DatabaseReference reference; //database reference
-
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -44,36 +41,19 @@ public class ProfileMessage extends AppCompatActivity {
     messengerButton = findViewById(R.id.send_message);
     email = findViewById(R.id.email_text);
 
-
     userAuthentication = FirebaseAuth.getInstance();
     fbUser = userAuthentication.getCurrentUser();
     email.setText(fbUser.getEmail());
 
     reference = FirebaseDatabase.getInstance().getReference();
-    //reference.child("users").
-
-    sample = new StickerUser(fbUser.getEmail());
-    sample.addSticker(Constants.ANGRY);
-    sample.addSticker(Constants.ANGRY);
-    sample.addSticker(Constants.TIRED);
-    //sample.addSticker(Constants.SHOCKED);
-
-    reference.child("users").child(fbUser.getUid()).setValue(sample);
-
-
-//    stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
-      StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
+    StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
 
     reference.addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         StickerUser stickers = snapshot.getValue(StickerUser.class);
-        //Log.d("stickers",stickers.getEmail());
         stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
         stickerHistoryGrid.setAdapter(adapter);
-
-
-
       }
 
       @Override
@@ -82,8 +62,6 @@ public class ProfileMessage extends AppCompatActivity {
 
       }
     });
-
-
 
     messengerButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -97,7 +75,6 @@ public class ProfileMessage extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         userAuthentication.signOut();
-        //FirebaseAuth.getInstance().signOut();
         finish();
       }
     });
@@ -105,10 +82,7 @@ public class ProfileMessage extends AppCompatActivity {
 
   public void openMessengerActivity(View view) {
          Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
-         //intent1.putExtra("loggedInUsers",loggedInUsers);
          startActivity(intent1);
-
-
   }
 
 }
