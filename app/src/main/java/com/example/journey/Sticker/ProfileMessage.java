@@ -4,13 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.example.journey.MessengerChatView;
 import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,10 +24,11 @@ public class ProfileMessage extends AppCompatActivity {
   private Button messengerButton;
   TextView email;
   GridView stickerHistoryGrid;
-  private  FirebaseAuth myAuthentication;
+  private  FirebaseAuth userAuthentication;
   FirebaseUser fbUser;
-
   DatabaseReference reference; //database reference
+
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +36,12 @@ public class ProfileMessage extends AppCompatActivity {
     setContentView(R.layout.activity_profile_message);
 
     logoutText = findViewById(R.id.logout_text);
-    messengerButton = findViewById(R.id.send_messege);
+    messengerButton = findViewById(R.id.send_message);
     email = findViewById(R.id.email_text);
 
 
-
-    myAuthentication = FirebaseAuth.getInstance();
-    fbUser = myAuthentication.getCurrentUser();
+    userAuthentication = FirebaseAuth.getInstance();
+    fbUser = userAuthentication.getCurrentUser();
     email.setText(fbUser.getEmail());
 
     reference = FirebaseDatabase.getInstance().getReference();
@@ -61,6 +59,7 @@ public class ProfileMessage extends AppCompatActivity {
     StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
     stickerHistoryGrid.setAdapter(adapter);
 
+
     messengerButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -72,7 +71,7 @@ public class ProfileMessage extends AppCompatActivity {
     logoutText.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        myAuthentication.signOut();
+        userAuthentication.signOut();
         //FirebaseAuth.getInstance().signOut();
         finish();
       }
@@ -80,7 +79,11 @@ public class ProfileMessage extends AppCompatActivity {
   }
 
   public void openMessengerActivity(View view) {
-    startActivity(new Intent(ProfileMessage.this, MessengerChatView.class));
+         Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
+         //intent1.putExtra("loggedInUsers",loggedInUsers);
+         startActivity(intent1);
+
+
   }
 
 }
