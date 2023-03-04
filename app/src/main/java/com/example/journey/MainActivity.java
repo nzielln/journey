@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void startGiphyService(View view) {
         startActivity(new Intent(MainActivity.this, GiphyWebService.class));
+
     }
 
     /**
