@@ -1,9 +1,11 @@
 package com.example.journey.Sticker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -13,8 +15,11 @@ import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileMessage extends AppCompatActivity {
   private static final String TAG = "ProfileMessageActivity";
@@ -55,9 +60,29 @@ public class ProfileMessage extends AppCompatActivity {
 
     reference.child("users").child(fbUser.getUid()).setValue(sample);
 
-    stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
-    StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
-    stickerHistoryGrid.setAdapter(adapter);
+
+//    stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
+      StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
+
+    reference.addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        StickerUser stickers = snapshot.getValue(StickerUser.class);
+        //Log.d("stickers",stickers.getEmail());
+        stickerHistoryGrid = (GridView) findViewById(R.id.sticker_history_grid);
+        stickerHistoryGrid.setAdapter(adapter);
+
+
+
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        System.out.println();
+
+      }
+    });
+
 
 
     messengerButton.setOnClickListener(new View.OnClickListener() {
