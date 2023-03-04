@@ -75,9 +75,6 @@ public class StickerGridAdapter extends BaseAdapter {
         } else {
 
         }
-
-
-
         return convertView;
     }
 }
