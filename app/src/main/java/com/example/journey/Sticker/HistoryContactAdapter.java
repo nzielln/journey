@@ -1,8 +1,6 @@
 package com.example.journey.Sticker;
 
-import android.animation.LayoutTransition;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.journey.R;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class HistoryContactAdapter extends RecyclerView.Adapter<HistoryContactAdapter.ViewHolder>{
@@ -38,7 +33,7 @@ public class HistoryContactAdapter extends RecyclerView.Adapter<HistoryContactAd
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View historyView = inflater.inflate(R.layout.activity_sticker_history,parent,false);
+        View historyView = inflater.inflate(R.layout.fragment_sticker_history,parent,false);
         HistoryContactAdapter.ViewHolder viewHolder = new ViewHolder(historyView);
         return viewHolder;
     }
