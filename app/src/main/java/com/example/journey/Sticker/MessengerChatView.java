@@ -1,18 +1,23 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.RadioButton;
 
+import com.example.journey.JRealtimeDatabase;
 import com.example.journey.databinding.ActivityMessengerChatViewBinding;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class MessengerChatView extends AppCompatActivity {
 
@@ -22,7 +27,9 @@ public class MessengerChatView extends AppCompatActivity {
   DatabaseReference myDatabase; //database reference
   private String userReceiver;
 
-  private RadioButton user;
+  //private RadioButton user;
+
+  ArrayList<String> loggedInUsers = new ArrayList<>();
 
 
   @Override
@@ -32,32 +39,21 @@ public class MessengerChatView extends AppCompatActivity {
     bind = ActivityMessengerChatViewBinding.inflate(getLayoutInflater());
     setContentView(bind.getRoot());
 
-    user = (RadioButton) findViewById(R.id.user1);
-
     myDatabase = FirebaseDatabase.getInstance().getReference();
 
     // Update image here
-    myDatabase.child("user").addChildEventListener(new ChildEventListener() {
+    myDatabase.child("users").addValueEventListener(new ValueEventListener() {
       @Override
-      public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-        //addSticker(snapshot);
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        if (dataSnapshot == null) {
+          return;
+        }
+
+        for (DataSnapshot user : dataSnapshot.getChildren()) {
+          loggedInUsers.add(user.child("email").getValue().toString());
+        }
+        Log.d("logged in users", String.join(", ", loggedInUsers));
       }
-
-      @Override
-      public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-      }
-
-      @Override
-      public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-      }
-
-      @Override
-      public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-      }
-
       @Override
       public void onCancelled(@NonNull DatabaseError error) {
 
