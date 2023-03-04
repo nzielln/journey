@@ -41,7 +41,7 @@ public class ProfileMessage extends AppCompatActivity {
 
     logoutText = findViewById(R.id.logout_text);
     messengerButton = findViewById(R.id.send_message);
-    messengerButton = findViewById(R.id.history);
+    historyButton = findViewById(R.id.history);
     email = findViewById(R.id.email_text);
 
     userAuthentication = FirebaseAuth.getInstance();
