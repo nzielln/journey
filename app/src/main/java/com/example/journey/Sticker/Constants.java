@@ -6,6 +6,7 @@ import com.example.journey.R;
 
 public class Constants {
     public static String DELEGATE = "DELEGATE";
+    public static String RECIPIENT = "RECIPIENT";
 
     public static String ERROR_SIGNING_IN_MESSAGE = "There was an error signing you in. Please try again.";
     public static String ERROR_CREATING_ACCOUNT_MESSAGE = "There was an error creating your account. Please try again.";

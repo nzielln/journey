@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -35,7 +37,6 @@ public class MessengerChatView extends AppCompatActivity {
   ActivityMessengerChatViewBinding bind;
   DatabaseReference myDatabase; //database reference
   private String userReceiver;
-
 
   //private RadioButton user;
 
@@ -85,6 +86,14 @@ public class MessengerChatView extends AppCompatActivity {
 
     ListView1.setAdapter(firebaseAdapter);
 
+    ListView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        TextView tview = view.findViewById(android.R.id.text1);
+        openMessengerActivityToUser(tview.getText().toString());
+      }
+    });
+
 //    @Override
 //    protected void showListView(View view, StickerUser user, int position) {
 //      ((TextView) findViewById(android.R.id.tex)
@@ -114,6 +123,14 @@ public class MessengerChatView extends AppCompatActivity {
    * This method adds/send a sticker to user.
    */
   public void addSticker() {
+
+  }
+
+  public void openMessengerActivityToUser(String email) {
+    Intent intent = new Intent(MessengerChatView.this, MessengerActivity.class);
+    intent.putExtra(Constants.RECIPIENT, email);
+
+    startActivity(intent);
 
   }
 }

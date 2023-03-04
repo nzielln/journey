@@ -28,6 +28,7 @@ public class MessengerActivity extends AppCompatActivity {
   private FirebaseAuth userAuthentication;
   FirebaseUser fbUser;
   Button confirmSend;
+  String recipient;
 
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
@@ -36,7 +37,10 @@ public class MessengerActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_messenger);
-
+    Bundle bundle = getIntent().getExtras();
+    if (bundle != null) {
+      recipient = bundle.getString(Constants.RECIPIENT);
+    }
     userAuthentication = FirebaseAuth.getInstance();
     fbUser = userAuthentication.getCurrentUser();
     databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -47,26 +51,6 @@ public class MessengerActivity extends AppCompatActivity {
 
     confirmSend = findViewById(R.id.confirm_and_send);
 
-
-    databaseReference.child("users").addValueEventListener(new ValueEventListener() {
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-        if (dataSnapshot == null) {
-          return;
-        }
-
-        for (DataSnapshot user : dataSnapshot.getChildren()) {
-          loggedInUsers.add(user.child("email").getValue().toString());
-        }
-
-        Log.d("logged in users", String.join(", ", loggedInUsers));
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-
-      }
-    });
 
   }
 
