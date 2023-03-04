@@ -81,6 +81,7 @@ public class StickerGridAdapter extends BaseAdapter {
         } else {
             count.setText(String.valueOf("SENT: " + user.getCountForSticker(stickers[position]) + " stickers"));
 
+
         }
         return convertView;
     }
