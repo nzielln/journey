@@ -1,13 +1,17 @@
 package com.example.journey.Sticker.Models;
 
 import com.example.journey.Sticker.Constants;
+import com.example.journey.Sticker.HistoryContact;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StickerUser {
 
     String email;
+
+    ArrayList<HistoryContact> history;
     Map<String, Integer> stickers;
 
     public StickerUser(String email) {
