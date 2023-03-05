@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import com.example.journey.Sticker.Constants;
-import com.example.journey.Sticker.StickerMessage;
+import com.example.journey.Sticker.Message;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,17 +16,19 @@ public class StickerUser implements Parcelable {
 
     String email;
     String UUID;
+    ArrayList<Message> messages;
     Map<String, Integer> stickers;
-    ArrayList<StickerMessage> messages;
 
     public StickerUser(String email, String UUID) {
         this.email = email;
         this.UUID = UUID;
         this.stickers = new HashMap<>();
+        this.messages = new ArrayList<>();
     }
 
     public StickerUser() {
         this.stickers = new HashMap<>();
+        this.messages = new ArrayList<>();
     }
 
     protected StickerUser(Parcel in) {
@@ -67,12 +69,15 @@ public class StickerUser implements Parcelable {
         return email;
     }
 
-    public void addNewMessage(StickerMessage newMessage) {
-        messages.add(newMessage);
+    public ArrayList<Message> getMessages() {
+        return messages;
     }
 
-    public ArrayList<StickerMessage> getMessages() {
-        return messages;
+    public void addNewMessage(Message newHistory) {
+        if (messages == null) {
+            messages = new ArrayList<>();
+        }
+        messages.add(newHistory);
     }
 
     public Map<String, Integer> getStickers() {

@@ -45,7 +45,7 @@ public class MessengerActivity extends AppCompatActivity {
   Integer selectedImageId;
   ImageView selectedImage;
   TextView recipientView;
-  StickerMessage message;
+  Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
 
@@ -74,12 +74,11 @@ public class MessengerActivity extends AppCompatActivity {
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ImageView imageView = view.findViewById(R.id.sticker_history_image);
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        message = new StickerMessage(fbUser.getUid(),recipientUserID, selectedImageId, dateFormat.format(now));
+        message = new Message(fbUser.getEmail(),selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
 
       }
     });
@@ -114,7 +113,7 @@ public class MessengerActivity extends AppCompatActivity {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
 
-  public void sendMessage(StickerMessage message) {
+  public void sendMessage(Message message) {
     Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).child(UUID.randomUUID().toString()).setValue(message);
 
     if (sendMessage.isSuccessful()) {
