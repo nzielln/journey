@@ -77,7 +77,13 @@ public class SignIn extends Fragment {
       @Override
       public void onClick(View v) {
         String email = String.valueOf(emailTextInput.getEditText().getText());
-        String password = String.valueOf(passwordTextInput.getEditText().getText());
+        String password = "password"; // Hardcoded password for TA easy login
+
+        //String password = String.valueOf(passwordTextInput.getEditText().getText());
+        if(email.isEmpty()) {
+          email = "sample@email.com"; // If no email is provided app wont crash
+        }
+
         delegate.signInUserWith(email, password);
         Log.i(TAG, "SIGN IN BUTTON CLICKED");
 
