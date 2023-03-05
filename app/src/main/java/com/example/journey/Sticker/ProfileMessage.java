@@ -89,6 +89,8 @@ public class ProfileMessage extends AppCompatActivity {
         openHistoryActivity();
       }
     });
+
+    startMessagingService();
   }
 
   public void openMessengerActivity(View view) {
@@ -98,6 +100,10 @@ public class ProfileMessage extends AppCompatActivity {
 
   public void openHistoryActivity() {
     startActivity(new Intent(ProfileMessage.this, StickerHistory.class));
+  }
+
+  public void startMessagingService() {
+    startService(new Intent(this, StickerMessagingService.class));
   }
 
 }

@@ -11,6 +11,8 @@ public class Constants {
     public static String ERROR_SIGNING_IN_MESSAGE = "There was an error signing you in. Please try again.";
     public static String ERROR_CREATING_ACCOUNT_MESSAGE = "There was an error creating your account. Please try again.";
     public static String USERS_DATABASE_ROOT = "users";
+    public static String MESSAGES_DATABASE_ROOT = "messages";
+    public static String ID_EMAIL_DATABASE_ROOT = "email_to_uuid";
 
     public final static String STICKER_ANGRY = "angry";
     public final static String STICKER_BORING = "boring";
@@ -72,6 +74,11 @@ public class Constants {
 
         }
         return null;
+    }
+
+    public static String formatEmailForPath(String email) {
+        return email.replace(".", "_");
+
     }
 
 }
