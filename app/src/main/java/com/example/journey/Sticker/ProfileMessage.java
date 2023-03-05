@@ -43,10 +43,12 @@ public class ProfileMessage extends AppCompatActivity {
   private  FirebaseAuth userAuthentication;
   FirebaseUser fbUser;
   DatabaseReference reference; //database reference
+  ValueEventListener stickerValueEventListener;
+
+  String restoredEmail;
 
   private Button triggerNotification;
   NotificationManager notificationManager;
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -68,10 +70,20 @@ public class ProfileMessage extends AppCompatActivity {
     fbUser = userAuthentication.getCurrentUser();
     email.setText(fbUser.getEmail());
 
+    if (savedInstanceState != null) {
+      restoredEmail = savedInstanceState.getString("email");
+    }
+
+    if (restoredEmail != null) {
+      email.setText(restoredEmail);
+    } else {
+      email.setText(fbUser.getEmail());
+    }
+
     reference = FirebaseDatabase.getInstance().getReference();
     StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
 
-    reference.child(Constants.USERS_DATABASE_ROOT).child(fbUser.getUid()).addValueEventListener(new ValueEventListener() {
+    stickerValueEventListener = new ValueEventListener() {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         StickerUser stickers = snapshot.getValue(StickerUser.class);
@@ -85,7 +97,9 @@ public class ProfileMessage extends AppCompatActivity {
         System.out.println();
 
       }
-    });
+    };
+
+    reference.child(Constants.USERS_DATABASE_ROOT).child(fbUser.getUid()).addValueEventListener(stickerValueEventListener);
 
     messengerButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -99,6 +113,7 @@ public class ProfileMessage extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         userAuthentication.signOut();
+        stopService(new Intent(ProfileMessage.this, StickerMessagingService.class));
         finish();
       }
     });
@@ -110,8 +125,21 @@ public class ProfileMessage extends AppCompatActivity {
       }
     });
 
-    startMessagingService();
   }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("email", email.getText().toString());
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    String restoredEmail = savedInstanceState.getString("email");
+    email.setText(restoredEmail);
+  }
+
 
   public void openMessengerActivity(View view) {
          Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
@@ -121,12 +149,6 @@ public class ProfileMessage extends AppCompatActivity {
   public void openHistoryActivity() {
     startActivity(new Intent(ProfileMessage.this, StickerHistory.class));
   }
-
-  public void startMessagingService() {
-    startService(new Intent(this, StickerMessagingService.class));
-  }
-
-
 
   /**
    * The createStickerNotificationChannel() method

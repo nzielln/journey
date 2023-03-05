@@ -64,7 +64,7 @@ public class MessengerChatView extends AppCompatActivity {
     userAuthentication = FirebaseAuth.getInstance();
     fbUser = userAuthentication.getCurrentUser();
     myDatabase = FirebaseDatabase.getInstance().getReference();
-    DatabaseReference allUsers = FirebaseDatabase.getInstance().getReference().child("users");
+    DatabaseReference allUsers = FirebaseDatabase.getInstance().getReference().child(Constants.USERS_DATABASE_ROOT);
 
     ArrayList<StickerUser> users = new ArrayList<>();
     allUsers.addValueEventListener(new ValueEventListener() {
@@ -120,7 +120,7 @@ public class MessengerChatView extends AppCompatActivity {
 //    }
 
     // Update image here
-    myDatabase.child("users").addValueEventListener(new ValueEventListener() {
+    myDatabase.child(Constants.USERS_DATABASE_ROOT).addValueEventListener(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         if (dataSnapshot == null) {
@@ -153,4 +153,17 @@ public class MessengerChatView extends AppCompatActivity {
     startActivity(intent);
 
   }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putStringArrayList("LoggedInUsers", loggedInUsers);
+  }
+
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    loggedInUsers = savedInstanceState.getStringArrayList("LoggedInUsers");
+  }
+
 }
