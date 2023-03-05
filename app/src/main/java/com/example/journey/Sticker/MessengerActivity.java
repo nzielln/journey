@@ -38,7 +38,6 @@ public class MessengerActivity extends AppCompatActivity {
 
   GridView stickerHistoryGrid;
   private FirebaseAuth userAuthentication;
-
   FirebaseUser fbUser;
   Button confirmSend;
   String recipient;
@@ -46,7 +45,6 @@ public class MessengerActivity extends AppCompatActivity {
   Integer selectedImageId;
   ImageView selectedImage;
   TextView recipientView;
-
   Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
@@ -140,8 +138,26 @@ public class MessengerActivity extends AppCompatActivity {
     } else if (sendMessage.isCanceled()) {
       Log.e(TAG, "FAILED TO SEND MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
     }
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("recipient", recipient);
+    outState.putInt("imageID", selectedImageId);
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+
+    // set recipient and selectedImageId fields
+    recipient = savedInstanceState.getString(Constants.RECIPIENT);
+    recipientView.setText(recipient);
+
+
+    selectedImageId = savedInstanceState.getInt("imageID");
 
   }
 
 }
-

@@ -1,6 +1,7 @@
 package com.example.journey;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
@@ -49,11 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     /**
      * The startGiphyService() method opens up a new activity.
      */
     public void startGiphyService(View view) {
         startActivity(new Intent(MainActivity.this, GiphyWebService.class));
+
     }
 
     /**

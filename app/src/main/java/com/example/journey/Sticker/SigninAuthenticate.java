@@ -37,6 +37,8 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     private static final String TAG = "SigninAuthenticate";
     DatabaseReference reference; //database reference
 
+    private Boolean isUserSignedIn = false;
+
     protected SigninAuthenticate(Parcel in) {}
 
     public SigninAuthenticate() {}
@@ -63,10 +65,42 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
 
         setContentView(binding.getRoot());
 
+        if (savedInstanceState != null) {
+            isUserSignedIn = savedInstanceState.getBoolean("UserSignedIn", false);
+        } else {
+            isUserSignedIn = checkIsUserSignedIn();
+        }
+
+
         if (checkIsUserSignedIn()) {
             openProfileActivity();
         } else {
             signInUserView();
+        }
+
+      /*  if (savedInstanceState != null) {
+            Boolean isUserSignedIn = savedInstanceState.getBoolean("UserSignedIn");
+            if (isUserSignedIn != null && isUserSignedIn) {
+                openProfileActivity();
+                return;
+            }
+        }*/
+
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("UserSignedIn", checkIsUserSignedIn());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        Boolean isUserSignedIn = savedInstanceState.getBoolean("UserSignedIn");
+        if (isUserSignedIn != null && isUserSignedIn) {
+            openProfileActivity();
         }
     }
 

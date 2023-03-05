@@ -19,6 +19,7 @@ import com.example.journey.R;
  * a notification for a new sticker received by the app user.
  */
 public class SendNewStickerNotification extends AppCompatActivity {
+  String email;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,18 @@ public class SendNewStickerNotification extends AppCompatActivity {
             //.build();
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
     notificationManagerCompat.notify(0, notificationBuilder.build());
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("email", email);
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    email = savedInstanceState.getString("email");
   }
 
   /**

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="recycler" type="id" />
+    <item name="messageEd" type="id" />
+    <item name="sendMessageLayout" type="id" />
+    <item name="sendMessage" type="id" />
+    <item name="mainMesssageLayout" type="id" />
+    <item name="mainMessageLayout" type="id" />
+    <item name="message" type="id" />
+    <item name="logout" type="id" />
+</resources>
