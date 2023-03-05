@@ -4,9 +4,15 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HistoryContact {
-    private String senderEmail;
-    private String image;
-    private String dateTime;
+    String senderEmail;
+    String image;
+    String dateTime;
+
+    public HistoryContact() {
+        senderEmail = "Default email";
+        image = "Default image";
+        dateTime = "Default dateTime";
+    }
 
     public HistoryContact(String email, String image, String dateTime){
         this.senderEmail = email;

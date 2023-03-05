@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,19 +10,28 @@
 
     <TextView
         android:id="@+id/history_email_text"
-        android:layout_width="0dp"
-        android:layout_weight="1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
-<!--        android:fontFamily="@font/roboto"-->
-<!--        android:text="Email of Sender Goes here"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="18sp"-->
+        android:font="@font/roboto_bold"
+        android:textColor="@color/black"
+        android:paddingBottom="5dp"
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/history_date_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:font="@font/roboto"
+        android:layout_below="@id/history_email_text"
+        />
+    <TextView
+        android:id="@+id/history_image_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:font="@font/roboto"
+        android:layout_alignParentRight="true"
+        android:paddingEnd="10dp"
+        android:layout_below="@id/history_email_text"
         />
 <!--        android:fontFamily="@font/roboto"-->
 <!--        android:text="Date of Sender Goes Here"-->
@@ -30,7 +39,7 @@
 <!--        android:textSize="16sp"-->
 
 
-</LinearLayout>
+</RelativeLayout>
 <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
 <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
 <!--    xmlns:tools="http://schemas.android.com/tools"-->
