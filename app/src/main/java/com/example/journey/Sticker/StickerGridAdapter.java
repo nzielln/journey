@@ -89,11 +89,11 @@ public class StickerGridAdapter extends BaseAdapter {
         TextView count = (TextView) convertView.findViewById(R.id.count);
 
         if (!showCount) {
-            ViewGroup viewParent = (ViewGroup) imageView.getParent();
-            viewParent.removeView(count);
-
+            count.setText(Constants.getStickerKey(stickers[position]).toUpperCase());
         } else {
-            count.setText(String.valueOf("SENT: " + user.getCountForSticker(stickers[position]) + " stickers"));
+            Integer stikerCount = user.getCountForSticker(stickers[position]);
+            String plural = stikerCount > 1 ? "s" : "";
+            count.setText(String.valueOf("SENT: " + stikerCount + " sticker" + plural ));
         }
         return convertView;
     }
