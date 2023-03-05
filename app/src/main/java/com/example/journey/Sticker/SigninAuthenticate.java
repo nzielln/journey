@@ -72,7 +72,6 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
         }
 
 
-
         if (checkIsUserSignedIn()) {
             openProfileActivity();
         } else {
