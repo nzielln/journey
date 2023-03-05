@@ -2,6 +2,7 @@ package com.example.journey.Sticker;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
@@ -32,6 +33,8 @@ public class StickerMessagingService extends Service {
     private FirebaseAuth myAuthentication;
     StickerAppDelegate delegate;
     FirebaseUser currentUser;
+
+
     public StickerMessagingService() {
     }
 
@@ -44,6 +47,7 @@ public class StickerMessagingService extends Service {
         myAuthentication = FirebaseAuth.getInstance();
         currentUser = myAuthentication.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
+
 
         reference.child(Constants.MESSAGES_DATABASE_ROOT).addChildEventListener(new ChildEventListener() {
             @Override
