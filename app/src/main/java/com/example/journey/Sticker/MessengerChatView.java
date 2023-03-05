@@ -140,12 +140,11 @@ public class MessengerChatView extends AppCompatActivity {
   }
 
   /**
-   * This method adds/send a sticker to user.
+   * The openMessengerActivityToUser() method opens
+   * the Chat Activity where users can tap on
+   * a sticker and send a sticker to another user.
+   * @param email
    */
-  public void addSticker() {
-
-  }
-
   public void openMessengerActivityToUser(String email) {
     Intent intent = new Intent(MessengerChatView.this, MessengerActivity.class);
     intent.putExtra(Constants.RECIPIENT, email);

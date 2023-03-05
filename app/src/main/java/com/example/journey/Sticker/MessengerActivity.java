@@ -71,6 +71,10 @@ public class MessengerActivity extends AppCompatActivity {
 
     confirmSend = findViewById(R.id.confirm_and_send);
 
+    /**
+     * The setOnItemClickListener() method
+     * selects the images that need to be sent.
+     */
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -83,6 +87,11 @@ public class MessengerActivity extends AppCompatActivity {
       }
     });
 
+
+    /**
+     * The setOnClickListener() method
+     * calls the sendMessage() method that sends the message.
+     */
     confirmSend.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -116,6 +125,11 @@ public class MessengerActivity extends AppCompatActivity {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
 
+  /**
+   * The sendMessage() method handles
+   * sending the message to the recipient.
+   * @param message
+   */
   public void sendMessage(Message message) {
     Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).child(UUID.randomUUID().toString()).setValue(message);
 
@@ -124,6 +138,8 @@ public class MessengerActivity extends AppCompatActivity {
     } else if (sendMessage.isCanceled()) {
       Log.e(TAG, "FAILED TO SEND MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
     }
+
   }
 
 }
+
