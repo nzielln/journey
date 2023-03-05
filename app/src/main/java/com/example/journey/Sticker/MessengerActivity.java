@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.journey.R;
+import com.example.journey.Sticker.Models.StickerUser;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +26,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
 public class MessengerActivity extends AppCompatActivity {
   private static final String TAG = "MessengerActivity";
@@ -34,10 +41,11 @@ public class MessengerActivity extends AppCompatActivity {
   FirebaseUser fbUser;
   Button confirmSend;
   String recipient;
+  String recipientUserID;
   Integer selectedImageId;
   ImageView selectedImage;
   TextView recipientView;
-
+  Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
 
@@ -48,7 +56,8 @@ public class MessengerActivity extends AppCompatActivity {
     Bundle bundle = getIntent().getExtras();
     recipientView = findViewById(R.id.recipient_email);
     if (bundle != null) {
-      recipientView.setText(bundle.getString(Constants.RECIPIENT));
+      recipient = bundle.getString(Constants.RECIPIENT);
+      recipientView.setText(recipient);
     }
 
     selectedImage = findViewById(R.id.selected_sticker);
@@ -65,10 +74,31 @@ public class MessengerActivity extends AppCompatActivity {
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ImageView imageView = view.findViewById(R.id.sticker_history_image);
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
-
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        message = new Message(fbUser.getEmail(),selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
+
+      }
+    });
+
+    confirmSend.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        sendMessage(message);
+      }
+    });
+
+    databaseReference.child(Constants.ID_EMAIL_DATABASE_ROOT).child(Constants.formatEmailForPath(recipient)).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        recipientUserID = snapshot.getValue(String.class);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
       }
     });
 
@@ -83,8 +113,14 @@ public class MessengerActivity extends AppCompatActivity {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
 
-  public void sendMessage() {
+  public void sendMessage(Message message) {
+    Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).child(UUID.randomUUID().toString()).setValue(message);
 
+    if (sendMessage.isSuccessful()) {
+      Log.i(TAG, "SENDING MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
+    } else if (sendMessage.isCanceled()) {
+      Log.e(TAG, "FAILED TO SEND MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
+    }
   }
 
 }
