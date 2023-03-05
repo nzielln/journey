@@ -153,4 +153,17 @@ public class MessengerChatView extends AppCompatActivity {
     startActivity(intent);
 
   }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putStringArrayList("LoggedInUsers", loggedInUsers);
+  }
+
+  @Override
+  public void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    loggedInUsers = savedInstanceState.getStringArrayList("LoggedInUsers");
+  }
+
 }

@@ -159,4 +159,24 @@ public class MessengerActivity extends AppCompatActivity {
     });
   }
 
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("recipient", recipient);
+    outState.putInt("imageID", selectedImageId);
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+
+    // set recipient and selectedImageId fields
+    recipient = savedInstanceState.getString(Constants.RECIPIENT);
+    recipientView.setText(recipient);
+
+
+    selectedImageId = savedInstanceState.getInt("imageID");
+
+  }
+
 }

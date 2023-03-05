@@ -2,6 +2,7 @@ package com.example.journey.Sticker;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
@@ -31,6 +32,8 @@ public class StickerMessagingService extends Service {
     DatabaseReference reference; //database reference
     private FirebaseAuth myAuthentication;
     FirebaseUser currentUser;
+
+
     public StickerMessagingService() {
     }
 
@@ -46,6 +49,7 @@ public class StickerMessagingService extends Service {
         String startKey = reference.push().getKey();
 
         ChildEventListener childEventListener = new ChildEventListener() {
+
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message message = snapshot.getValue(Message.class);

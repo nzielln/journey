@@ -45,6 +45,8 @@ public class ProfileMessage extends AppCompatActivity {
   DatabaseReference reference; //database reference
   ValueEventListener stickerValueEventListener;
 
+  String restoredEmail;
+
   private Button triggerNotification;
   NotificationManager notificationManager;
 
@@ -67,6 +69,16 @@ public class ProfileMessage extends AppCompatActivity {
     userAuthentication = FirebaseAuth.getInstance();
     fbUser = userAuthentication.getCurrentUser();
     email.setText(fbUser.getEmail());
+
+    if (savedInstanceState != null) {
+      restoredEmail = savedInstanceState.getString("email");
+    }
+
+    if (restoredEmail != null) {
+      email.setText(restoredEmail);
+    } else {
+      email.setText(fbUser.getEmail());
+    }
 
     reference = FirebaseDatabase.getInstance().getReference();
     StickerGridAdapter adapter = new StickerGridAdapter(this.getApplicationContext(), true);
@@ -114,6 +126,20 @@ public class ProfileMessage extends AppCompatActivity {
     });
 
   }
+
+  @Override
+  protected void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("email", email.getText().toString());
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Bundle savedInstanceState) {
+    super.onRestoreInstanceState(savedInstanceState);
+    String restoredEmail = savedInstanceState.getString("email");
+    email.setText(restoredEmail);
+  }
+
 
   public void openMessengerActivity(View view) {
          Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
