@@ -25,6 +25,7 @@
             android:layout_marginStart="-100dp"
             android:layout_marginTop="1dp"
             android:clickable="true"
+            android:onClick="sendStickerNotification"
             android:text="@string/temp_notification" />
 
         <TextView

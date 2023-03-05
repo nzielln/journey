@@ -94,6 +94,9 @@ public class MessengerActivity extends AppCompatActivity {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         recipientUserID = snapshot.getValue(String.class);
+        if (recipientUserID != null) {
+          // SendStickerNotification()
+        }
       }
 
       @Override
