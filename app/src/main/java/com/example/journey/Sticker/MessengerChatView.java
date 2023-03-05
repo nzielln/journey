@@ -71,7 +71,7 @@ public class MessengerChatView extends AppCompatActivity {
       @Override
       public void onDataChange(@NonNull DataSnapshot snapshot) {
         for(DataSnapshot dbUser: snapshot.getChildren()) {
-          StickerUser user = dbUser.getValue(StickerUser.class);
+            StickerUser user = dbUser.getValue(StickerUser.class);
           assert user != null;
           if (!Objects.equals(user.getEmail(), fbUser.getEmail())) {
             users.add(user);
