@@ -38,6 +38,7 @@ public class MessengerActivity extends AppCompatActivity {
 
   GridView stickerHistoryGrid;
   private FirebaseAuth userAuthentication;
+
   FirebaseUser fbUser;
   Button confirmSend;
   String recipient;
@@ -45,6 +46,7 @@ public class MessengerActivity extends AppCompatActivity {
   Integer selectedImageId;
   ImageView selectedImage;
   TextView recipientView;
+
   Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
