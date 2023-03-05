@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,10 +14,10 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.journey.R;
-import com.example.journey.StickerMessage;
+import com.example.journey.Sticker.Models.StickerUser;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +26,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 public class MessengerActivity extends AppCompatActivity {
@@ -38,10 +41,11 @@ public class MessengerActivity extends AppCompatActivity {
   FirebaseUser fbUser;
   Button confirmSend;
   String recipient;
+  String recipientUserID;
   Integer selectedImageId;
   ImageView selectedImage;
   TextView recipientView;
-
+  Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
 
@@ -52,7 +56,8 @@ public class MessengerActivity extends AppCompatActivity {
     Bundle bundle = getIntent().getExtras();
     recipientView = findViewById(R.id.recipient_email);
     if (bundle != null) {
-      recipientView.setText(bundle.getString(Constants.RECIPIENT));
+      recipient = bundle.getString(Constants.RECIPIENT);
+      recipientView.setText(recipient);
     }
 
     selectedImage = findViewById(R.id.selected_sticker);
@@ -69,10 +74,34 @@ public class MessengerActivity extends AppCompatActivity {
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ImageView imageView = view.findViewById(R.id.sticker_history_image);
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
-
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        message = new Message(fbUser.getEmail(),selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
+
+      }
+    });
+
+    confirmSend.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        sendMessage(message);
+      }
+    });
+
+    databaseReference.child(Constants.ID_EMAIL_DATABASE_ROOT).child(Constants.formatEmailForPath(recipient)).addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        recipientUserID = snapshot.getValue(String.class);
+        if (recipientUserID != null) {
+          // SendStickerNotification()
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+
       }
     });
 
@@ -81,49 +110,20 @@ public class MessengerActivity extends AppCompatActivity {
   /**
    * The openBackToProfile() method goes back to the profile
    * activity.
-   *
    * @paramview
    */
   public void openBackToProfile(View view) {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
-/*
-  public void sendMessage(String message) {
 
-    String messageId= UUID.randomUUID().toString();
-    MessageModel messageModel = new MessageModel(messageId, FirebaseAuth.getInstance().getUid(), message);
+  public void sendMessage(Message message) {
+    Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).child(UUID.randomUUID().toString()).setValue(message);
 
-    messageAdapter.add(messageModel);
-    databaseReferenceSender
-            .child(messageId)
-            .setValue(messageModel);
-
-    databaseReferenceReceiver
-            .child(messageId)
-            .setValue(messageModel);
-
-    // Show a toast indicating that the message was sent
-    Toast.makeText(this, "Message sent", Toast.LENGTH_SHORT).show();
-
+    if (sendMessage.isSuccessful()) {
+      Log.i(TAG, "SENDING MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
+    } else if (sendMessage.isCanceled()) {
+      Log.e(TAG, "FAILED TO SEND MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
+    }
   }
-  */
-
-  public void sendMessage() {
-    String message = String.valueOf(selectedImageId);
-    recipient = recipientView.getText().toString();
-    String sender = fbUser.getEmail();
-
-    // Create a new message object with the sender, recipient, and message text
-    StickerMessage newMessage = new StickerMessage(sender, recipient, message);
-
-    // Get a reference to the messages node in the database
-    DatabaseReference messagesRef = databaseReference.child("messages");
-
-    // Push the new message to the database
-    messagesRef.push().setValue(newMessage);
-
-    // Show a toast indicating that the message was sent
-    Toast.makeText(this, "Message sent", Toast.LENGTH_SHORT).show();
-}
 
 }

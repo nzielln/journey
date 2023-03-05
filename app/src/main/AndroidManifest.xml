@@ -3,6 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGE_PHONE_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -14,6 +21,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
+        <service
+            android:name=".Sticker.StickerMessagingService"
+            android:enabled="true"
+            android:exported="true"></service>
+
+        <activity
+            android:name=".ReceiveNotification"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".StickerHistory"
             android:exported="false">
@@ -78,10 +97,14 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/channel_id" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

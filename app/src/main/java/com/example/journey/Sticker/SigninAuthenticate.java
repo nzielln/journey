@@ -27,6 +27,8 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class SigninAuthenticate extends AppCompatActivity implements StickerAppDelegate, Parcelable {
 
     private FirebaseAuth myAuthentication;
@@ -155,14 +157,23 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     }
 
     public void addNewUserToDatabase(FirebaseUser user) {
-        StickerUser stickerUser = new StickerUser(user.getEmail());
-        Task taskAddUserTodB = reference.child(Constants.USERS_DATABASE_ROOT).child(user.getUid()).setValue(stickerUser);
+        StickerUser stickerUser = new StickerUser(user.getEmail(), user.getUid());
+        Task<Void> taskAddUserTodB = reference.child(Constants.USERS_DATABASE_ROOT).child(user.getUid()).setValue(stickerUser);
+
+        Task<Void> taskAddIDEmailToDatabase = reference.child(Constants.ID_EMAIL_DATABASE_ROOT).child(Objects.requireNonNull(Constants.formatEmailForPath(user.getEmail()))).setValue(user.getUid());
 
         if (taskAddUserTodB.isSuccessful()) {
-            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH ID: " + user.getEmail() + " TO DATABASE");
+            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
         } else if (taskAddUserTodB.isCanceled()) {
-            Log.e(TAG, "FAILED TO ADD NEW USER WITH ID: " + user.getEmail() + " TO DATABASE");
+            Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
         }
+
+        if (taskAddIDEmailToDatabase.isSuccessful()) {
+            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO EMAIL/UUID DATABASE");
+        } else if (taskAddIDEmailToDatabase.isCanceled()) {
+            Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO EMAIL/UUID DATABASE");
+        }
+
     }
 
 
