@@ -70,8 +70,8 @@ public class SendNewStickerNotification extends AppCompatActivity {
             .setAutoCancel(true)
             .addAction(R.drawable.angry, "Test", callIntent)
              */
-            //.setcon
-            //.build();
+    //.setcon
+    //.build();
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
     notificationManagerCompat.notify(0, notificationBuilder.build());
   }
@@ -88,9 +88,4 @@ public class SendNewStickerNotification extends AppCompatActivity {
     email = savedInstanceState.getString("email");
   }
 
-  /**
-   * if (user receives a new sticker) {
-   *
-   * }
-   */
 }
