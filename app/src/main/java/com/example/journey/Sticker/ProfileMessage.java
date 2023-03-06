@@ -48,10 +48,6 @@ public class ProfileMessage extends AppCompatActivity {
   String restoredEmail;
 
 
-  private Button triggerNotification;
-  NotificationManager notificationManager;
-
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -137,82 +133,14 @@ public class ProfileMessage extends AppCompatActivity {
     email.setText(restoredEmail);
   }
 
-
   public void openMessengerActivity(View view) {
-         Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
-         startActivity(intent1);
+    Intent intent1 = new Intent(ProfileMessage.this, MessengerChatView.class);
+    startActivity(intent1);
   }
 
   public void openHistoryActivity() {
     startActivity(new Intent(ProfileMessage.this, StickerHistory.class));
   }
 
-  /**
-   * The createStickerNotificationChannel() method
-   * creates a notification channel and must be called
-   * before the notification is send.
-   * Used the class videos/Android Studio Dolphin Essentials book
-   * to help write this code.
-
-  public void createStickerNotificationChannel() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      CharSequence name = "New Sticker Notification";
-      String notificationDescription = "A new sticker has been sent to you!";
-      int priorityLevel = NotificationManager.IMPORTANCE_DEFAULT;
-
-      NotificationChannel channel =
-              new NotificationChannel(getString(R.string.channel_id), name, priorityLevel);
-      channel.setDescription(notificationDescription);
-      channel.enableLights(true);
-      channel.setLightColor(Color.RED);
-      //channel.enableVibration(true);
-
-
-      //NotificationManager notificationManager = getSystemService((NotificationManager.class));
-      notificationManager.createNotificationChannel(channel);
-    }
-  }
-*/
-
-  /**
-   * The sendStickerNotification() method
-   * handles sending the notification.
-   * Used the class videos/Android Studio Dolphin Essentials book
-   * to help write this code.
-   * @paramview
-
-  public void sendStickerNotification(View view) {
-
-    Intent intent = new Intent(this, AlertDialog.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-    // Build notification
-    String stickerChannelID = getString(R.string.channel_id);
-    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.happy);
-    int notifID = 0;
-    //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, stickerChannelID)
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(ProfileMessage.this, stickerChannelID)
-            .setContentTitle("New Sticker from friend!")
-            .setWhen(System.currentTimeMillis())
-            .setContentText("New Sticker Yayy!")
-            .setSmallIcon(R.drawable.happy)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setChannelId(stickerChannelID)
-            .setContentIntent(pIntent)
-            .setVibrate(new long[]{100, 200, 400})
-            .setLargeIcon(bitmap)
-            .setStyle(new NotificationCompat.BigPictureStyle()
-                    .bigPicture(bitmap)
-                    .bigLargeIcon(null))
-            .setAutoCancel(true);
-
-
-    NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-    notificationManagerCompat.notify(notifID, notificationBuilder.build());
-    //notificationManager.notify(notifID,notificationBuilder);
-
-  }
-*/
 
 }

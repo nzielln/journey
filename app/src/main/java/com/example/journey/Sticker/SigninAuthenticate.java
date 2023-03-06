@@ -111,7 +111,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     }
 
     public void signInUserView() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction().setReorderingAllowed(true);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.DELEGATE, this);
@@ -123,7 +123,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     }
 
     public void createNewAccountView() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction().setReorderingAllowed(true);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.DELEGATE, this);
         CreateAccount createAccountFragment = new CreateAccount();
@@ -141,6 +141,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
                             Log.i(TAG, "SUCCESSFULLY SIGNED IN USER");
                             FirebaseUser user = myAuthentication.getCurrentUser();
                             reloadViewWithUser(user);
+                            signInUserView();
                         } else {
                             Log.e(TAG, "ERROR SIGNING IN", task.getException());
                             showErrorSigningInToast();
@@ -213,7 +214,9 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
     }
 
     public void startMessagingService() {
-        startService(new Intent(this, StickerMessagingService.class));
+        Intent intent = new Intent(this, StickerMessagingService.class);
+
+        startService(intent);
     }
 
     @Override

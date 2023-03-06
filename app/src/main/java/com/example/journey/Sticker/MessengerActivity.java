@@ -65,9 +65,6 @@ public class MessengerActivity extends AppCompatActivity {
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
 
-  Button triggerNotification;
-  NotificationManager notificationManager;
-
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +88,11 @@ public class MessengerActivity extends AppCompatActivity {
     stickerHistoryGrid.setAdapter(adapter);
 
     confirmSend = findViewById(R.id.confirm_and_send);
-    selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), Constants.ANGRY));
+    selectedImageId = Constants.ANGRY;
+    selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
     stickerLabel.setText(Constants.STICKER_ANGRY);
+    createMessage();
 
-    /*********Handles the notifications************/
-    triggerNotification = findViewById(R.id.tempNotification);
-    notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
-    //createStickerNotificationChannel();
 
     /**
      * The setOnItemClickListener() method
@@ -109,9 +104,7 @@ public class MessengerActivity extends AppCompatActivity {
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
         stickerLabel.setText(Constants.getStickerKey(selectedImageId).toUpperCase());
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        message = new Message(fbUser.getEmail(),selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
+        createMessage();
 
       }
     });
@@ -124,7 +117,7 @@ public class MessengerActivity extends AppCompatActivity {
     confirmSend.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        sendMessage(message, v);
+        sendMessage(message);
 
       }
     });
@@ -146,6 +139,12 @@ public class MessengerActivity extends AppCompatActivity {
 
   }
 
+  public void createMessage(){
+    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
+    LocalDateTime now = LocalDateTime.now();
+    message = new Message(fbUser.getEmail(), selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
+  }
+
   /**
    * The openBackToProfile() method goes back to the profile
    * activity.
@@ -155,19 +154,16 @@ public class MessengerActivity extends AppCompatActivity {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
 
-
   /**
    * The sendMessage() method handles
    * sending the message to the recipient.
    * @param message
    */
-  
-=======
+
   public void sendMessage(Message message) {
     Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).push().setValue(message);
 
 
-    sendStickerNotification(view);
 
     if (sendMessage.isSuccessful()) {
       Log.i(TAG, "SENDING MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
@@ -226,69 +222,6 @@ public class MessengerActivity extends AppCompatActivity {
 
   }
 
-  /**
-   * The createStickerNotificationChannel() method
-   * creates a notification channel and must be called
-   * before the notification is send.
-   * Used the class videos/Android Studio Dolphin Essentials book
-   * to help write this code.
-   */
-  public void createStickerNotificationChannel() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      CharSequence name = "New Sticker Notification";
-      String notificationDescription = "A new sticker has been sent to you!";
-      int priorityLevel = NotificationManager.IMPORTANCE_DEFAULT;
 
-      NotificationChannel channel =
-              new NotificationChannel(getString(R.string.channel_id), name, priorityLevel);
-      channel.setDescription(notificationDescription);
-      channel.enableLights(true);
-      channel.setLightColor(Color.RED);
-      channel.enableVibration(true);
-
-
-      //NotificationManager notificationManager = getSystemService((NotificationManager.class));
-      notificationManager.createNotificationChannel(channel);
-    }
-  }
-
-  /**
-   * The sendStickerNotification() method
-   * handles sending the notification.
-   * Used the class videos/Android Studio Dolphin Essentials book
-   * to help write this code.
-   * @paramview
-   */
-  public void sendStickerNotification(View view) {
-
-    Intent intent = new Intent(this, AlertDialog.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-    // Build notification
-    String stickerChannelID = getString(R.string.channel_id);
-    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.happy);
-    int notifID = 0;
-
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MessengerActivity.this, stickerChannelID)
-            .setContentTitle("You received a message from " + message.getSenderEmail() + "!")
-            .setContentText("Yayy New Message!")
-            .setWhen(System.currentTimeMillis())
-            .setSmallIcon(R.drawable.happy)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setChannelId(stickerChannelID)
-            .setContentIntent(pIntent)
-            .setVibrate(new long[]{100, 200, 400})
-            .setLargeIcon(bitmap)
-            .setStyle(new NotificationCompat.BigPictureStyle()
-                    .bigPicture(bitmap)
-                    .bigLargeIcon(null))
-            .setAutoCancel(true);
-
-
-    NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-    notificationManagerCompat.notify(notifID, notificationBuilder.build());
-
-  }
 
 }

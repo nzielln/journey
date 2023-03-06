@@ -1,6 +1,7 @@
 package com.example.journey.Sticker;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
@@ -29,6 +31,7 @@ import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +43,13 @@ import com.google.firebase.database.Transaction;
 import java.util.Objects;
 
 public class StickerMessagingService extends Service {
+
+    public Boolean SHOULD_SEND_MESSAGE = false;
+    public static final String STICKER_CHANNEL_ID = "CHANNEL_ID";
+    public static final String STICKER_CHANNEL_NAME = "CHANNEL_NAME";
+    public static final String STICKER_CHANNEL_DESCRIPTION = "CHANNEL_DESCRIPTION";
+
+
     Looper looper;
     String TAG = StickerMessagingService.class.toString();
     DatabaseReference reference; //database reference
@@ -65,6 +75,7 @@ public class StickerMessagingService extends Service {
         String startKey = reference.push().getKey();
 
 
+
         notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
         createStickerNotificationChannel();
 
@@ -81,13 +92,9 @@ public class StickerMessagingService extends Service {
 
                 if (Objects.equals(message.getRecipientID(), currentUser.getUid())) {
 
-                    Log.i(TAG, "NEW MESSAGE RECEIVED! ");
-                        updateUserMessages(message);
-                        System.out.println("Tester!");
-                        //sendNotificationToUser();
-                        //sendStickerNotification();
-
-                   
+                    Log.i(TAG, "NEW MESSAGE RECEIEVED! ");
+                    updateUserMessages(message);
+                    sendStickerNotification(message);
 
                 }
             }
@@ -156,10 +163,10 @@ public class StickerMessagingService extends Service {
             channel.setDescription(notificationDescription);
             channel.enableLights(true);
             channel.setLightColor(Color.RED);
-            //channel.enableVibration(true);
+            channel.enableVibration(true);
 
 
-            //NotificationManager notificationManager = getSystemService((NotificationManager.class));
+
             notificationManager.createNotificationChannel(channel);
         }
     }
@@ -171,36 +178,47 @@ public class StickerMessagingService extends Service {
      * to help write this code.
      * @paramview
      */
-    public void sendStickerNotification(View view) {
+    public void sendStickerNotification(Message message) {
+        if (message.getRecipientID() == null) {
+            return;
+        }
 
-        Intent intent = new Intent(this, AlertDialog.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        Intent myIntent = new Intent(this, StickerMessagingService.class);
+        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-        // Build notification
-        String stickerChannelID = getString(R.string.channel_id);
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.happy);
-        int notifID = 0;
-        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, stickerChannelID)
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(StickerMessagingService.this, stickerChannelID)
-                .setContentTitle(recipientMessage.getSenderID())
-                .setWhen(System.currentTimeMillis())
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0 /* Request code*/, myIntent,
+                PendingIntent.FLAG_IMMUTABLE);
+
+        Notification stickerNotification;
+        NotificationCompat.Builder stickerBuilder;
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(STICKER_CHANNEL_ID,STICKER_CHANNEL_NAME, NotificationManager.IMPORTANCE_HIGH);
+            // Configure the notification channel
+            notificationChannel.setDescription(STICKER_CHANNEL_DESCRIPTION);
+            notificationManager.createNotificationChannel(notificationChannel);
+            stickerBuilder = new NotificationCompat.Builder(this, STICKER_CHANNEL_ID);
+
+        } else {
+            stickerBuilder = new NotificationCompat.Builder(this);
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),  message.getImage());
+        stickerNotification = stickerBuilder.setContentTitle("You received a message from " + message.getSenderEmail() + "!")
                 .setContentText("New Sticker Yayy!")
                 .setSmallIcon(R.drawable.happy)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setChannelId(stickerChannelID)
                 .setContentIntent(pIntent)
                 .setVibrate(new long[]{100, 200, 400})
                 .setLargeIcon(bitmap)
                 .setStyle(new NotificationCompat.BigPictureStyle()
                         .bigPicture(bitmap)
                         .bigLargeIcon(null))
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .build();
+        notificationManager.notify(0, stickerNotification);
 
-
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(notifID, notificationBuilder.build());
-        //notificationManager.notify(notifID,notificationBuilder);
 
     }
 
@@ -213,4 +231,6 @@ public class StickerMessagingService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+
 }
