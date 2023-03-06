@@ -21,19 +21,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
+
         <service
             android:name=".Sticker.StickerMessagingService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+        </service>
 
-        <activity
-            android:name=".ReceiveNotification"
-            android:exported="false"
-            android:configChanges="orientation|screenSize">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
         <activity
             android:name=".StickerHistory"
 
@@ -43,6 +37,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Sticker.MessengerChatView"
             android:configChanges="orientation|screenSize"
@@ -51,6 +46,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Sticker.MessengerActivity"
             android:configChanges="orientation|screenSize"
@@ -59,6 +55,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Sticker.About"
             android:configChanges="orientation|screenSize"
@@ -67,6 +64,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Sticker.ProfileMessage"
             android:configChanges="orientation|screenSize"
@@ -75,6 +73,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Sticker.SigninAuthenticate"
             android:configChanges="orientation|screenSize"
@@ -83,6 +82,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".Giphy.GiphyWebService"
             android:configChanges="orientation|screenSize"
@@ -92,6 +92,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
@@ -107,6 +108,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/channel_id" />

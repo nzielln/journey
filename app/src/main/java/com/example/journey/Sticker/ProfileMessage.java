@@ -47,18 +47,15 @@ public class ProfileMessage extends AppCompatActivity {
 
   String restoredEmail;
 
+
   private Button triggerNotification;
   NotificationManager notificationManager;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_profile_message);
-
-    /*********Handles the notifications************/
-    triggerNotification = findViewById(R.id.tempNotification);
-    notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
-    createStickerNotificationChannel();
 
 
     logoutText = findViewById(R.id.logout_text);
@@ -156,7 +153,7 @@ public class ProfileMessage extends AppCompatActivity {
    * before the notification is send.
    * Used the class videos/Android Studio Dolphin Essentials book
    * to help write this code.
-   */
+
   public void createStickerNotificationChannel() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       CharSequence name = "New Sticker Notification";
@@ -175,6 +172,7 @@ public class ProfileMessage extends AppCompatActivity {
       notificationManager.createNotificationChannel(channel);
     }
   }
+*/
 
   /**
    * The sendStickerNotification() method
@@ -182,7 +180,7 @@ public class ProfileMessage extends AppCompatActivity {
    * Used the class videos/Android Studio Dolphin Essentials book
    * to help write this code.
    * @paramview
-   */
+
   public void sendStickerNotification(View view) {
 
     Intent intent = new Intent(this, AlertDialog.class);
@@ -209,27 +207,12 @@ public class ProfileMessage extends AppCompatActivity {
                     .bigLargeIcon(null))
             .setAutoCancel(true);
 
-          /*.setLargeIcon(myBitmap)
-          .setStyle(new NotificationCompat.BigPictureStyle()
-                  .bigPicture()
-                  .bigLargeIcon(null))
-          .setPriority(NotificationCompat.PRIORITY_HIGH)
-          .setAutoCancel(true)
-          .addAction(R.drawable.angry, "Test", callIntent)
-           */
-    //.setcon
 
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
     notificationManagerCompat.notify(notifID, notificationBuilder.build());
     //notificationManager.notify(notifID,notificationBuilder);
 
   }
-
-/**
- * if (user receives a new sticker) {
- *
- * }
- */
-
+*/
 
 }

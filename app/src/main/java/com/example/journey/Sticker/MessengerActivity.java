@@ -3,10 +3,20 @@ package com.example.journey.Sticker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +44,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MessengerActivity extends AppCompatActivity {
@@ -42,6 +53,7 @@ public class MessengerActivity extends AppCompatActivity {
   GridView stickerHistoryGrid;
   private FirebaseAuth userAuthentication;
   FirebaseUser fbUser;
+  FirebaseUser currentUser;
   Button confirmSend;
   String recipient;
   String recipientUserID;
@@ -52,6 +64,10 @@ public class MessengerActivity extends AppCompatActivity {
   Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
+
+  Button triggerNotification;
+  NotificationManager notificationManager;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +94,15 @@ public class MessengerActivity extends AppCompatActivity {
     selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), Constants.ANGRY));
     stickerLabel.setText(Constants.STICKER_ANGRY);
 
+    /*********Handles the notifications************/
+    triggerNotification = findViewById(R.id.tempNotification);
+    notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
+    //createStickerNotificationChannel();
+
+    /**
+     * The setOnItemClickListener() method
+     * selects the images that need to be sent.
+     */
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -91,10 +116,16 @@ public class MessengerActivity extends AppCompatActivity {
       }
     });
 
+
+    /**
+     * The setOnClickListener() method
+     * calls the sendMessage() method that sends the message.
+     */
     confirmSend.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        sendMessage(message);
+        sendMessage(message, v);
+
       }
     });
 
@@ -124,8 +155,19 @@ public class MessengerActivity extends AppCompatActivity {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
 
+
+  /**
+   * The sendMessage() method handles
+   * sending the message to the recipient.
+   * @param message
+   */
+  
+=======
   public void sendMessage(Message message) {
     Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).push().setValue(message);
+
+
+    sendStickerNotification(view);
 
     if (sendMessage.isSuccessful()) {
       Log.i(TAG, "SENDING MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
@@ -166,6 +208,11 @@ public class MessengerActivity extends AppCompatActivity {
     outState.putInt("imageID", selectedImageId);
   }
 
+  /**
+   * The onRestoreInstanceState() method restores the UI
+   * so that when user's rotate the phone screen the UI runs smoothly.
+   * @paramsavedInstanceState
+   */
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
@@ -176,6 +223,71 @@ public class MessengerActivity extends AppCompatActivity {
 
 
     selectedImageId = savedInstanceState.getInt("imageID");
+
+  }
+
+  /**
+   * The createStickerNotificationChannel() method
+   * creates a notification channel and must be called
+   * before the notification is send.
+   * Used the class videos/Android Studio Dolphin Essentials book
+   * to help write this code.
+   */
+  public void createStickerNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      CharSequence name = "New Sticker Notification";
+      String notificationDescription = "A new sticker has been sent to you!";
+      int priorityLevel = NotificationManager.IMPORTANCE_DEFAULT;
+
+      NotificationChannel channel =
+              new NotificationChannel(getString(R.string.channel_id), name, priorityLevel);
+      channel.setDescription(notificationDescription);
+      channel.enableLights(true);
+      channel.setLightColor(Color.RED);
+      channel.enableVibration(true);
+
+
+      //NotificationManager notificationManager = getSystemService((NotificationManager.class));
+      notificationManager.createNotificationChannel(channel);
+    }
+  }
+
+  /**
+   * The sendStickerNotification() method
+   * handles sending the notification.
+   * Used the class videos/Android Studio Dolphin Essentials book
+   * to help write this code.
+   * @paramview
+   */
+  public void sendStickerNotification(View view) {
+
+    Intent intent = new Intent(this, AlertDialog.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+    // Build notification
+    String stickerChannelID = getString(R.string.channel_id);
+    Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.happy);
+    int notifID = 0;
+
+    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(MessengerActivity.this, stickerChannelID)
+            .setContentTitle("You received a message from " + message.getSenderEmail() + "!")
+            .setContentText("Yayy New Message!")
+            .setWhen(System.currentTimeMillis())
+            .setSmallIcon(R.drawable.happy)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setChannelId(stickerChannelID)
+            .setContentIntent(pIntent)
+            .setVibrate(new long[]{100, 200, 400})
+            .setLargeIcon(bitmap)
+            .setStyle(new NotificationCompat.BigPictureStyle()
+                    .bigPicture(bitmap)
+                    .bigLargeIcon(null))
+            .setAutoCancel(true);
+
+
+    NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+    notificationManagerCompat.notify(notifID, notificationBuilder.build());
 
   }
 
