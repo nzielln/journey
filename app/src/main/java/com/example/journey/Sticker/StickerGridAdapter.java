@@ -92,7 +92,6 @@ public class StickerGridAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.sticker_image_view, null); // inflate the layout
         }
-
         ImageView imageView = (ImageView) convertView.findViewById(R.id.sticker_history_image);
         imageView.setImageDrawable(ContextCompat.getDrawable(context, stickers[position]));
         TextView count = (TextView) convertView.findViewById(R.id.count);
