@@ -1,16 +1,29 @@
 package com.example.journey.Sticker;
 
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
 import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +47,9 @@ public class StickerMessagingService extends Service {
     StickerAppDelegate delegate;
     FirebaseUser currentUser;
 
+    NotificationManager notificationManager;
+    Message recipientMessage;
+
 
     public StickerMessagingService() {
     }
@@ -48,6 +64,9 @@ public class StickerMessagingService extends Service {
         currentUser = myAuthentication.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
 
+        notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
+        createStickerNotificationChannel();
+
 
         reference.child(Constants.MESSAGES_DATABASE_ROOT).addChildEventListener(new ChildEventListener() {
             @Override
@@ -58,9 +77,11 @@ public class StickerMessagingService extends Service {
                 assert message != null;
 
                 if (Objects.equals(message.getRecipientID(), currentUser.getUid())) {
-                    Log.i(TAG, "NEW MESSAGE RECEIEVED! ");
+                    Log.i(TAG, "NEW MESSAGE RECEIVED! ");
                         updateUserMessages(message);
-                        sendNotificationToUser();
+                        System.out.println("Tester!");
+                        //sendNotificationToUser();
+                        //sendStickerNotification();
                 }
             }
 
@@ -112,6 +133,72 @@ public class StickerMessagingService extends Service {
 
             }
         });
+
+    }
+
+    /**
+     * The createStickerNotificationChannel() method
+     * creates a notification channel and must be called
+     * before the notification is send.
+     * Used the class videos/Android Studio Dolphin Essentials book
+     * to help write this code.
+     */
+    public void createStickerNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "New Sticker Notification";
+            String notificationDescription = "A new sticker has been sent to you!";
+            int priorityLevel = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel =
+                    new NotificationChannel(getString(R.string.channel_id), name, priorityLevel);
+            channel.setDescription(notificationDescription);
+            channel.enableLights(true);
+            channel.setLightColor(Color.RED);
+            //channel.enableVibration(true);
+
+
+            //NotificationManager notificationManager = getSystemService((NotificationManager.class));
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    /**
+     * The sendStickerNotification() method
+     * handles sending the notification.
+     * Used the class videos/Android Studio Dolphin Essentials book
+     * to help write this code.
+     * @paramview
+     */
+    public void sendStickerNotification(View view) {
+
+        Intent intent = new Intent(this, AlertDialog.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Build notification
+        String stickerChannelID = getString(R.string.channel_id);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.happy);
+        int notifID = 0;
+        //NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, stickerChannelID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(StickerMessagingService.this, stickerChannelID)
+                .setContentTitle(recipientMessage.getSenderID())
+                .setWhen(System.currentTimeMillis())
+                .setContentText("New Sticker Yayy!")
+                .setSmallIcon(R.drawable.happy)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setChannelId(stickerChannelID)
+                .setContentIntent(pIntent)
+                .setVibrate(new long[]{100, 200, 400})
+                .setLargeIcon(bitmap)
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(bitmap)
+                        .bigLargeIcon(null))
+                .setAutoCancel(true);
+
+
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+        notificationManagerCompat.notify(notifID, notificationBuilder.build());
+        //notificationManager.notify(notifID,notificationBuilder);
 
     }
 
