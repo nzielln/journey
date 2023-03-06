@@ -1,6 +1,7 @@
 package com.example.journey.Sticker;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -34,6 +35,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
@@ -57,6 +60,7 @@ public class MessengerActivity extends AppCompatActivity {
   Integer selectedImageId;
   ImageView selectedImage;
   TextView recipientView;
+  TextView stickerLabel;
   Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
@@ -73,10 +77,11 @@ public class MessengerActivity extends AppCompatActivity {
     recipientView = findViewById(R.id.recipient_email);
     if (bundle != null) {
       recipient = bundle.getString(Constants.RECIPIENT);
-      recipientView.setText(recipient);
+      recipientView.setText(getString(R.string.recipient_email, recipient));
     }
 
     selectedImage = findViewById(R.id.selected_sticker);
+    stickerLabel = findViewById(R.id.sticker_label);
     userAuthentication = FirebaseAuth.getInstance();
     fbUser = userAuthentication.getCurrentUser();
     databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -86,6 +91,8 @@ public class MessengerActivity extends AppCompatActivity {
     stickerHistoryGrid.setAdapter(adapter);
 
     confirmSend = findViewById(R.id.confirm_and_send);
+    selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), Constants.ANGRY));
+    stickerLabel.setText(Constants.STICKER_ANGRY);
 
     /*********Handles the notifications************/
     triggerNotification = findViewById(R.id.tempNotification);
@@ -101,6 +108,7 @@ public class MessengerActivity extends AppCompatActivity {
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
+        stickerLabel.setText(Constants.getStickerKey(selectedImageId).toUpperCase());
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         message = new Message(fbUser.getEmail(),selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
@@ -152,8 +160,8 @@ public class MessengerActivity extends AppCompatActivity {
    * sending the message to the recipient.
    * @param message
    */
-  public void sendMessage(Message message, View view) {
-    Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).child(UUID.randomUUID().toString()).setValue(message);
+  public void sendMessage(Message message) {
+    Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).push().setValue(message);
 
     sendStickerNotification(view);
 
@@ -162,6 +170,31 @@ public class MessengerActivity extends AppCompatActivity {
     } else if (sendMessage.isCanceled()) {
       Log.e(TAG, "FAILED TO SEND MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
     }
+    updateUserStickerCount(message.getImage());
+    finish();
+  }
+
+  public void updateUserStickerCount(Integer stickerId) {
+    databaseReference.child(Constants.USERS_DATABASE_ROOT).child(fbUser.getUid()).runTransaction(new Transaction.Handler() {
+      @NonNull
+      @Override
+      public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+        StickerUser user = currentData.getValue(StickerUser.class);
+
+        if (user != null) {
+          user.addSticker(stickerId);
+          currentData.setValue(user);
+        }
+        Log.i(TAG, "NEW MESSAGE ADDED TO USER! ");
+        return Transaction.success(currentData);
+      }
+
+      @Override
+      public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+        Log.e(TAG, "FAILED TO ADD NEW MESSAGE TO USER");
+
+      }
+    });
   }
 
   @Override

@@ -42,8 +42,8 @@ public class MessageHistoryAdapter extends RecyclerView.Adapter<MessageHistoryAd
         TextView emailAddressOfSender = holder.emailSenderTextView;
         TextView dateReceived = holder.dateTimeTextView;
         ImageView imageReceived = holder.imageTextView;
-        emailAddressOfSender.setText(cHistory.getSenderEmail());
-        dateReceived.setText(cHistory.getDateTime());
+        emailAddressOfSender.setText(rcontext.getString(R.string.sender_email,cHistory.getSenderEmail()));
+        dateReceived.setText(rcontext.getString(R.string.sent_time, cHistory.getDateTime()));
         imageReceived.setImageDrawable(ContextCompat.getDrawable(rcontext, cHistory.getImage()));
 
     }

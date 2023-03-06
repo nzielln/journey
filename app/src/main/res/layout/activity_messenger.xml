@@ -6,23 +6,31 @@
     android:layout_height="match_parent"
     tools:context=".Sticker.MessengerActivity"
     android:paddingHorizontal="8dp"
-    android:paddingTop="32dp"
+    android:paddingTop="8dp"
+
 
     >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_gravity="center_vertical"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="vertical"
 
             >
+
             <Button
                 android:id="@+id/tempNotification"
                 android:layout_width="wrap_content"
@@ -36,12 +44,11 @@
                 android:id="@+id/recipient_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:fontFamily="@font/roboto_medium"
-                android:textSize="16sp"
+                android:paddingBottom="24dp"
                 android:text="Recipient"
-                android:paddingBottom="32dp"
-                />
+                android:textColor="@color/black"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/selected_sticker"
@@ -51,13 +58,22 @@
 
                 />
 
+            <TextView
+                android:id="@+id/sticker_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_medium"
+                android:padding="4dp"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
             <Button
                 android:id="@+id/confirm_and_send"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="@string/confirm_and_send"
-                android:layout_marginTop="16dp"
                 android:textSize="14sp"
 
                 />
@@ -65,13 +81,16 @@
             <GridView
                 android:id="@+id/sticker_history_grid"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="481dp"
                 android:horizontalSpacing="16dp"
+                android:nestedScrollingEnabled="true"
                 android:numColumns="2"
-                android:paddingTop="24dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
                 android:verticalSpacing="16dp"
 
                 />
 
         </LinearLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
