@@ -44,7 +44,6 @@ public class StickerMessagingService extends Service {
     String TAG = StickerMessagingService.class.toString();
     DatabaseReference reference; //database reference
     private FirebaseAuth myAuthentication;
-    StickerAppDelegate delegate;
     FirebaseUser currentUser;
 
     NotificationManager notificationManager;
@@ -63,12 +62,16 @@ public class StickerMessagingService extends Service {
         myAuthentication = FirebaseAuth.getInstance();
         currentUser = myAuthentication.getCurrentUser();
         reference = FirebaseDatabase.getInstance().getReference();
+        String startKey = reference.push().getKey();
+
 
         notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
         createStickerNotificationChannel();
 
 
-        reference.child(Constants.MESSAGES_DATABASE_ROOT).addChildEventListener(new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
+
+
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Message message = snapshot.getValue(Message.class);
@@ -77,34 +80,33 @@ public class StickerMessagingService extends Service {
                 assert message != null;
 
                 if (Objects.equals(message.getRecipientID(), currentUser.getUid())) {
+
                     Log.i(TAG, "NEW MESSAGE RECEIVED! ");
                         updateUserMessages(message);
                         System.out.println("Tester!");
                         //sendNotificationToUser();
                         //sendStickerNotification();
+
+                   
+
                 }
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
 
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {}
+        };
 
-            }
-        });
+        reference.child(Constants.MESSAGES_DATABASE_ROOT).orderByKey().startAt(startKey).addChildEventListener(childEventListener);
+
     }
 
     @Override

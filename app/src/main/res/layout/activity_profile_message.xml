@@ -7,16 +7,23 @@
     android:padding="8dp"
     tools:context=".Sticker.ProfileMessage">
 
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="1.0"
+    >
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_gravity="center_vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+       >
 
 
         <TextView
@@ -87,13 +94,15 @@
         <GridView
             android:id="@+id/sticker_history_grid"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="499dp"
             android:horizontalSpacing="16dp"
+            android:nestedScrollingEnabled="true"
             android:numColumns="2"
             android:paddingTop="16dp"
             android:verticalSpacing="16dp"
             tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
+</ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

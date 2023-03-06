@@ -14,9 +14,8 @@
         android:layout_height="match_parent"
         android:text="@string/sender"
         android:fontFamily="@font/roboto_medium"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/black"
-        android:paddingBottom="8dp"
 
         />
     <TextView
@@ -24,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="@string/time_sent"
-        android:fontFamily="@font/roboto_medium"
-        android:textSize="16sp"
+        android:fontFamily="@font/roboto"
+        android:textSize="14sp"
         android:textColor="@color/black"
         android:paddingBottom="8dp"
         />

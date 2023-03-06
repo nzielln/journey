@@ -37,11 +37,14 @@
     <string name="don_t_have_an_account_create_one_here">Don\'t have an account? Create one here.</string>
     <string name="already_have_an_account_sign_in_here">Already have an account? Sign in here.</string>
     <string name="messenger_page">Messenger Page</string>
-    <string name="send_a_new_message">Send a new message</string>
+    <string name="send_a_new_message">Send a sticker</string>
     <string name="welcome">Welcome</string>
     <string name="logout">Logout</string>
+    <string name="recipient_email">To: %1$s</string>
+    <string name="sender_email">%1$s sent you a new sticker!</string>
+    <string name="sent_time">On: %1$s</string>
     <string name="count_goes_here">Count goes here</string>
-    <string name="confirm_and_send">Confirm and send</string>
+    <string name="confirm_and_send">Send</string>
     <string name="send_message">Send Message</string>
     <string name="chat_messenger_heading">Chat Messenger</string>
     <string name="type_message_here">Type Message Here</string>

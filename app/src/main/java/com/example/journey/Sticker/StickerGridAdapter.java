@@ -16,6 +16,7 @@ import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StickerGridAdapter extends BaseAdapter {
     int[] stickers = {
@@ -32,20 +33,27 @@ public class StickerGridAdapter extends BaseAdapter {
     Context context;
     Boolean showCount = false;
     StickerUser user;
+    HashMap<Integer, Integer> stickerCountMap;
 
     public StickerGridAdapter(Context context, Boolean showCount) {
         this.context = context;
         layoutInflater = (LayoutInflater.from(context)) ;
         this.showCount = showCount;
+        stickerCountMap = new HashMap<Integer, Integer>();
 
     }
     public StickerGridAdapter(Context context) {
         this.context = context;
         layoutInflater = (LayoutInflater.from(context)) ;
+        stickerCountMap = new HashMap<Integer, Integer>();
     }
 
     public void updateUser(StickerUser user) {
         this.user = user;
+        stickerCountMap.clear();
+        for (int sticker : stickers) {
+            stickerCountMap.put(sticker, user.getCountForSticker(sticker));
+        }
         notifyDataSetChanged();
     }
 
@@ -83,17 +91,19 @@ public class StickerGridAdapter extends BaseAdapter {
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.sticker_image_view, null); // inflate the layout
         }
-
         ImageView imageView = (ImageView) convertView.findViewById(R.id.sticker_history_image);
         imageView.setImageDrawable(ContextCompat.getDrawable(context, stickers[position]));
         TextView count = (TextView) convertView.findViewById(R.id.count);
 
         if (!showCount) {
-            ViewGroup viewParent = (ViewGroup) imageView.getParent();
-            viewParent.removeView(count);
-
+            count.setText(Constants.getStickerKey(stickers[position]).toUpperCase());
         } else {
-            count.setText(String.valueOf("SENT: " + user.getCountForSticker(stickers[position]) + " stickers"));
+            //Integer stikerCount = user.getCountForSticker(stickers[position]);
+            Integer sticker = stickers[position];
+            Integer stickerCount = stickerCountMap.get(sticker);
+            String plural = stickerCount > 1 ? "s" : "";
+            //count.setText(String.valueOf("SENT: " + stikerCount + " sticker" + plural ));
+            count.setText(String.valueOf("SENT: " + stickerCount + " sticker" + plural ));
         }
         return convertView;
     }

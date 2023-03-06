@@ -73,6 +73,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
 
 
         if (checkIsUserSignedIn()) {
+            startMessagingService();
             openProfileActivity();
         } else {
             signInUserView();
@@ -172,6 +173,7 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
 
     private void reloadViewWithUser(@Nullable FirebaseUser user) {
         if (user != null) {
+            startMessagingService();
             openProfileActivity();
         }
     }
@@ -210,6 +212,15 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
 
     }
 
+    public void startMessagingService() {
+        startService(new Intent(this, StickerMessagingService.class));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(this, StickerMessagingService.class));
+    }
 
     // Parcelable Implementations
     @Override
