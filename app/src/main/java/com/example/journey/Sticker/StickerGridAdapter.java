@@ -33,7 +33,6 @@ public class StickerGridAdapter extends BaseAdapter {
     Context context;
     Boolean showCount = false;
     StickerUser user;
-
     HashMap<Integer, Integer> stickerCountMap;
 
     public StickerGridAdapter(Context context, Boolean showCount) {
