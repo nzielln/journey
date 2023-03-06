@@ -47,6 +47,7 @@ public class ProfileMessage extends AppCompatActivity {
 
   String restoredEmail;
 
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

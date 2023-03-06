@@ -74,10 +74,14 @@ public class StickerMessagingService extends Service {
         reference = FirebaseDatabase.getInstance().getReference();
         String startKey = reference.push().getKey();
 
+
+
         notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
         createStickerNotificationChannel();
 
+
         ChildEventListener childEventListener = new ChildEventListener() {
+
 
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -87,9 +91,11 @@ public class StickerMessagingService extends Service {
                 assert message != null;
 
                 if (Objects.equals(message.getRecipientID(), currentUser.getUid())) {
+
                     Log.i(TAG, "NEW MESSAGE RECEIEVED! ");
                     updateUserMessages(message);
                     sendStickerNotification(message);
+
                 }
             }
 

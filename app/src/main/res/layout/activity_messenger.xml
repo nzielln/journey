@@ -40,6 +40,7 @@
                 android:clickable="true"
                 android:onClick="sendStickerNotification"
                 android:text="@string/temp_notification" />
+
             <TextView
                 android:id="@+id/recipient_email"
                 android:layout_width="wrap_content"
