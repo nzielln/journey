@@ -162,7 +162,7 @@ public class MessengerActivity extends AppCompatActivity {
    * @param message
    */
   
-=======
+
   public void sendMessage(Message message) {
     Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).push().setValue(message);
 
