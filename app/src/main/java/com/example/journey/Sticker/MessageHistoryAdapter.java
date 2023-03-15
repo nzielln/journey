@@ -15,7 +15,7 @@ import com.example.journey.R;
 
 import java.util.List;
 
-public class MessageHistoryAdapter extends RecyclerView.Adapter<MessageHistoryAdapter.ViewHolder>{
+public class MessageHistoryAdapter extends RecyclerView.Adapter<MessageHistoryAdapter.ViewHolder> {
 
     private List<Message> historyList;
     private Context rcontext;

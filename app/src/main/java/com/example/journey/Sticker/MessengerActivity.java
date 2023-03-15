@@ -3,10 +3,20 @@ package com.example.journey.Sticker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +44,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
 public class MessengerActivity extends AppCompatActivity {
@@ -42,6 +53,7 @@ public class MessengerActivity extends AppCompatActivity {
   GridView stickerHistoryGrid;
   private FirebaseAuth userAuthentication;
   FirebaseUser fbUser;
+  FirebaseUser currentUser;
   Button confirmSend;
   String recipient;
   String recipientUserID;
@@ -52,6 +64,7 @@ public class MessengerActivity extends AppCompatActivity {
   Message message;
   DatabaseReference databaseReference;
   ArrayList<String> loggedInUsers;
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +93,11 @@ public class MessengerActivity extends AppCompatActivity {
     stickerLabel.setText(Constants.STICKER_ANGRY);
     createMessage();
 
+
+    /**
+     * The setOnItemClickListener() method
+     * selects the images that need to be sent.
+     */
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,10 +110,16 @@ public class MessengerActivity extends AppCompatActivity {
       }
     });
 
+
+    /**
+     * The setOnClickListener() method
+     * calls the sendMessage() method that sends the message.
+     */
     confirmSend.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         sendMessage(message);
+
       }
     });
 
@@ -130,8 +154,16 @@ public class MessengerActivity extends AppCompatActivity {
     startActivity(new Intent(MessengerActivity.this, ProfileMessage.class));
   }
 
+  /**
+   * The sendMessage() method handles
+   * sending the message to the recipient.
+   * @param message
+   */
+
   public void sendMessage(Message message) {
     Task sendMessage = databaseReference.child(Constants.MESSAGES_DATABASE_ROOT).push().setValue(message);
+
+
 
     if (sendMessage.isSuccessful()) {
       Log.i(TAG, "SENDING MESSAGE FROM: " + message.getSenderID() + " TO: " + message.getRecipientID());
@@ -172,6 +204,11 @@ public class MessengerActivity extends AppCompatActivity {
     outState.putInt("imageID", selectedImageId);
   }
 
+  /**
+   * The onRestoreInstanceState() method restores the UI
+   * so that when user's rotate the phone screen the UI runs smoothly.
+   * @paramsavedInstanceState
+   */
   @Override
   protected void onRestoreInstanceState(Bundle savedInstanceState) {
     super.onRestoreInstanceState(savedInstanceState);
@@ -184,5 +221,7 @@ public class MessengerActivity extends AppCompatActivity {
     selectedImageId = savedInstanceState.getInt("imageID");
 
   }
+
+
 
 }
