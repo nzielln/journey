@@ -75,8 +75,10 @@ public class MessengerActivity extends AppCompatActivity {
     stickerHistoryGrid.setAdapter(adapter);
 
     confirmSend = findViewById(R.id.confirm_and_send);
-    selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), Constants.ANGRY));
+    selectedImageId = Constants.ANGRY;
+    selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
     stickerLabel.setText(Constants.STICKER_ANGRY);
+    createMessage();
 
     stickerHistoryGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
@@ -84,9 +86,8 @@ public class MessengerActivity extends AppCompatActivity {
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
         stickerLabel.setText(Constants.getStickerKey(selectedImageId).toUpperCase());
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        message = new Message(fbUser.getEmail(),selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
+
+        createMessage();
 
       }
     });
@@ -113,6 +114,11 @@ public class MessengerActivity extends AppCompatActivity {
       }
     });
 
+  }
+  public void createMessage(){
+    DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
+    LocalDateTime now = LocalDateTime.now();
+    message = new Message(fbUser.getEmail(), selectedImageId, dateFormat.format(now), fbUser.getUid(),recipientUserID);
   }
 
   /**
