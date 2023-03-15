@@ -62,7 +62,6 @@ public class SigninAuthenticate extends AppCompatActivity implements StickerAppD
         myAuthentication = FirebaseAuth.getInstance();
         binding = ActivitySigninAuthenticateBinding.inflate(getLayoutInflater());
         reference = FirebaseDatabase.getInstance().getReference();
-
         setContentView(binding.getRoot());
 
         if (savedInstanceState != null) {

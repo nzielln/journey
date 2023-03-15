@@ -31,6 +31,13 @@ android {
     buildFeatures {
         viewBinding true
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src/main/res', 'src/main/res/layouts/profile', 'src/main/res/layouts/dashboard', 'src/main/res/layouts/assignments', 'src/main/res/layouts/chat', 'src/main/res/layouts/login', 'src/main/res/layouts/insights', 'src/main/res/drawables/stickers', 'src/main/res/drawables/journey', 'src/main/res/drawables/other', 'src/main/res/drawables/styles'
+            }
+        }
+    }
 }
 
 
