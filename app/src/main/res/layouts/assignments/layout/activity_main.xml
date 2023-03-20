@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="30dp"
-                android:onClick="startRealtimeDatabase"
+                android:onClick="startJourneyApp"
                 android:text="Journey"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

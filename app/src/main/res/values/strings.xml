@@ -59,4 +59,8 @@
     <string name="messages_tab">Messages</string>
     <string name="insights_tab">Insights</string>
     <string name="add_tab">Add</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="profile">Profile</string>
+    <string name="insights">Insights</string>
+    <string name="chat">Chat</string>
 </resources>

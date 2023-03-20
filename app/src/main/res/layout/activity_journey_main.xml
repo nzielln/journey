@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
 
-
         app:menu="@menu/bottom_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/journey_fragment_container"
@@ -29,7 +28,8 @@
         app:itemTextAppearanceInactive="@style/tab_text_normal"
         app:itemIconSize="50dp"
         app:itemRippleColor="@color/light_blue"
-        android:elevation="4dp"
+        android:elevation="8dp"
+        android:background="@color/white_grey"
 
         >
 
