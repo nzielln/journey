@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Content -->
+    <style name="content_normal">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="content_medium">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="content_semi">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Body -->
+    <style name="body_normal">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/inter</item>
+    </style>
+
+    <style name="body_medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="body_semi">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <!-- Headings -->
+
+    <style name="subheading_medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="subheading_semi">
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <style name="heading">
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+
+    <!-- Tabs, Menus, Smaller Fonts -->
+
+    <style name="all_caps_medium">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="all_caps_semi">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="tab_normal">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="tab_active">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="icons">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="tab_text_normal" parent="tab_normal">
+        <item name="android:textColor">@android:color/darker_gray</item>
+
+    </style>
+
+    <!-- Popups, Forms, Chat-->
+
+    <style name="small_body_normal">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="small_body_semi">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
+    <style name="small_body_time">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">8sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+</resources>
+
+<!--
+Types of Fonts
+Body Semi: Inter Semi 14
+Body Medium: Inter Medium 14
+Body Reg: Inter 14
+Subheading: Inter Medium 16
+Heading: Inter Semi 18 Blue
+
+Dashboard
+Header: Subheading
+Tab and Search
+Normal: Inter 12 Blue
+Active: Inter Medium 12 Blue
+Search: Inter 12 Light-Blue
+
+Content: Inter 13 Blue
+Content-Time: Inter Medium Caps 10 (Light Blue)
+Content-Name: Body Medium (Blue)
+
+Icons
+Inter Medium 8 Light-Blue
+
+Profile
+Followers Heading: Inter Semi 10 Blue
+Count, Name: Subheading -> Semi
+
+Timeline
+Title: Inter Semi 12 Blue
+
+Buttons:
+Dark: Inter Medium 14 Cream -> Blue BG
+Light: Inter Medium 14 Blue -> Clear BG
+
+Login Form
+Inter 14 Light-Blue
+
+Link
+Inter Bold 12 Blue
+
+Popup
+Input Title: Inter 10 Light-Blue
+Value: Inter 10 Blue
+
+Chat
+Notification Number: Inter Semi 10 Cream
+Messaging
+Time: Inter 8 Light-Blue
+Message Edit: Inter 10 Light-Blue
+-->

@@ -54,4 +54,9 @@
     <string name="time_sent">Time Sent</string>
     <string name="temp_notification">Temp Notification</string>
     <string name="channel_id">Sticker_Channel_Notification</string>
+    <string name="home_tab">Home</string>
+    <string name="profile_tab">Profile</string>
+    <string name="messages_tab">Messages</string>
+    <string name="insights_tab">Insights</string>
+    <string name="add_tab">Add</string>
 </resources>

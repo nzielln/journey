@@ -1,4 +1,4 @@
-package com.example.journey.Framents;
+package com.example.journey.Sticker.Framents;
 
 import android.os.Bundle;
 

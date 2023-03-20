@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.journey.Framents.CreateAccount;
-import com.example.journey.Framents.SignIn;
+import com.example.journey.Sticker.Framents.CreateAccount;
+import com.example.journey.Sticker.Framents.SignIn;
 import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
 import com.example.journey.databinding.ActivitySigninAuthenticateBinding;
