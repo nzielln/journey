@@ -80,9 +80,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
             case R.id.insights_item:
                 openInsightsFragment();
                 break;
-
         }
-
         return true;
     }
 }

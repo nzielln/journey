@@ -63,4 +63,13 @@
     <string name="profile">Profile</string>
     <string name="insights">Insights</string>
     <string name="chat">Chat</string>
+    <string name="profile_to_do">Profile To Do</string>
+    <string name="to_do">To Do</string>
+    <string name="timeline">Timeline</string>
+    <string name="documents">Documents</string>
+    <string name="sample_user_name">Hi, Jessica Jones</string>
+    <string name="followers">Followers</string>
+    <string name="_122">122</string>
+    <string name="following">Following</string>
+    <string name="add_new_application">Add new application</string>
 </resources>
