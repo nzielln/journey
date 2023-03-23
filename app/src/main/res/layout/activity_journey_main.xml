@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     tools:context=".JourneyApp.Main.JourneyMain">
 
     <FrameLayout
@@ -27,9 +28,10 @@
         app:itemTextAppearanceActive="@style/tab_active"
         app:itemTextAppearanceInactive="@style/tab_text_normal"
         app:itemIconSize="50dp"
-        app:itemRippleColor="@color/light_blue"
-        android:elevation="8dp"
+        app:itemPaddingBottom="8dp"
+        app:itemRippleColor="@null"
         android:background="@color/white_grey"
+        android:elevation="8dp"
 
         >
 
