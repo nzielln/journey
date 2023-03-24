@@ -3,12 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JourneyApp.Profile.ProfileDocumentsFragment">
+    tools:context=".JourneyApp.Profile.ProfileDocumentsFragment"
+    android:layout_marginTop="16dp"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <include
+
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/documents" />
+        android:layout_height="wrap_content"
+        layout="@layout/document_item"
+
+        />
 
 </FrameLayout>

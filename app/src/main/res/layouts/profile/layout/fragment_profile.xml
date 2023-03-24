@@ -48,7 +48,7 @@
             app:tabBackground="@drawable/tab_selection"
             app:tabSelectedTextColor="@color/dark_blue"
             app:tabTextColor="@color/dark_blue"
-            app:tabGravity="center"
+            app:tabGravity="fill"
             app:tabTextAppearance="@style/tab_normal"
             app:tabSelectedTextAppearance="@style/tab_active"
             app:tabMode="fixed"
