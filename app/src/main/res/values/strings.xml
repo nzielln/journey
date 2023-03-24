@@ -54,4 +54,26 @@
     <string name="time_sent">Time Sent</string>
     <string name="temp_notification">Temp Notification</string>
     <string name="channel_id">Sticker_Channel_Notification</string>
+    <string name="home_tab">Home</string>
+    <string name="profile_tab">Profile</string>
+    <string name="messages_tab">Messages</string>
+    <string name="insights_tab">Insights</string>
+    <string name="add_tab">Add</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="profile">Profile</string>
+    <string name="insights">Insights</string>
+    <string name="chat">Chat</string>
+    <string name="profile_to_do">Profile To Do</string>
+    <string name="to_do">To Do</string>
+    <string name="timeline">Timeline</string>
+    <string name="documents">Documents</string>
+    <string name="sample_user_name">Hi, Jessica Jones</string>
+    <string name="followers">Followers</string>
+    <string name="_122">122</string>
+    <string name="following">Following</string>
+    <string name="add_new_application">Add new application</string>
+    <string name="todo_sample_title">Transitioned to waiting for approval</string>
+    <string name="todo_sample_time">September 21, 2022</string>
+    <string name="doc_sample_time">09/21/23</string>
+    <string name="completed">Completed</string>
 </resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".JourneyApp.Profile.ProfileFragment"
+    android:padding="24dp"
+
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <include
+            android:id="@+id/include_profile_menu"
+            layout="@layout/profile_top_menu_layout" />
+
+        <include
+            android:id="@+id/include_profile_details"
+            layout="@layout/profile_details"
+            />
+
+        <Button
+            style="@style/ShapeAppearanceOverlay.Material3.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="@string/add_new_application"
+            android:layout_marginVertical="16dp"
+            android:layout_gravity="center"
+            android:theme="@style/body_normal"
+            android:textAllCaps="false"
+            android:letterSpacing="0"
+
+            />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/profile_tab"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:tabIndicator="@null"
+            app:tabBackground="@drawable/tab_selection"
+            app:tabSelectedTextColor="@color/dark_blue"
+            app:tabTextColor="@color/dark_blue"
+            app:tabGravity="fill"
+            app:tabTextAppearance="@style/tab_normal"
+            app:tabSelectedTextAppearance="@style/tab_active"
+            app:tabMode="fixed"
+            android:theme="@style/tab_active"
+            android:layout_marginBottom="16dp"
+            app:tabRippleColor="@null"
+            android:background="@android:color/transparent"
+            >
+            <com.google.android.material.tabs.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/to_do"
+                android:layout_marginHorizontal="12dp"
+                />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/timeline"
+                android:layout_marginHorizontal="12dp"
+
+                />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/documents"
+                android:layout_marginHorizontal="12dp"
+
+                />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <FrameLayout
+            android:id="@+id/profile_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</ScrollView>
+
+<!--
+<FrameLayout
+            android:id="@+id/profile_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@+id/include_profile_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+-->

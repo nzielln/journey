@@ -104,6 +104,7 @@ public class MessengerActivity extends AppCompatActivity {
         selectedImageId = Constants.getStickerForPostion(position); // sticker resource id
         selectedImage.setImageDrawable(ContextCompat.getDrawable(getApplicationContext(), selectedImageId));
         stickerLabel.setText(Constants.getStickerKey(selectedImageId).toUpperCase());
+
         createMessage();
 
       }
@@ -138,7 +139,6 @@ public class MessengerActivity extends AppCompatActivity {
     });
 
   }
-
   public void createMessage(){
     DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/uuuu HH:mm:ss");
     LocalDateTime now = LocalDateTime.now();

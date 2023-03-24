@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home_item"
+        android:title="@string/home_tab"
+        android:icon="@drawable/home_tab_icon_foreground"
+        />
+    <item
+        android:id="@+id/insights_item"
+        android:title="@string/insights_tab"
+        android:icon="@drawable/insights_tab_icon_foreground"
+        android:iconTint="@color/dark_blue"
+        />
+
+    <item
+        android:id="@+id/add_item"
+        android:icon="@drawable/add_tab_icon_foreground"
+        android:title=""
+        />
+    <item
+        android:id="@+id/messages_item"
+        android:title="@string/messages_tab"
+        android:icon="@drawable/messages_tab_icon_foreground"
+        />
+    <item
+        android:id="@+id/profile_item"
+        android:title="@string/profile_tab"
+        android:icon="@drawable/profile_tab_icon_foreground"
+        />
+
+</menu>
