@@ -8,4 +8,5 @@
     <item name="mainMessageLayout" type="id" />
     <item name="message" type="id" />
     <item name="logout" type="id" />
+    <item name="todo_item_title" type="id" />
 </resources>
