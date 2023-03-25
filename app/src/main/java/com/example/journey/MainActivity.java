@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.journey.Giphy.GiphyWebService;
+import com.example.journey.JourneyApp.LoadingPage;
 import com.example.journey.Sticker.About;
 import com.example.journey.Sticker.SigninAuthenticate;
 
@@ -72,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
      */
     public void onAbout(View view) {
         startActivity(new Intent(MainActivity.this, About.class));
+    }
+
+    /**
+     * The onAbout() method opens up the About Activity.
+     */
+    public void onJourneyApp(View view) {
+        startActivity(new Intent(MainActivity.this, LoadingPage.class));
     }
 
 }
