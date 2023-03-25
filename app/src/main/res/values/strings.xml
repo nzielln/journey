@@ -54,4 +54,10 @@
     <string name="time_sent">Time Sent</string>
     <string name="temp_notification">Temp Notification</string>
     <string name="channel_id">Sticker_Channel_Notification</string>
+    <string name="about">About</string>
+    <string name="realtime_database">Realtime Database</string>
+    <string name="journey_App">Journey</string>
+    <string name="todo">TODO</string>
+    <string name="todo2">TODO</string>
+    <string name="todo3">TODO</string>
 </resources>
