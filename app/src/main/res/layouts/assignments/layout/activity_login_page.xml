@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JourneyApp.LoginPage">
+    tools:context=".JourneyApp.Login.LoginPage">
     <ImageView
         android:id="@+id/graphic_Icon"
         android:layout_width="433dp"

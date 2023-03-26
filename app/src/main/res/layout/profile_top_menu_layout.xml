@@ -9,14 +9,15 @@
 
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/settingsTab"
+        style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="?attr/materialIconButtonStyle"
+        android:onClick="openSettingsFragment"
         app:icon="@drawable/hamburger_menu_icon_foreground"
-        app:iconSize="32dp"
 
 
-        />
+        app:iconSize="32dp" />
 
 
 </LinearLayout>

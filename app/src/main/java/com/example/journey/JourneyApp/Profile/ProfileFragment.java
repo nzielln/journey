@@ -11,8 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.journey.R;
+import com.example.journey.SettingsFragment;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.google.android.material.tabs.TabLayout;
 
@@ -23,6 +25,7 @@ import com.google.android.material.tabs.TabLayout;
  */
 public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelectedListener {
 
+    Button settingsTab;
     FragmentManager fragmentManager;
     TabLayout tabLayout;
     FragmentProfileBinding binding;
@@ -42,6 +45,7 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -51,7 +55,21 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         fragmentManager = getChildFragmentManager();
         showFragment(new ProfileToDoFragment());
+
+        //showFragment(new SettingsFragment());
         return binding.getRoot();
+    }
+
+    /**
+     * The openSettingsFragment() method opens
+     * the settings fragment when the
+     * settings tab button is pressed.
+     */
+    public void openSettingsFragment() {
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        SettingsFragment settingsFragment = new SettingsFragment();
+
+        transaction.replace(R.id.settingsTab, settingsFragment).commit();
     }
 
     @Override
@@ -79,6 +97,12 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
             case 2:
                 showFragment(new ProfileDocumentsFragment());
                 break;
+
+                /*case 3:
+                showFragment(new SettingsFragment());
+                break;
+
+                 */
         }
     }
 

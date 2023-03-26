@@ -76,4 +76,7 @@
     <string name="todo_sample_time">September 21, 2022</string>
     <string name="doc_sample_time">09/21/23</string>
     <string name="completed">Completed</string>
+    <string name="about">About</string>
+    <string name="realtime_database">Realtime Database</string>
+    <string name="back">Back</string>
 </resources>

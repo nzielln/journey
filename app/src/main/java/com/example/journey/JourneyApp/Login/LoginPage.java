@@ -1,4 +1,4 @@
-package com.example.journey.JourneyApp;
+package com.example.journey.JourneyApp.Login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
