@@ -69,6 +69,13 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
+    <style name="all_caps">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="fontFamily">@font/inter</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="all_caps_semi">
         <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="fontFamily">@font/inter_semibold</item>
@@ -80,6 +87,12 @@
         <item name="android:fontFamily">@font/inter_semibold</item>
         <item name="fontFamily">@font/inter_semibold</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="tab_semi_small">
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="tab_normal">
