@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.flexbox.FlexboxLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    app:alignItems="center"
-    app:justifyContent="space_between"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/rounded_15_white_border_todo"
-
+    android:layout_marginVertical="4dp"
     >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/todo_description"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/todo_icons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/todo_item_title"
@@ -22,6 +24,8 @@
             android:layout_height="wrap_content"
             android:text="@string/todo_sample_title"
             android:theme="@style/tab_semi"
+            android:maxLines="2"
+
             />
 
         <TextView
@@ -29,38 +33,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/todo_sample_time"
-            android:theme="@style/all_caps_medium"
             android:textColor="@color/light_blue"
-            />
+            android:theme="@style/all_caps_medium" />
 
 
     </LinearLayout>
 
 
     <LinearLayout
+        android:id="@+id/todo_icons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/todo_description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/todo_description"
+        app:layout_constraintTop_toTopOf="@+id/todo_description"
         >
 
         <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/todo_checkbox"
+            style="@style/checkbox_style"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:maxWidth="0dp"
-            android:minWidth="0dp"
-            style="@style/checkbox_style"
-            />
+            android:minWidth="0dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/more_button"
+            style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ellipsis_vert"
-            style="?attr/materialIconButtonStyle"
             app:iconTint="@color/light_blue"
 
             />
 
     </LinearLayout>
-</com.google.android.flexbox.FlexboxLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

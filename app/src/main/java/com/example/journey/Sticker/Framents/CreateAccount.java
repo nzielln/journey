@@ -40,7 +40,6 @@ public class CreateAccount extends Fragment {
     super(R.layout.fragment_create_account);
   }
 
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".JourneyApp.Profile.ProfileTimelineFragment">
+
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/add_todo_item_modal"
+            />
+
+</FrameLayout>
+
+<!--<androidx.recyclerview.widget.RecyclerView-->
+<!--android:id="@+id/timeline_recycler_view"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+
+<!--    />-->
