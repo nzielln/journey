@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/add_a_new_task"
+        android:text="@string/add_a_new_application"
         android:theme="@style/subheading_medium"
         android:textColor="@color/dark_blue"
         android:gravity="center"
@@ -27,15 +27,59 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/task"
+            android:text="@string/type"
             android:theme="@style/all_caps"
             android:textColor="@color/light_blue"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"
+            android:layout_marginBottom="8dp"
+
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/task_input"
+            android:id="@+id/type_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@null"
+            android:backgroundTint="@color/light_blue"
+            android:foregroundTint="@color/light_blue"
+            app:boxStrokeColor="@color/light_blue"
+            android:textColorHint="@color/light_blue"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            android:layout_marginBottom="12dp"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/type_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/light_blue"
+                android:padding="10dp"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sponsor"
+            android:theme="@style/all_caps"
+            android:textColor="@color/light_blue"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
+            android:layout_marginBottom="2dp"
+
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sponsor_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@null"
@@ -50,10 +94,53 @@
             app:boxCornerRadiusTopEnd="10dp"
             app:boxCornerRadiusTopStart="10dp"
 
+            android:layout_marginBottom="12dp"
+
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/task_edit_text"
+                android:id="@+id/sponsor_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/light_blue"
+                android:padding="10dp"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_time"
+            android:theme="@style/all_caps"
+            android:textColor="@color/light_blue"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
+            android:layout_marginBottom="2dp"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/date_time_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@null"
+            android:backgroundTint="@color/light_blue"
+            android:foregroundTint="@color/light_blue"
+            app:boxStrokeColor="@color/light_blue"
+            android:textColorHint="@color/light_blue"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+            android:layout_marginBottom="12dp"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/date_time_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/light_blue"
@@ -93,7 +180,7 @@
                 android:theme="@style/body_medium"
                 android:textColor="@color/cream"
                 android:background="@drawable/pill_blue"
-                android:text="@string/add_task"
+                android:text="@string/save"
                 />
 
         </LinearLayout>

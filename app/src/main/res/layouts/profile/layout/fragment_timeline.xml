@@ -9,7 +9,7 @@
         <include
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            layout="@layout/add_todo_item_modal"
+            layout="@layout/update_application_modal"
             />
 
 </FrameLayout>
