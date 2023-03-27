@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -23,7 +24,7 @@ import com.google.android.material.tabs.TabLayout;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelectedListener {
+public class ProfileFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
     Button settingsTab;
     FragmentManager fragmentManager;
@@ -45,6 +46,7 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //settingsTab = findByView(R.id.settingsTab);
 
     }
 
@@ -53,8 +55,17 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+        View layoutInflater = inflater.inflate(R.layout.fragment_profile, container, false);
         fragmentManager = getChildFragmentManager();
         showFragment(new ProfileToDoFragment());
+
+        settingsTab = layoutInflater.findViewById(R.id.settingsTabNav);
+        settingsTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSettingsFragment();
+            }
+        });
 
         //showFragment(new SettingsFragment());
         return binding.getRoot();
@@ -69,7 +80,7 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         SettingsFragment settingsFragment = new SettingsFragment();
 
-        transaction.replace(R.id.settingsTab, settingsFragment).commit();
+        transaction.replace(R.id.settingsLayout, settingsFragment).commit();
     }
 
     @Override
