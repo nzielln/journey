@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dropdown_input_item"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:theme="@style/subheading_medium"
+        android:textColor="@color/dark_blue"
+        android:gravity="center_vertical"
+        android:layout_gravity="end"
+        android:paddingStart="8dp"
+        android:paddingEnd="0dp"
+
+    />
+

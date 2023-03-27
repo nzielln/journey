@@ -17,6 +17,7 @@ import android.widget.Button;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoCompletedRecyclerViewAdapter;
 import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoRecyclerViewAdapter;
+import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Models.ProfileTimelineItemModel;
 import com.example.journey.JourneyApp.Profile.Models.ProfileTodoItemModel;
 import com.example.journey.R;
@@ -94,9 +95,16 @@ public class ProfileToDoFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewTask();
+//                addNewTask();
+
+                openAddTaskModal();
             }
         });
+    }
+
+    public void openAddTaskModal() {
+        AddTaskModal addTaskModal = new AddTaskModal();
+        addTaskModal.show(getChildFragmentManager(), AddTaskModal.TAG);
     }
 
     public void addNewTask() {

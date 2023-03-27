@@ -5,18 +5,52 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_gravity="center"
-    android:layout_marginVertical="24dp">
+    android:paddingVertical="24dp"
+    android:paddingHorizontal="16dp"
+    android:gravity="center"
+    >
 
-    <TextView
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/application_name"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/update_application"
+        android:hint="@null"
+        android:backgroundTint="@color/dark_blue"
+        android:foregroundTint="@color/dark_blue"
+        android:textColorHint="@color/dark_blue"
         android:theme="@style/subheading_medium"
-        android:textColor="@color/dark_blue"
         android:gravity="center"
-        android:layout_marginVertical="16dp"
-        />
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+
+        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeColor="@android:color/transparent"
+        app:boxStrokeWidth="0dp"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:endIconDrawable="@drawable/down_chevron_arrow"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        >
+
+        <AutoCompleteTextView
+            android:id="@+id/application_name_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"
+            android:padding="10dp"
+            android:theme="@style/subheading_medium"
+            android:foregroundTint="@color/dark_blue"
+            android:elevation="@null"
+            android:hint="@null"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:shadowColor="@android:color/transparent"
+            app:boxBackgroundColor="@android:color/transparent"
+
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +87,6 @@
             app:boxCornerRadiusTopStart="10dp"
             android:layout_marginBottom="12dp"
             android:clickable="false"
-
             >
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +96,6 @@
                 android:foregroundTint="@color/light_blue"
                 android:padding="10dp"
                 android:clickable="false"
-
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -71,46 +103,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:gravity="start"
+            android:orientation="horizontal"
 
             >
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-
+                android:layout_weight="1"
+                android:orientation="vertical"
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/date_picker"
-                    android:theme="@style/all_caps"
-                    android:textColor="@color/light_blue"
+                    android:layout_marginBottom="2dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="0dp"
-                    android:layout_marginBottom="2dp"
-                    />
+                    android:text="@string/date_picker"
+                    android:textColor="@color/light_blue"
+                    android:theme="@style/all_caps" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/date_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@null"
-                    android:backgroundTint="@color/light_blue"
-                    android:foregroundTint="@color/light_blue"
-                    app:boxStrokeColor="@color/light_blue"
-                    android:textColorHint="@color/light_blue"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="1dp"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
                     app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/light_blue"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
+                    android:backgroundTint="@color/light_blue"
+                    android:foregroundTint="@color/light_blue"
+                    android:hint="@null"
+                    android:textColorHint="@color/light_blue"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -119,6 +154,10 @@
                         android:layout_height="wrap_content"
                         android:foregroundTint="@color/light_blue"
                         android:padding="10dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -127,37 +166,40 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_weight="0.5"
-
+                android:orientation="vertical"
                 >
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/time_picker"
-                    android:theme="@style/all_caps"
-                    android:textColor="@color/light_blue"
+                    android:layout_marginBottom="2dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="0dp"
-                    android:layout_marginBottom="2dp"
-                    />
+                    android:text="@string/time_picker"
+                    android:textColor="@color/light_blue"
+                    android:theme="@style/all_caps" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/time_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@null"
-                    android:backgroundTint="@color/light_blue"
-                    android:foregroundTint="@color/light_blue"
-                    app:boxStrokeColor="@color/light_blue"
-                    android:textColorHint="@color/light_blue"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="1dp"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
                     app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/light_blue"
+                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidthFocused="1dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
+                    android:backgroundTint="@color/light_blue"
+                    android:foregroundTint="@color/light_blue"
+                    android:hint="@null"
+                    android:textColorHint="@color/light_blue"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -166,6 +208,10 @@
                         android:layout_height="wrap_content"
                         android:foregroundTint="@color/light_blue"
                         android:padding="10dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -184,26 +230,44 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:theme="@style/body_medium"
                 android:textColor="@color/dark_blue"
-                android:background="@drawable/pill_white_border"
                 android:text="@string/cancel"
                 android:backgroundTint="@android:color/transparent"
                 app:strokeColor="@color/dark_blue"
-                app:strokeWidth="2dp"
+                app:strokeWidth="1dp"
                 android:layout_marginHorizontal="8dp"
+                app:backgroundTint="@color/dark_blue"
+                app:cornerRadius="10dp"
+                android:paddingHorizontal="16dp"
                 />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/update_application_button"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:theme="@style/body_medium"
                 android:textColor="@color/cream"
-                android:background="@drawable/pill_blue"
                 android:text="@string/update_application"
+                app:backgroundTint="@color/dark_blue"
+                app:cornerRadius="10dp"
+                android:paddingHorizontal="16dp"
                 />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+
+<!--
+
+    <TextView
+        android:id="@+id/application_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/update_application"
+        android:theme="@style/subheading_medium"
+        android:textColor="@color/dark_blue"
+        android:gravity="center"
+        android:layout_marginVertical="16dp"
+        />
+-->

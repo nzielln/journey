@@ -9,4 +9,5 @@
     <item name="message" type="id" />
     <item name="logout" type="id" />
     <item name="todo_item_title" type="id" />
+    <item name="add_application" type="id" />
 </resources>
