@@ -93,4 +93,6 @@
     <string name="date_time"><![CDATA[Date & Time]]></string>
     <string name="update_application">Update application</string>
     <string name="status">Status</string>
+    <string name="date_picker">Date</string>
+    <string name="time_picker">Time</string>
 </resources>
