@@ -8,8 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.journey.JourneyApp.Main.Helper;
-import com.example.journey.JourneyApp.Profile.Models.ProfileTimelineItemModel;
-import com.example.journey.JourneyApp.Profile.Models.ProfileTodoItemModel;
+import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.JourneyApp.Profile.ViewHolders.ProdileTodoViewHolder;
 import com.example.journey.R;
 
@@ -18,9 +17,9 @@ import java.util.ArrayList;
 public class ProfileTodoRecyclerViewAdapter extends RecyclerView.Adapter<ProdileTodoViewHolder> {
     public static final int TODO_ITEM = 0;
     public static final int TODO_ITEM_COMPLETED = 1;
-    ArrayList<ProfileTodoItemModel> items;
+    ArrayList<TaskItemModel> items;
 
-    public ProfileTodoRecyclerViewAdapter(ArrayList<ProfileTodoItemModel> items) {
+    public ProfileTodoRecyclerViewAdapter(ArrayList<TaskItemModel> items) {
         this.items = items;
     }
 
@@ -33,7 +32,7 @@ public class ProfileTodoRecyclerViewAdapter extends RecyclerView.Adapter<Prodile
 
     @Override
     public void onBindViewHolder(@NonNull ProdileTodoViewHolder holder, int position) {
-        ProfileTodoItemModel itemModel = items.get(position);
+        TaskItemModel itemModel = items.get(position);
         holder.todoTitle.setText(itemModel.getTitle());
         holder.todoTimeAdded.setText(Helper.todoISOToDate(itemModel.getDateAdded()));
         holder.checkBox.setChecked(itemModel.getCompleted());
@@ -54,7 +53,7 @@ public class ProfileTodoRecyclerViewAdapter extends RecyclerView.Adapter<Prodile
         return TODO_ITEM;
     }
 
-    public ArrayList<ProfileTodoItemModel> getItems() {
+    public ArrayList<TaskItemModel> getItems() {
         return items;
     }
 }

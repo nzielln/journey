@@ -1,16 +1,15 @@
 package com.example.journey.JourneyApp.Profile.Models;
 
-import java.util.Date;
 import java.util.UUID;
 
-public class ProfileTodoItemModel {
+public class TaskItemModel {
     UUID id;
     String title;
     String dateAdded; // ISO String
     Boolean isCompleted;
 
-    public ProfileTodoItemModel() {}
-    public ProfileTodoItemModel(String title, String dateAdded, Boolean isCompleted) {
+    public TaskItemModel() {}
+    public TaskItemModel(String title, String dateAdded, Boolean isCompleted) {
         this.title = title;
         this.dateAdded = dateAdded;
         this.isCompleted = isCompleted;

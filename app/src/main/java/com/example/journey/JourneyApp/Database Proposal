@@ -1,0 +1,71 @@
+Just some ideas on how we can structure the database
+// Command to get SHA Key: ./gradlew signingReport
+
+Tables
+1. users
+    Fields
+    - userID: GUID
+    - email: String
+    - username: String?
+    - firstName: String
+    - lastName: String
+    - age: Int
+    - applicationsIDs: GUID[]
+    - chatIDs: String[]
+    - followers: Int
+    - following: Int
+    - settingsID: GUID
+    - profileImage: String
+
+2. applications -> retrieve using applicationID
+    -> returns ApplicationModel
+    Fields
+    - applicationID: GUID
+    - applicationName: String
+    - status: ApplicationStatus -> enum
+    - sponsor: String
+    - dateCreated: String -> ISO String
+    - dateComleted: String -> ISO String
+    - isCompleted: Bool
+
+3. tasks -> retrieved using userID, returns a list of ProfileTodoItemModel (see file)
+
+4a. postIDs -> maps user to list of postIDS they've created
+    Field
+    - userID: GUID
+    - postIDs: GUID[]
+4b. likedPosts -> list of GUIDs of posts user has like
+4c. sharedPosts -> list of GUIDs of posts user has shared
+
+5. postID_to_post -> returns post for a particular ID
+    Fields
+    - postID: GUID
+    - content: PostContent -> custom object
+        - postTitle: String?
+        - authorID: GUID
+        - timePosted: String -> ISO String
+        - content: String
+        - comments: Comment[] -> custom object
+            - authorID: GUID
+            - timePosted: String -> ISO String
+            - comment: String
+
+5. userID_to_user -> return user for a particular GUID (? not sure if this is necessary of we have 1)
+
+6. chatID_to_chat -> returns ChatModel object for a particular GUID
+    Fields
+    - charID: GUID
+    - participants: GUID[]
+    - unreadMessages: Int
+    - lastActive: String -> ISO String
+
+7. chat_to_messages -> returns MessageModel[] for a particular chat ID, ordered by timeSent
+    Fields
+    - sender: GUID
+    - recipient: GUID
+    - messages: String
+    - timeSent: String -> ISO String
+
+8. user_to_documents -> return ProfileDocumentModel[] for a particular userID
+9. insights
+10. user_to_settings -> returns JourneySettings object for a particular userID

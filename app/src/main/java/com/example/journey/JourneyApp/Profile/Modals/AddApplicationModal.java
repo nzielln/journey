@@ -13,15 +13,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.UUID;
 
 public class AddApplicationModal extends BottomSheetDialogFragment {
     Button cancelButton;
@@ -31,6 +35,7 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
     TextInputLayout sponsorField;
     AutoCompleteTextView typeDropDown;
     public static String TAG =  AddApplicationModal.class.toGenericString();
+    DatabaseReference databaseReference;
 
     String[] types = {"Banana", "Apple", "Strawberry", "Kiwi"};
 
@@ -39,6 +44,7 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.add_application_modal, container, false);
+        setUpDatabase();
 
         cancelButton = view.findViewById(R.id.cancel_button);
         addApplicationButton = view.findViewById(R.id.add_application);
@@ -62,6 +68,7 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
         addApplicationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addSampleToDatabase();
                 Toast.makeText(getActivity(),
                                 "Add task button clicked", Toast.LENGTH_SHORT)
                         .show();
@@ -90,6 +97,14 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
         });
 
         return view;
+    }
+
+    public void setUpDatabase() {
+        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+    }
+
+    public void addSampleToDatabase() {
+        databaseReference.child(Database.APPLICATION).child(UUID.randomUUID().toString()).setValue("Something");
     }
 
     public void openDatePicker() {

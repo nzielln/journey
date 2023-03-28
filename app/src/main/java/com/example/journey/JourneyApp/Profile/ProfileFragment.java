@@ -70,8 +70,8 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
         addNewApplication.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                openAddApplicationModal();
-                openUpdateApplicationModal();
+                openAddApplicationModal();
+//                openUpdateApplicationModal();
             }
         });
     }
