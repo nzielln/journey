@@ -2,15 +2,15 @@ package com.example.journey.JourneyApp.Profile.Models;
 
 import java.util.UUID;
 
-public class ProfileTimelineItemModel {
+public class TimelineItemObject {
     String title;
     UUID applicationId;
     UUID id;
     String dateAdded; // ISO String
     Integer rank;
 
-    public ProfileTimelineItemModel(){}
-    public ProfileTimelineItemModel(String title, UUID applicationId, UUID id, String dateAdded, Integer rank) {
+    public TimelineItemObject(){}
+    public TimelineItemObject(String title, UUID applicationId, UUID id, String dateAdded, Integer rank) {
         this.title = title;
         this.applicationId = applicationId;
         this.id = id;
