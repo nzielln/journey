@@ -25,9 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="17dp"
-            android:textStyle="bold"
-            android:text="Settings"/>
+            android:text="@string/settings"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Edit Profile"
+                    android:text="@string/edit_profile"
                     android:layout_toEndOf="@+id/profileIcon"/>
 
                 <ImageView
@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Reminders"
+                    android:text="@string/reminders"
                     android:layout_toEndOf="@+id/remindersIcon"/>
 
                 <ImageView
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Change Password"
+                    android:text="@string/change_password"
                     android:layout_toEndOf="@+id/passwordIcon"/>
 
                 <ImageView
@@ -155,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Invite Friends"
+                    android:text="@string/invite_friends"
                     android:layout_toEndOf="@+id/friendsIcon"/>
 
                 <ImageView
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/friendsIcon"
-                    android:layout_marginLeft="205dp"
+                    android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
 
@@ -185,7 +185,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Location"
+                    android:text="@string/location"
                     android:layout_toEndOf="@+id/locationIcon"/>
 
                 <ImageView
@@ -193,7 +193,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/locationIcon"
-                    android:layout_marginLeft="205dp"
+                    android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
 
@@ -215,7 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Notification"
+                    android:text="@string/notification"
                     android:layout_toEndOf="@+id/notificationIcon"/>
 
                 <ImageView
@@ -223,7 +223,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/notificationIcon"
-                    android:layout_marginLeft="205dp"
+                    android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
 
@@ -245,7 +245,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Help"
+                    android:text="@string/help"
                     android:layout_toEndOf="@+id/helpIcon"/>
 
                 <ImageView
@@ -275,7 +275,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="About"
+                    android:text="@string/about_JourneyApp"
                     android:layout_toEndOf="@+id/aboutIcon"/>
 
                 <ImageView
@@ -283,7 +283,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/aboutIcon"
-                    android:layout_marginLeft="205dp"
+                    android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
 
@@ -305,7 +305,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Delete Account"
+                    android:text="@string/delete_account"
                     android:layout_toEndOf="@+id/deleteAccountIcon"/>
 
                 <ImageView
@@ -313,7 +313,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/deleteAccountIcon"
-                    android:layout_marginLeft="205dp"
+                    android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
 
@@ -335,7 +335,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="Signout"
+                    android:text="@string/signout"
                     android:layout_toEndOf="@+id/signoutIcon"/>
 
                 <ImageView
@@ -343,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/signoutIcon"
-                    android:layout_marginLeft="205dp"
+                    android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
 
