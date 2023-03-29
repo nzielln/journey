@@ -116,4 +116,8 @@
     <string name="continue_with_google">Continue with Google</string>
     <string name="log_in">Log In</string>
     <string name="create_an_account_to_get_started">Create an account to get started.</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="log_in_here">Log in here.</string>
+    <string name="don_t_have_an_account_already">Don\'t have an account already?</string>
+    <string name="sign_up_here">Sign up here.</string>
 </resources>
