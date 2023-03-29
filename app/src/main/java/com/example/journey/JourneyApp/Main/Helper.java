@@ -2,14 +2,16 @@ package com.example.journey.JourneyApp.Main;
 
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class Helper {
-
-
+    DateFormat ISO_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+;
 
     public static String todoISOToDate(String isoString) {
         DateTimeFormatter isoToDateFormat = DateTimeFormatter.ISO_DATE_TIME;

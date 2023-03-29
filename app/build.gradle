@@ -64,8 +64,6 @@ dependencies {
     //Support notifications
     //implementation("androidx.core:core-ktx:$core_version")
 
-
-
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
@@ -76,9 +74,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
     implementation 'com.google.firebase:firebase-auth-ktx'
-
+    implementation 'com.google.firebase:firebase-storage'
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
-
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
 }

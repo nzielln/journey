@@ -3,7 +3,8 @@ package com.example.journey.JourneyApp.Profile.Models;
 import java.util.UUID;
 
 public class DocumentItemModel {
-    UUID id;
+    UUID ID;
+    UUID userID;
     String title;
     String dateAdded; // ISO String
 
@@ -21,7 +22,7 @@ public class DocumentItemModel {
         return dateAdded;
     }
 
-    public UUID getId() {
-        return id;
+    public UUID getID() {
+        return ID;
     }
 }

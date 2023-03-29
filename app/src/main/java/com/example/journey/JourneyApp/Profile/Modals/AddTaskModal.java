@@ -10,14 +10,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class AddTaskModal extends BottomSheetDialogFragment {
     Button cancelButton;
     Button addTaskButton;
+    TaskItemModel taskItemModel;
     public static String TAG =  AddTaskModal.class.toGenericString();
-
 
     @Nullable
     @Override
@@ -48,5 +49,9 @@ public class AddTaskModal extends BottomSheetDialogFragment {
         });
 
         return view;
+    }
+
+    public void addTask() {
+
     }
 }
