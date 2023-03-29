@@ -1,4 +1,4 @@
-package com.example.journey;
+package com.example.journey.Sticker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.ConditionVariable;
 import android.util.Log;
 
+import com.example.journey.R;
 import com.example.journey.Sticker.Constants;
 import com.example.journey.Sticker.Message;
 import com.example.journey.Sticker.MessageHistoryAdapter;

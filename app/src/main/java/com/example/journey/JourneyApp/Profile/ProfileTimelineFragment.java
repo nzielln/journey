@@ -24,8 +24,6 @@ import java.util.Calendar;
 
 public class ProfileTimelineFragment extends Fragment {
     FragmentTimelineBinding binding;
-    EditText datePicker;
-    EditText timePicker;
     public ProfileTimelineFragment() {
         super(R.layout.fragment_timeline);
     }
@@ -52,47 +50,6 @@ public class ProfileTimelineFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        datePicker = binding.dateInput.getEditText();
-        timePicker = binding.timeInput.getEditText();
-
-        datePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDatePicker();
-            }
-        });
-
-        timePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTimePicker();
-            }
-        });
-
     }
 
-    public void openDatePicker() {
-        Calendar calendar = Calendar.getInstance();
-
-        MaterialDatePicker datePicker = MaterialDatePicker.Builder
-                .datePicker()
-                .setTitleText("Select Date")
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build();
-        datePicker.show(this.getChildFragmentManager(), datePicker.toString());
-
-
-    }
-
-    public void openTimePicker() {
-        LocalDateTime now = LocalDateTime.now();
-
-        MaterialTimePicker timePicker = new MaterialTimePicker.Builder()
-                .setTimeFormat(TimeFormat.CLOCK_12H)
-                .setHour(now.getHour())
-                .setMinute(now.getMinute())
-                .setTitleText("Select Time")
-                .build();
-        timePicker.show(this.getChildFragmentManager(), timePicker.toString());
-    }
 }

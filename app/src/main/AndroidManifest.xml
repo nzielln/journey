@@ -52,7 +52,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".StickerHistory"
+            android:name=".Sticker.StickerHistory"
             android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data

@@ -1,6 +1,6 @@
 package com.example.journey.JourneyApp.Main;
 
-import com.example.journey.JourneyApp.Profile.Models.ProfileTodoItemModel;
+import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,10 +19,10 @@ public class Helper {
         return dateFormat.format(date);
     }
 
-    public static ArrayList<ProfileTodoItemModel> getCompletedTasks(ArrayList<ProfileTodoItemModel> items) {
-        return items.stream().filter(ProfileTodoItemModel::getCompleted).collect(Collectors.toCollection(ArrayList::new));
+    public static ArrayList<TaskItemModel> getCompletedTasks(ArrayList<TaskItemModel> items) {
+        return items.stream().filter(TaskItemModel::getCompleted).collect(Collectors.toCollection(ArrayList::new));
     }
-    public static ArrayList<ProfileTodoItemModel> getToBeCompletedTasks(ArrayList<ProfileTodoItemModel> items) {
+    public static ArrayList<TaskItemModel> getToBeCompletedTasks(ArrayList<TaskItemModel> items) {
         return items.stream().filter(task -> !task.getCompleted()).collect(Collectors.toCollection(ArrayList::new));
     }
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,17 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoCompletedRecyclerViewAdapter;
 import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoRecyclerViewAdapter;
-import com.example.journey.JourneyApp.Profile.Models.ProfileTimelineItemModel;
-import com.example.journey.JourneyApp.Profile.Models.ProfileTodoItemModel;
+import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
+import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.R;
-import com.example.journey.databinding.FragmentCreateAccountBinding;
 import com.example.journey.databinding.FragmentProfileTodoBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,9 +40,11 @@ public class ProfileToDoFragment extends Fragment {
 
     Button addButton;
 
-    ArrayList<ProfileTodoItemModel> sample = new ArrayList<>();
-    ArrayList<ProfileTodoItemModel> completed;
-    ArrayList<ProfileTodoItemModel> tasks;
+    ArrayList<TaskItemModel> sample = new ArrayList<>();
+    ArrayList<TaskItemModel> completed;
+    ArrayList<TaskItemModel> tasks;
+
+    DatabaseReference databaseReference;
 
     public ProfileToDoFragment() {
         super(R.layout.fragment_profile_todo);
@@ -57,14 +59,19 @@ public class ProfileToDoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addSamples();
+        setUpDatabase();
         Bundle bundle = new Bundle();
 
     }
 
+    public void setUpDatabase() {
+        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+    }
+
     public void addSamples() {
-        ProfileTodoItemModel sample1 = new ProfileTodoItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
-        ProfileTodoItemModel sample2 = new ProfileTodoItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
-        ProfileTodoItemModel sample1Completed = new ProfileTodoItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , true);
+        TaskItemModel sample1 = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
+        TaskItemModel sample2 = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
+        TaskItemModel sample1Completed = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , true);
 
         sample.add(sample1);
         sample.add(sample2);
@@ -72,6 +79,7 @@ public class ProfileToDoFragment extends Fragment {
 
         tasks = Helper.getToBeCompletedTasks(sample);
         completed = Helper.getCompletedTasks(sample);
+
     }
 
     @Override
@@ -94,15 +102,22 @@ public class ProfileToDoFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewTask();
+//                addNewTask();
+
+                openAddTaskModal();
             }
         });
+    }
+
+    public void openAddTaskModal() {
+        AddTaskModal addTaskModal = new AddTaskModal();
+        addTaskModal.show(getChildFragmentManager(), AddTaskModal.TAG);
     }
 
     public void addNewTask() {
         int pos = tasks.size();
 
-        ProfileTodoItemModel sample1 = new ProfileTodoItemModel("Some new task name here","2022-09-25T15:18:45+00:00" , false);
+        TaskItemModel sample1 = new TaskItemModel("Some new task name here","2022-09-25T15:18:45+00:00" , false);
         tasks.add(pos, sample1);
         profileTodoRecyclerViewAdapter.notifyItemInserted(pos);
         todoRecyclerView.scrollToPosition(pos);
@@ -113,12 +128,10 @@ public class ProfileToDoFragment extends Fragment {
         profileTodoCompletedRecyclerViewAdapter = new ProfileTodoCompletedRecyclerViewAdapter(completed);
 
         todoRecyclerView.setHasFixedSize(true);
-        todoRecyclerView.addItemDecoration(new DividerItemDecoration(todoRecyclerView.getContext(), 0));
         todoRecyclerView.setAdapter(profileTodoRecyclerViewAdapter);
         todoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         todoCompletedRecyclerView.setHasFixedSize(true);
-        todoCompletedRecyclerView.addItemDecoration(new DividerItemDecoration(todoCompletedRecyclerView.getContext(), 0));
         todoCompletedRecyclerView.setAdapter(profileTodoCompletedRecyclerViewAdapter);
         todoCompletedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

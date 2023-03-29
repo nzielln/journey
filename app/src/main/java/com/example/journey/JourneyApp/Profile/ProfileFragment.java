@@ -13,6 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
+import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
+import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.R;
 import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.databinding.FragmentProfileBinding;
@@ -28,6 +31,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     Button settingsTab;
     FragmentManager fragmentManager;
     TabLayout tabLayout;
+    Button addNewApplication;
     FragmentProfileBinding binding;
     View layoutInflater;
 
@@ -89,13 +93,33 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         super.onViewCreated(view, savedInstanceState);
 
         tabLayout = binding.profileTab;
+        addNewApplication = binding.addNewApplicationButton;
         tabLayout.addOnTabSelectedListener(this);
+
+        addNewApplication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddApplicationModal();
+//                openUpdateApplicationModal();
+            }
+        });
     }
 
     public void showFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.profile_fragment_container, fragment).commit();
     }
+
+    public void openAddApplicationModal() {
+        AddApplicationModal addApplicationModal = new AddApplicationModal();
+        addApplicationModal.show(getChildFragmentManager(), AddApplicationModal.TAG);
+    }
+
+    public void openUpdateApplicationModal() {
+        UpdateApplicationModal updateApplicationModal = new UpdateApplicationModal();
+        updateApplicationModal.show(getChildFragmentManager(), UpdateApplicationModal.TAG);
+    }
+
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
