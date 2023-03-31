@@ -2,13 +2,29 @@ package com.example.journey.JourneyApp.Profile;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
+import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Main.Helper;
+import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoCompletedRecyclerViewAdapter;
+import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoRecyclerViewAdapter;
+import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
+import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.R;
+import com.example.journey.databinding.FragmentProfileTodoBinding;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,51 +32,115 @@ import com.example.journey.R;
  * create an instance of this fragment.
  */
 public class ProfileToDoFragment extends Fragment {
+    FragmentProfileTodoBinding binding;
+    RecyclerView todoRecyclerView;
+    RecyclerView todoCompletedRecyclerView;
+    ProfileTodoRecyclerViewAdapter profileTodoRecyclerViewAdapter;
+    ProfileTodoCompletedRecyclerViewAdapter profileTodoCompletedRecyclerViewAdapter;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    Button addButton;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    ArrayList<TaskItemModel> sample = new ArrayList<>();
+    ArrayList<TaskItemModel> completed;
+    ArrayList<TaskItemModel> tasks;
+
+    DatabaseReference databaseReference;
 
     public ProfileToDoFragment() {
-        // Required empty public constructor
+        super(R.layout.fragment_profile_todo);
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Profile_todo.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ProfileToDoFragment newInstance(String param1, String param2) {
         ProfileToDoFragment fragment = new ProfileToDoFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        addSamples();
+        setUpDatabase();
+        Bundle bundle = new Bundle();
+
+    }
+
+    public void setUpDatabase() {
+        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+    }
+
+    public void addSamples() {
+        TaskItemModel sample1 = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
+        TaskItemModel sample2 = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
+        TaskItemModel sample1Completed = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , true);
+
+        sample.add(sample1);
+        sample.add(sample2);
+        sample.add(sample1Completed);
+
+        tasks = Helper.getToBeCompletedTasks(sample);
+        completed = Helper.getCompletedTasks(sample);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_todo, container, false);
+        binding = FragmentProfileTodoBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        addButton = binding.addButton;
+        todoRecyclerView = binding.todoRecyclerView;
+        todoCompletedRecyclerView = binding.todoCompletedRecyclerView;
+
+        createRecyclerView();
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                addNewTask();
+
+                openAddTaskModal();
+            }
+        });
+    }
+
+    public void openAddTaskModal() {
+        AddTaskModal addTaskModal = new AddTaskModal();
+        addTaskModal.show(getChildFragmentManager(), AddTaskModal.TAG);
+    }
+
+    public void addNewTask() {
+        int pos = tasks.size();
+
+        TaskItemModel sample1 = new TaskItemModel("Some new task name here","2022-09-25T15:18:45+00:00" , false);
+        tasks.add(pos, sample1);
+        profileTodoRecyclerViewAdapter.notifyItemInserted(pos);
+        todoRecyclerView.scrollToPosition(pos);
+    }
+
+    public void createRecyclerView() {
+        profileTodoRecyclerViewAdapter = new ProfileTodoRecyclerViewAdapter(tasks);
+        profileTodoCompletedRecyclerViewAdapter = new ProfileTodoCompletedRecyclerViewAdapter(completed);
+
+        todoRecyclerView.setHasFixedSize(true);
+        todoRecyclerView.setAdapter(profileTodoRecyclerViewAdapter);
+        todoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        todoCompletedRecyclerView.setHasFixedSize(true);
+        todoCompletedRecyclerView.setAdapter(profileTodoCompletedRecyclerViewAdapter);
+        todoCompletedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+    }
+
+//    public ArrayList<ProfileTodoItemModel> getCompletedTasks() {
+//        return sample.stream().filter(ProfileTodoItemModel::getCompleted).collect(Collectors.toCollection(ArrayList::new));
+//    }
+//    public ArrayList<ProfileTodoItemModel> getToBeCompletedTasks() {
+//        return sample.stream().filter(task -> !task.getCompleted()).collect(Collectors.toCollection(ArrayList::new));
+//    }
 }

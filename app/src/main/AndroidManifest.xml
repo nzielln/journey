@@ -22,25 +22,25 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
-            android:theme="@style/Theme.Journey.NoActionBar"
             android:name=".JourneyApp.Main.JourneyMain"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.Journey.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:theme="@style/Theme.Journey.NoActionBar"
-            android:name=".JourneyApp.LoginPage"
-            android:exported="false">
+            android:name=".JourneyApp.Login.LoginPage"
+            android:exported="false"
+            android:theme="@style/Theme.Journey.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:theme="@style/Theme.Journey.NoActionBar"
-            android:name=".JourneyApp.LoadingPage"
-            android:exported="false">
+            android:name=".JourneyApp.Loading.LoadingPage"
+            android:exported="true"
+            android:theme="@style/Theme.Journey.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -52,7 +52,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".StickerHistory"
+            android:name=".Sticker.StickerHistory"
             android:configChanges="orientation|screenSize"
             android:exported="false">
             <meta-data

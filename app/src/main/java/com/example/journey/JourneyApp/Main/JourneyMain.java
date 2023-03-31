@@ -26,6 +26,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journey_main);
+        setUpDatabase();
 
         fragmentManager = getSupportFragmentManager();
         openDashboardFragment();
@@ -34,6 +35,9 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
         tabBarNavigation.setOnItemSelectedListener(this);
     }
 
+    public void setUpDatabase() {
+        Database.getDatabase(this);
+    }
 
     public void openProfileFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
