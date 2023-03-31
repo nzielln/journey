@@ -1,17 +1,21 @@
 package com.example.journey.JourneyApp.Profile.Models;
 
+import com.example.journey.JourneyApp.Main.Helper;
+
+import java.text.DateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.UUID;
 
 public class ApplicationModel {
-    UUID applicationID;
+    String applicationID;
     String applicationName;
     ApplicationStatus status;
     String dateCreated;
     String dateComleted;
     Boolean isCompleted;
 
-    public ApplicationModel(UUID applicationID, String applicationName, ApplicationStatus status, String dateCreated, String dateComleted, Boolean isCompleted) {
+    public ApplicationModel(String applicationID, String applicationName, ApplicationStatus status, String dateCreated, String dateComleted, Boolean isCompleted) {
         this.applicationID = applicationID;
         this.applicationName = applicationName;
         this.status = status;
@@ -19,8 +23,14 @@ public class ApplicationModel {
         this.dateComleted = dateComleted;
         this.isCompleted = isCompleted;
     }
+    public ApplicationModel(String applicationID, String applicationName, ApplicationStatus status, String dateCreated) {
+        this.applicationID = applicationID;
+        this.applicationName = applicationName;
+        this.status = status;
+        this.dateCreated = dateCreated;
+    }
 
-    public ApplicationModel(UUID applicationID, String applicationName, String dateCreated) {
+    public ApplicationModel(String applicationID, String applicationName, String dateCreated) {
         this.applicationID = applicationID;
         this.applicationName = applicationName;
         this.dateCreated = dateCreated;
@@ -45,7 +55,7 @@ public class ApplicationModel {
         isCompleted = completed;
     }
 
-    public UUID getApplicationID() {
+    public String getApplicationID() {
         return applicationID;
     }
 
@@ -69,7 +79,9 @@ public class ApplicationModel {
         return isCompleted;
     }
 
-    static ApplicationModel getMock() {
-        return new ApplicationModel(UUID.randomUUID(), "Fake Application", ApplicationStatus.PROCESSING, Date.);
+    public static ApplicationModel getMock() {
+        Date date = new Date();
+        String applicationName = "Fake Application ID-" + UUID.randomUUID().toString();
+        return new ApplicationModel(UUID.randomUUID().toString(), applicationName, ApplicationStatus.PROCESSING, Helper.getLongDateTime());
     }
 }

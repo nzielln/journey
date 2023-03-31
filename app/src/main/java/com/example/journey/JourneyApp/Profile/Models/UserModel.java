@@ -1,40 +1,67 @@
 package com.example.journey.JourneyApp.Profile.Models;
 
+import com.example.journey.JourneyApp.Main.Helper;
+
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserModel {
-    UUID userID;
+    String userID;
     String email;
     String username;
     String firstName;
     String lastName;
     Integer age;
-    ArrayList<UUID> applicationsIDs = new ArrayList<>();
-    ArrayList<UUID> chatIDs = new ArrayList<>();
+    ArrayList<String> applicationsIDs = new ArrayList<>();
+    ArrayList<String> chatIDs = new ArrayList<>();
     Integer followers = 0;
     Integer following = 0;
-    UUID settingsID;
+    String settingsID;
     String profileImage;
 
-    public UserModel(UUID userID, String email) {
+    public UserModel(String userID, String email) {
         this.userID = userID;
         this.email = email;
-        this.settingsID = UUID.randomUUID();
+        this.settingsID = UUID.randomUUID().toString();
     }
 
     public UserModel(
-            UUID userID,
+            String userID,
             String email,
             String username,
             String firstName,
             String lastName,
             Integer age,
-            ArrayList<UUID> applicationsIDs,
-            ArrayList<UUID> chatIDs,
             Integer followers,
             Integer following,
-            UUID settingsID,
+            String profileImage
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.followers = followers;
+        this.following = following;
+        this.profileImage = profileImage;
+        this.settingsID = UUID.randomUUID().toString();
+
+    }
+
+    public UserModel(
+            String userID,
+            String email,
+            String username,
+            String firstName,
+            String lastName,
+            Integer age,
+            ArrayList<String> applicationsIDs,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            String settingsID,
             String profileImage
     ) {
         this.userID = userID;
@@ -56,21 +83,21 @@ public class UserModel {
         this.lastName = lastName;
     }
 
-    public void addApplicationID(UUID applicationsID) {
+    public void addApplicationID(String applicationsID) {
         this.applicationsIDs.add(applicationsID);
     }
 
 
-    public void deleteApplication(UUID applicationsID) {
-        this.applicationsIDs.removeIf(uuid -> uuid == applicationsID);
+    public void deleteApplication(String applicationsID) {
+        this.applicationsIDs.removeIf(uuid -> Objects.equals(uuid, applicationsID));
     }
 
 
-    public void deleteChat(UUID chatID) {
-        this.chatIDs.removeIf(uuid -> uuid == chatID);
+    public void deleteChat(String chatID) {
+        this.chatIDs.removeIf(uuid -> Objects.equals(uuid, chatID));
     }
 
-    public void chatID(UUID chatID) {
+    public void chatID(String chatID) {
         chatIDs.add(chatID );
     }
 
@@ -102,7 +129,7 @@ public class UserModel {
         this.profileImage = profileImage;
     }
 
-    public UUID getUserID() {
+    public String getUserID() {
         return userID;
     }
 
@@ -126,11 +153,11 @@ public class UserModel {
         return age;
     }
 
-    public ArrayList<UUID> getApplicationsIDs() {
+    public ArrayList<String> getApplicationsIDs() {
         return applicationsIDs;
     }
 
-    public ArrayList<UUID> getChatIDs() {
+    public ArrayList<String> getChatIDs() {
         return chatIDs;
     }
 
@@ -142,11 +169,16 @@ public class UserModel {
         return following;
     }
 
-    public UUID getSettingsID() {
+    public String getSettingsID() {
         return settingsID;
     }
 
     public String getProfileImage() {
         return profileImage;
+    }
+
+    public static UserModel getMockUser() {
+
+        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 25, 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
     }
 }
