@@ -8,6 +8,8 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.journey.Giphy.GiphyWebService;
+import com.example.journey.JourneyApp.Loading.LoadingPage;
+import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Main.JourneyMain;
 import com.example.journey.Sticker.About;
 import com.example.journey.Sticker.SigninAuthenticate;
@@ -76,6 +78,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startJourneyApp(View view) {
-        startActivity(new Intent(MainActivity.this, JourneyMain.class));
+        startActivity(new Intent(MainActivity.this, LoadingPage.class));
     }
 }
