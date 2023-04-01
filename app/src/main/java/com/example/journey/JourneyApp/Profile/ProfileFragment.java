@@ -17,6 +17,7 @@ import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.R;
+import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.google.android.material.tabs.TabLayout;
 
@@ -25,12 +26,14 @@ import com.google.android.material.tabs.TabLayout;
  * Use the {@link ProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelectedListener {
+public class ProfileFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
+    Button settingsTab;
     FragmentManager fragmentManager;
     TabLayout tabLayout;
     Button addNewApplication;
     FragmentProfileBinding binding;
+    View layoutInflater;
 
     public ProfileFragment() {
         super(R.layout.fragment_profile);
@@ -47,6 +50,8 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //settingsTab = findByView(R.id.settingsTab);
+
     }
 
     @Override
@@ -54,9 +59,33 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
         binding = FragmentProfileBinding.inflate(inflater, container, false);
+
         fragmentManager = getChildFragmentManager();
         showFragment(new ProfileToDoFragment());
+
+        layoutInflater = inflater.inflate(R.layout.fragment_profile, container, false);
+        settingsTab = layoutInflater.findViewById(R.id.settingsTabNav);
+        settingsTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openSettingsFragment();
+            }
+        });
+
+        //showFragment(new SettingsFragment());
         return binding.getRoot();
+    }
+
+    /**
+     * The openSettingsFragment() method opens
+     * the settings fragment when the
+     * settings tab button is pressed.
+     */
+    public void openSettingsFragment() {
+        SettingsFragment settingsFragment = new SettingsFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        transaction.replace(R.id.settingsLayout, settingsFragment).commit();
     }
 
     @Override
@@ -104,6 +133,12 @@ public class ProfileFragment extends Fragment  implements TabLayout.OnTabSelecte
             case 2:
                 showFragment(new ProfileDocumentsFragment());
                 break;
+
+                /*case 3:
+                showFragment(new SettingsFragment());
+                break;
+
+                 */
         }
     }
 
