@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_gravity="center_vertical">
@@ -38,7 +38,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="380dp">
+            android:layout_marginTop="370dp">
 
             <EditText
                 android:layout_width="match_parent"
@@ -55,7 +55,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="460dp">
+            android:layout_marginTop="450dp">
 
             <EditText
                 android:layout_width="match_parent"
@@ -82,7 +82,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="600dp">
+            android:layout_marginTop="550dp">
 
             <Button
                 android:id="@+id/buttonLogin"
@@ -108,7 +108,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="750dp"
+            android:layout_marginTop="660dp"
             android:gravity="center">
 
             <TextView
