@@ -117,4 +117,8 @@ public class UpdateApplicationModal extends BottomSheetDialogFragment {
                 .build();
         timePicker.show(this.getChildFragmentManager(), timePicker.toString());
     }
+
+    public void updateApplication() {
+
+    }
 }

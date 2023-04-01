@@ -34,7 +34,7 @@ public class ProfileTodoRecyclerViewAdapter extends RecyclerView.Adapter<Prodile
     public void onBindViewHolder(@NonNull ProdileTodoViewHolder holder, int position) {
         TaskItemModel itemModel = items.get(position);
         holder.todoTitle.setText(itemModel.getTitle());
-        holder.todoTimeAdded.setText(Helper.todoISOToDate(itemModel.getDateAdded()));
+        holder.todoTimeAdded.setText(itemModel.getDateAdded());
         holder.checkBox.setChecked(itemModel.getCompleted());
 
     }

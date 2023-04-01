@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Profile.Models.ApplicationModel;
 import com.example.journey.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -36,9 +37,8 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
     AutoCompleteTextView typeDropDown;
     public static String TAG =  AddApplicationModal.class.toGenericString();
     DatabaseReference databaseReference;
-
+    ApplicationModel applicationModel;
     String[] types = {"Banana", "Apple", "Strawberry", "Kiwi"};
-
 
     @Nullable
     @Override
@@ -130,5 +130,9 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
                 .setTitleText("Select Time")
                 .build();
         timePicker.show(this.getChildFragmentManager(), timePicker.toString());
+    }
+
+    public void addApplication() {
+
     }
 }
