@@ -10,6 +10,8 @@
     <color name="dark_blue">#2F424D</color>
     <color name="light_blue">#869BA8</color>
     <color name="light_blue_10">#1A869BA8</color>
+    <color name="light_blue_25">#40869BA8</color>
+    <color name="light_blue_15">#26869BA8</color>
     <color name="cream">#FAFAFA</color>
     <color name="white_grey">#F7F8F9</color>
     <color name="gray">#EDF0F2</color>

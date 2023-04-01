@@ -1,5 +1,9 @@
 package com.example.journey.JourneyApp.Main;
 
+import android.content.Context;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 
 import java.text.DateFormat;
@@ -51,5 +55,9 @@ public class Helper {
     static public String getLongTime() {
         Date date = new Date();
         return DateFormat.getTimeInstance(DateFormat.LONG).format(date);
+    }
+
+    static void loadImage(Context context, String imageURL, ImageView imageView) {
+       Glide.with(context).load(imageURL).into(imageView);
     }
 }
