@@ -163,13 +163,13 @@
             android:maxLines="4"
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
+            android:paddingRight="20dp"
             android:text="Corem ipsum dotor sit amet, consecteur
-             adipiscing elit. Etism eu turpis molestie dictum est a,
-            mttis tellus. Sed digissim metus."/>
+             adipiscing elit. Corem ipsum dotor.Etism eu turpis molestie dictum hvhkjcdd est a,mttis tellus. Sed digm metus."/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="120dp">
+            android:layout_marginTop="130dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/dashb_commentBtn"
