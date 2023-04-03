@@ -70,7 +70,7 @@
     <SearchView
         android:id="@+id/search_view_dashboard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="80dp"
         android:layout_marginStart="20dp"
