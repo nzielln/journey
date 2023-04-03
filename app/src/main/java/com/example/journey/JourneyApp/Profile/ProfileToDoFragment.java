@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -69,13 +70,12 @@ public class ProfileToDoFragment extends Fragment {
     }
 
     public void addSamples() {
-        TaskItemModel sample1 = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
-        TaskItemModel sample2 = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , false);
-        TaskItemModel sample1Completed = new TaskItemModel("Transitioned to waiting for approval","2022-09-25T15:18:45+00:00" , true);
 
-        sample.add(sample1);
-        sample.add(sample2);
-        sample.add(sample1Completed);
+        sample.add(TaskItemModel.getMockTask(false));
+        sample.add(TaskItemModel.getMockTask(false));
+        sample.add(TaskItemModel.getMockTask(true));
+        sample.add(TaskItemModel.getMockTask(true));
+        sample.add(TaskItemModel.getMockTask(false));
 
         tasks = Helper.getToBeCompletedTasks(sample);
         completed = Helper.getCompletedTasks(sample);
@@ -116,9 +116,7 @@ public class ProfileToDoFragment extends Fragment {
 
     public void addNewTask() {
         int pos = tasks.size();
-
-        TaskItemModel sample1 = new TaskItemModel("Some new task name here","2022-09-25T15:18:45+00:00" , false);
-        tasks.add(pos, sample1);
+        tasks.add(pos, TaskItemModel.getMockTask(false));
         profileTodoRecyclerViewAdapter.notifyItemInserted(pos);
         todoRecyclerView.scrollToPosition(pos);
     }
@@ -137,10 +135,10 @@ public class ProfileToDoFragment extends Fragment {
 
     }
 
-//    public ArrayList<ProfileTodoItemModel> getCompletedTasks() {
-//        return sample.stream().filter(ProfileTodoItemModel::getCompleted).collect(Collectors.toCollection(ArrayList::new));
+//    public ArrayList<TaskItemModel> getCompletedTasks() {
+//        return sample.stream().filter(TaskItemModel::getCompleted).collect(Collectors.toCollection(ArrayList::new));
 //    }
-//    public ArrayList<ProfileTodoItemModel> getToBeCompletedTasks() {
+//    public ArrayList<TaskItemModel> getToBeCompletedTasks() {
 //        return sample.stream().filter(task -> !task.getCompleted()).collect(Collectors.toCollection(ArrayList::new));
 //    }
 }
