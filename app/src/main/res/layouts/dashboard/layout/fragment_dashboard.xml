@@ -125,15 +125,77 @@
         android:layout_marginTop="160dp">
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         app:cardCornerRadius="20dp"
         android:layout_margin="12dp"
         app:cardBackgroundColor="@color/pure_white"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/friend1"
+            android:scaleType="centerCrop"
+            android:layout_margin="20dp"
+            app:shapeAppearanceOverlay="@style/round_dash"/>
+        <TextView
+            android:id="@+id/info_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="20dp"
+            android:theme="@style/subheading_semi"
+            android:text="Samantha Greene"/>
+        <TextView
+            android:id="@+id/info_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="40dp"
+            android:theme="@style/all_caps_medium"
+            android:text="MONDAY 12:33 PM"/>
+        <TextView
+            android:id="@+id/info_infoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="4"
+            android:layout_marginTop="70dp"
+            android:layout_marginStart="20dp"
+            android:text="Corem ipsum dotor sit amet, consecteur
+             adipiscing elit. Etism eu turpis molestie dictum est a,
+            mttis tellus. Sed digissim metus."/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/dashb_commentBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/dashb_comment"
+                android:paddingLeft="180dp"
+                app:iconSize="14dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/heart_Btn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/heart"
+                app:iconSize="14dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/share_tBtn"
+                style="?attr/materialIconButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/share"
+                app:iconSize="14dp" />
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
-        
+
 
     </LinearLayout>
 </FrameLayout>
