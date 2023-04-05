@@ -1,5 +1,8 @@
 package com.example.journey.JourneyApp.Main;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 
 import java.text.DateFormat;
@@ -51,5 +54,10 @@ public class Helper {
     static public String getLongTime() {
         Date date = new Date();
         return DateFormat.getTimeInstance(DateFormat.LONG).format(date);
+    }
+
+    static public void showToast(Context context, String message) {
+        Toast.makeText(context, message,
+                Toast.LENGTH_SHORT).show();
     }
 }

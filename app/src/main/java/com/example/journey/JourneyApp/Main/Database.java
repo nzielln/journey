@@ -8,6 +8,9 @@ import com.google.firebase.FirebaseOptions;
 public class Database {
     static public FirebaseApp JOURNEYDB;
     static public String JOURNEYDB_TAG = "JOURNEY_DATABASE";
+    static public String CLIENT_ID = "397694645555-2grumshs22dghfbto8simschuk79krqd.apps.googleusercontent.com";
+
+    static public Integer GOOGLE_REQUEST_CODE = 600;
 
     static public String USERS = "users";
     static public String APPLICATION = "applications";
@@ -16,7 +19,6 @@ public class Database {
     static public String LIKED_POSTS_ID = "liked_posts";
     static public String SHARED_POSTS_ID = "shared_posts";
     static public String POST_ID_TO_POST = "post_id_to_post";
-    static public String USERS_ID_TO_USER = "user_id_to_user";
     static public String CHAT_ID_TO_CHAT = "chat_id_to_chat";
     static public String CHAT_ID_TO_MESSAGES = "chat_id_to_messages";
     static public String USER_ID_TO_DOCUMENT = "user_id_to_documents";

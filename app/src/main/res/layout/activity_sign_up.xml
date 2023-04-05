@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".JourneyApp.Signup.SignUp"
+android:orientation="vertical"
+android:layout_gravity="center"
+android:paddingHorizontal="24dp"
+android:paddingTop="32dp"
+android:gravity="center_horizontal">
+
+<ImageView
+    android:id="@+id/journeyLogo"
+    android:layout_width="175dp"
+    android:layout_height="175dp"
+    android:layout_marginBottom="32dp"
+    android:contentDescription="@string/logo_Journey"
+    android:src="@drawable/logo_login_page"
+    />
+
+<TextView
+    android:id="@+id/welcomeBack"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:text="@string/create_an_account_to_get_started"
+    android:theme="@style/heading"
+    android:lines="2"
+    android:layout_marginBottom="32dp"
+    android:textColor="@color/dark_blue" />
+
+<!-- Email -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="16dp"
+    >
+
+    <EditText
+        android:id="@+id/user_full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/full_name"
+        android:drawableStart="@drawable/small_profile"
+        android:drawablePadding="10dp"
+        android:textColor="@color/light_blue"
+        android:paddingBottom="20dp"
+        android:theme="@style/body_normal"
+        android:drawableTint="@color/light_blue"
+        android:backgroundTint="@color/light_blue"/>
+
+    <EditText
+        android:id="@+id/user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/email_JourneyUser"
+        android:drawableStart="@drawable/small_email"
+        android:drawablePadding="10dp"
+        android:textColor="@color/light_blue"
+        android:paddingBottom="20dp"
+        android:theme="@style/body_normal"
+        android:drawableTint="@color/light_blue"
+        android:backgroundTint="@color/light_blue"/>
+
+    <EditText
+        android:id="@+id/user_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/password_JourneyPassword"
+        android:drawableStart="@drawable/small_lock"
+        android:drawablePadding="10dp"
+        android:drawableEnd="@drawable/small_eye"
+        android:textColor="@color/light_blue"
+        android:paddingBottom="20dp"
+        android:theme="@style/body_normal"
+        android:drawableTint="@color/light_blue"
+        android:backgroundTint="@color/light_blue"
+        android:layout_marginBottom="32dp"
+
+        />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_up_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:theme="@style/body_semi"
+        android:text="@string/sign_up"
+        app:cornerRadius="10dp"
+        android:textStyle="bold"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_up_with_google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+
+        android:textAllCaps="false"
+        android:text="@string/continue_with_google"
+        android:theme="@style/body_semi"
+        android:gravity="center"
+        app:iconTint="@color/dark_blue"
+        app:iconGravity="textStart"
+        app:iconSize="15dp"
+
+        app:icon="@drawable/googleg_standard_color_18"
+        android:backgroundTint="@android:color/transparent"
+        android:textColor="@color/dark_blue"
+        app:strokeColor="@color/dark_blue"
+        app:strokeWidth="1.5dp"
+        app:cornerRadius="10dp"
+        />
+</LinearLayout>
+
+<!-- Singup -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:onClick="openLogInActivity"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/question"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/already_have_an_account"
+        android:gravity="center"
+        android:theme="@style/tab_normal"
+        />
+    <View
+        android:id="@+id/space_around"
+        android:layout_width="2dp"
+        android:layout_height="2dp"
+        />
+
+    <TextView
+        android:id="@+id/signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/tab_bold_small"
+        android:text="@string/log_in_here"/>
+
+</LinearLayout>
+
+</LinearLayout>
+
+
