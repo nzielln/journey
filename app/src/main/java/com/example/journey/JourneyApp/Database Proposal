@@ -40,15 +40,14 @@ Tables
 5. postID_to_post -> returns post for a particular ID
     Fields
     - postID: GUID
-    - content: PostContent -> custom object
-        - postTitle: String?
-        - authorID: GUID
-        - timePosted: String -> ISO String
-        - content: String
-        - comments: Comment[] -> custom object
-            - authorID: GUID
-            - timePosted: String -> ISO String
-            - comment: String
+    - postTitle: String?
+    - authorID: GUID
+    - timePosted: String -> ISO String
+    - postContent: String
+    - comments: Comment[] -> custom object
+       - authorID: GUID
+       - timePosted: String -> ISO String
+       - comment: String
 
 5. userID_to_user -> return user for a particular GUID (? not sure if this is necessary of we have 1)
 

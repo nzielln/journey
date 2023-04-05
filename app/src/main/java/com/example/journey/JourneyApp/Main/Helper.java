@@ -4,6 +4,8 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import android.widget.Toast;
+
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 
 import java.text.DateFormat;
@@ -58,6 +60,11 @@ public class Helper {
     }
 
     static void loadImage(Context context, String imageURL, ImageView imageView) {
-       Glide.with(context).load(imageURL).into(imageView);
+        Glide.with(context).load(imageURL).into(imageView);
+    }
+
+    static public void showToast(Context context, String message) {
+        Toast.makeText(context, message,
+                Toast.LENGTH_SHORT).show();
     }
 }

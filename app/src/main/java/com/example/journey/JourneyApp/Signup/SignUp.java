@@ -1,66 +1,219 @@
 package com.example.journey.JourneyApp.Signup;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.journey.JourneyApp.Login.LoginPage;
+import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Main.Helper;
+import com.example.journey.JourneyApp.Main.JourneyMain;
+import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
+import com.example.journey.Sticker.Constants;
+import com.example.journey.Sticker.SigninAuthenticate;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignUp#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class SignUp extends Fragment {
+import java.util.Objects;
 
-  // TODO: Rename parameter arguments, choose names that match
-  // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-  private static final String ARG_PARAM1 = "param1";
-  private static final String ARG_PARAM2 = "param2";
+public class SignUp extends AppCompatActivity {
 
-  // TODO: Rename and change types of parameters
-  private String mParam1;
-  private String mParam2;
+    GoogleSignInClient googleSignInClient;
+    FirebaseAuth firebaseAuth;
+    ActivityResultLauncher<Intent> googleIntentLauncher;
+    DatabaseReference databaseReference;
+    Button signUpButton;
+    Button signInWithGoogle;
+    EditText fullName;
+    EditText email;
+    EditText password;
+    private static final String TAG = SignUp.class.toGenericString();
 
-  public SignUp() {
-    // Required empty public constructor
-  }
 
-  /**
-   * Use this factory method to create a new instance of
-   * this fragment using the provided parameters.
-   *
-   * @param param1 Parameter 1.
-   * @param param2 Parameter 2.
-   * @return A new instance of fragment SignUp.
-   */
-  // TODO: Rename and change types and number of parameters
-  public static SignUp newInstance(String param1, String param2) {
-    SignUp fragment = new SignUp();
-    Bundle args = new Bundle();
-    args.putString(ARG_PARAM1, param1);
-    args.putString(ARG_PARAM2, param2);
-    fragment.setArguments(args);
-    return fragment;
-  }
+    private Boolean isLoggedIn;
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      mParam1 = getArguments().getString(ARG_PARAM1);
-      mParam2 = getArguments().getString(ARG_PARAM2);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
+        setUpDatabase();
+        setUpGoogleAuth();
+
+        signUpButton = findViewById(R.id.sign_up_button);
+        signInWithGoogle = findViewById(R.id.sign_up_with_google);
+        fullName = findViewById(R.id.user_full_name);
+        email = findViewById(R.id.user_email);
+        password = findViewById(R.id.user_password);
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fullNameInput = String.valueOf(fullName.getText());
+                String emailInput = String.valueOf(email.getText());
+                String passwordInput = String.valueOf(password.getText());
+                createNewUser(fullNameInput, emailInput, passwordInput);
+            }
+        });
+
+        signInWithGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signUpWithGoogle();
+            }
+        });
+
     }
-  }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_sign_up, container, false);
-  }
+    public void setUpDatabase() {
+        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+        firebaseAuth = FirebaseAuth.getInstance(Database.JOURNEYDB);
+    }
+
+    public void setUpGoogleAuth() {
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(Database.CLIENT_ID)
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(SignUp.this, options);
+
+//        googleIntentLauncher = registerForActivityResult(
+//                new ActivityResultContracts.StartActivityForResult(),
+//                new ActivityResultCallback<ActivityResult>() {
+//                    @Override
+//                    public void onActivityResult(ActivityResult result) {
+//                        if (result == null) {
+//                            Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+//                            return;
+//                        }
+//
+//                        if (result.getResultCode() == Database.GOOGLE_REQUEST_CODE) {
+//                            Log.i(TAG, "SUCCESSFULLY LOGGED IN USING GOOGLE");
+//
+//                            Intent data = result.getData();
+//                            completeGoogleSignUp(data);
+//
+//                        }
+//                    }
+//                }
+//        );
+        googleIntentLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result == null) {
+                            Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+                            return;
+                        }
+
+                        if (result.getResultCode() == Database.GOOGLE_REQUEST_CODE) {
+                            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                            if (task.isSuccessful()) {
+                                   GoogleSignInAccount data = task.getResult();
+                                   completeGoogleSignUp(data);
+
+                            } else {
+                                Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+                            }
+                        }
+                    }
+                }
+        );
+    }
+
+    private void completeGoogleSignUp(GoogleSignInAccount account) {
+        Log.i(TAG, "");
+        AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+
+
+
+    }
+
+    public void openLogInActivity(View view) {
+        startActivity(new Intent(this, LoginPage.class));
+
+    }
+
+    void createNewUser(String fullname, String email, String password) {
+        firebaseAuth.createUserWithEmailAndPassword(email, password) //change this
+                .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.i(TAG, "SUCCESSFULLY CREATED NEW USER");
+
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            assert user != null;
+                            addNewUserToDatabase(user, fullname);
+                            proceedToDashboarForUser(user);
+                        } else {
+                            Log.e(TAG, "FAILED TO CREATE NEW USER", task.getException());
+                            Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+                            reloadView();
+                        }
+                    }
+                });
+
+    }
+
+    void addNewUserToDatabase(FirebaseUser user, String fullname) {
+        String[] names = fullname.split(" ");
+        UserModel userModel = new UserModel(user.getUid(), user.getEmail());
+        // TODO: Will need to handle edge cases - Tinashe, can you do this?
+        userModel.addUserNameDetails(names[0], names[1]);
+
+        Task<Void> taskAddUserTodB = databaseReference.child(Database.USERS).child(userModel.getUserID()).setValue(userModel);
+
+        if (taskAddUserTodB.isSuccessful()) {
+            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
+        } else if (taskAddUserTodB.isCanceled()) {
+            Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
+        }
+    }
+
+
+
+    void reloadView() {
+        fullName.getText().clear();
+        email.getText().clear();
+        password.getText().clear();
+
+        fullName.clearFocus();
+        email.clearFocus();
+        password.clearFocus();
+    }
+
+    void proceedToDashboarForUser(FirebaseUser user) {
+        startActivity(new Intent(this, JourneyMain.class));
+    }
+
+    void signUpWithGoogle() {
+        googleIntentLauncher.launch(new Intent(googleSignInClient.getSignInIntent()));
+    }
 }

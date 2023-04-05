@@ -10,11 +10,10 @@ import android.view.MenuItem;
 
 import com.example.journey.JourneyApp.Chat.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
+import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
-import com.example.journey.Sticker.Constants;
-import com.example.journey.Sticker.Framents.SignIn;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -26,7 +25,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journey_main);
-        setUpDatabase();
+//        setUpDatabase();
 
         fragmentManager = getSupportFragmentManager();
         openDashboardFragment();
@@ -35,15 +34,21 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
         tabBarNavigation.setOnItemSelectedListener(this);
     }
 
-    public void setUpDatabase() {
-        Database.getDatabase(this);
-    }
+//    public void setUpDatabase() {
+//        Database.getDatabase(this);
+//    }
 
     public void openProfileFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         ProfileFragment profileFragment = new ProfileFragment();
 
         transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
+    }
+    public void openNewPostFragment(){
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        CreateNewPost newPost = new CreateNewPost();
+
+        transaction.replace(R.id.journey_fragment_container,newPost).commit();
     }
 
     public void openDashboardFragment() {
@@ -77,6 +82,9 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 break;
             case R.id.profile_item:
                 openProfileFragment();
+                break;
+            case R.id.add_item:
+                openNewPostFragment();
                 break;
             case R.id.messages_item:
                 openChatFragment();

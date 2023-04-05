@@ -95,6 +95,12 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="tab_bold_small">
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="tab_normal">
         <item name="android:fontFamily">@font/inter</item>
         <item name="fontFamily">@font/inter</item>
@@ -143,10 +149,16 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="round_dash">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
     <style name="checkbox_style" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">@color/checkbox_bg</item>
         <item name="buttonIconTint">@color/checkbox_icon</item>
     </style>
+
 
 </resources>
 
@@ -156,9 +168,9 @@ Body Semi: Inter Semi 14
 Body Medium: Inter Medium 14
 Body Reg: Inter 14
 Subheading: Inter Medium 16
-Heading: Inter Semi 18 Blue
+Heading: Inter Semi 18
 
-Dashboard
+DashboardBlue
 Header: Subheading
 Tab and Search
 Normal: Inter 12 Blue

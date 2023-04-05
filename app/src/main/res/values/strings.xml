@@ -119,5 +119,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="log_in_here">Log in here.</string>
     <string name="don_t_have_an_account_already">Don\'t have an account already?</string>
-    <string name="sign_up_here">Sign up here.</string>
+    <string name="sign_up_here">Sign up.</string>
+    <string name="sign_up">Sign up</string>
+    <string name="full_name">Full Name</string>
 </resources>

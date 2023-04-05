@@ -9,16 +9,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/settingsTabNav"
-        style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="?attr/materialIconButtonStyle"
         app:icon="@drawable/settings_icon"
         app:iconSize="24dp"
         app:iconPadding="0dp"
-        app:iconSize="32dp"
-
-
         />
 
 </LinearLayout>
