@@ -148,6 +148,9 @@
         <item name="buttonIconTint">@color/checkbox_icon</item>
     </style>
 
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    </style>
+
 </resources>
 
 <!--

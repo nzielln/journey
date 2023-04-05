@@ -1,21 +1,26 @@
 package com.example.journey.JourneyApp.Chat;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.journey.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChatFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChatFragment extends Fragment {
+    private ListView chatFriendsList;
+    private Button createNewChatButton;
+    private EditText searchChat;
+    private FrameLayout chatWindowContainer;
+    private FrameLayout chatWindow;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +65,26 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        // Inflate both layouts separately
+        View mainView = inflater.inflate(R.layout.fragment_chat, container, false);
+        View senderView = inflater.inflate(R.layout.fragment_chat_sender, container, false);
+        View receiverView = inflater.inflate(R.layout.fragment_chat_receiver, container, false);
+        View userView = inflater.inflate(R.layout.fragment_user_row, container, false);
+
+
+        // Find views from the main layout
+        chatFriendsList = mainView.findViewById(R.id.chat_friends_list);
+        createNewChatButton = mainView.findViewById(R.id.create_new_chat_button);
+        searchChat = mainView.findViewById(R.id.search_chat);
+        chatWindowContainer = mainView.findViewById(R.id.chat_window_container);
+        chatWindow = mainView.findViewById(R.id.chat_window);
+
+        // Add the views from the users to the main layout
+        ViewGroup userContainer = mainView.findViewById(R.id.user_container);
+        userContainer.addView(userView);
+
+        // Set up the other views here
+
+        return mainView;
     }
 }

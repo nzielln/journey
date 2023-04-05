@@ -120,4 +120,9 @@
     <string name="log_in_here">Log in here.</string>
     <string name="don_t_have_an_account_already">Don\'t have an account already?</string>
     <string name="sign_up_here">Sign up here.</string>
+    <string name="create_new_chat" />
+    <string name="search_chat_hint" />
+    <string name="search_chat" />
+    <string name="type_message_hint" />
+    <string name="chat_message_input_description" />
 </resources>

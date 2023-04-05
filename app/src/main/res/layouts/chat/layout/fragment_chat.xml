@@ -5,10 +5,72 @@
     android:layout_height="match_parent"
     tools:context=".JourneyApp.Chat.ChatFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Chat Window Container -->
+    <FrameLayout
+        android:id="@+id/chat_window_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/chat" />
+        android:layout_height="match_parent">
+
+        <!-- Chat Friends List -->
+        <ListView
+            android:id="@+id/chat_friends_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white"/>
+
+
+        <!-- Search Chat View -->
+        <EditText
+            android:id="@+id/search_chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_margin="16dp"
+            android:hint="Search"/>
+
+        <!-- Chat Window -->
+        <FrameLayout
+            android:id="@+id/chat_window"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
+    <!-- Container for sender layout -->
+    <FrameLayout
+        android:id="@+id/sender_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal">
+
+    </FrameLayout>
+
+    <!-- Container for receiver layout -->
+    <FrameLayout
+        android:id="@+id/receiver_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal">
+
+    </FrameLayout>
+
+    <!-- Container for user layout -->
+    <FrameLayout
+        android:id="@+id/user_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal">
+
+    </FrameLayout>
+
+
+
 
 </FrameLayout>
