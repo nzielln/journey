@@ -10,7 +10,9 @@ import android.view.MenuItem;
 
 import com.example.journey.JourneyApp.Chat.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
+import com.example.journey.JourneyApp.Dashboard.NewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
+import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
 import com.example.journey.Sticker.Constants;
@@ -45,6 +47,12 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
 
         transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
     }
+    public void openNewPostFragment(){
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        NewPost newPost = new NewPost();
+
+        transaction.replace(R.id.journey_fragment_container,newPost).commit();
+    }
 
     public void openDashboardFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -77,6 +85,9 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 break;
             case R.id.profile_item:
                 openProfileFragment();
+                break;
+            case R.id.add_item:
+                openNewPostFragment();
                 break;
             case R.id.messages_item:
                 openChatFragment();
