@@ -29,14 +29,14 @@ import java.util.Calendar;
 import java.util.UUID;
 
 public class AddApplicationModal extends BottomSheetDialogFragment {
+    public static String TAG =  AddApplicationModal.class.toGenericString();
+
     Button cancelButton;
     Button addApplicationButton;
     EditText datePicker;
     EditText timePicker;
     TextInputLayout sponsorField;
     AutoCompleteTextView typeDropDown;
-    public static String TAG =  AddApplicationModal.class.toGenericString();
-    DatabaseReference databaseReference;
     ApplicationModel applicationModel;
     String[] types = {"Banana", "Apple", "Strawberry", "Kiwi"};
 
@@ -44,8 +44,6 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.add_application_modal, container, false);
-        setUpDatabase();
-
         cancelButton = view.findViewById(R.id.cancel_button);
         addApplicationButton = view.findViewById(R.id.add_application);
         sponsorField = view.findViewById(R.id.sponsor_input);
@@ -99,12 +97,8 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
         return view;
     }
 
-    public void setUpDatabase() {
-        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
-    }
-
     public void addSampleToDatabase() {
-        databaseReference.child(Database.APPLICATION).child(UUID.randomUUID().toString()).setValue("Something");
+        Database.DB_REFERENCE.child(Database.APPLICATION).child(UUID.randomUUID().toString()).setValue("Something");
     }
 
     public void openDatePicker() {
@@ -116,7 +110,6 @@ public class AddApplicationModal extends BottomSheetDialogFragment {
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build();
         datePicker.show(this.getChildFragmentManager(), datePicker.toString());
-
 
     }
 
