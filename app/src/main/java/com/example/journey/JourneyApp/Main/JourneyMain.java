@@ -10,13 +10,10 @@ import android.view.MenuItem;
 
 import com.example.journey.JourneyApp.Chat.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
-import com.example.journey.JourneyApp.Dashboard.NewPost;
+import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
-import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
-import com.example.journey.Sticker.Constants;
-import com.example.journey.Sticker.Framents.SignIn;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -49,7 +46,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
     public void openNewPostFragment(){
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        NewPost newPost = new NewPost();
+        CreateNewPost newPost = new CreateNewPost();
 
         transaction.replace(R.id.journey_fragment_container,newPost).commit();
     }
