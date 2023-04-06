@@ -180,7 +180,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:icon="@drawable/dashb_comment"
-                android:paddingLeft="180dp"
+                android:layout_marginStart="180dp"
                 app:iconSize="14dp" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/heart_Btn"
@@ -199,6 +199,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
     </LinearLayout>
+
 <!--    <ScrollView-->
 <!--        android:layout_width="match_parent"-->
 <!--        android:layout_height="match_parent"-->

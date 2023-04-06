@@ -22,6 +22,11 @@ public class ProfileTimelineRecyclerViewAdapter extends RecyclerView.Adapter<Pro
     ArrayList<TimelineItemObject> items;
     Context context;
 
+    static final Integer TOP = 0;
+    static final Integer MIDDLE = 1;
+    static final Integer BOTTOM = 2;
+
+
     public ProfileTimelineRecyclerViewAdapter(ArrayList<TimelineItemObject> items, Context context) {
         this.items = items;
         this.context = context;
@@ -42,11 +47,18 @@ public class ProfileTimelineRecyclerViewAdapter extends RecyclerView.Adapter<Pro
 //         Set circle color here
         if (itemModel.getCompleted()) {
 
-            holder.timelineContent.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_15_gray));
+            holder.timelineContent.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_15_gray_15));
             holder.timelineCirle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle));
         } else {
             holder.timelineCirle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_complete));
             holder.timelineContent.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_15_white_border_dark));
+
+        }
+
+        if (getItemViewType(position) == TOP) {
+            holder.timeline.setBackground(ContextCompat.getDrawable(context, R.drawable.timeline_bg_round));
+        } else {
+            holder.timeline.setBackground(ContextCompat.getDrawable(context, R.drawable.timeline_bg));
 
         }
     }
@@ -54,5 +66,14 @@ public class ProfileTimelineRecyclerViewAdapter extends RecyclerView.Adapter<Pro
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return TOP;
+        } else {
+            return MIDDLE;
+        }
     }
 }

@@ -45,8 +45,6 @@ public class ProfileToDoFragment extends Fragment {
     ArrayList<TaskItemModel> completed;
     ArrayList<TaskItemModel> tasks;
 
-    DatabaseReference databaseReference;
-
     public ProfileToDoFragment() {
         super(R.layout.fragment_profile_todo);
     }
@@ -60,13 +58,8 @@ public class ProfileToDoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addSamples();
-        setUpDatabase();
         Bundle bundle = new Bundle();
 
-    }
-
-    public void setUpDatabase() {
-        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
     }
 
     public void addSamples() {
