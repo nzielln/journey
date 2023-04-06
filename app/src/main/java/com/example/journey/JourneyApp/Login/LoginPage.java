@@ -55,13 +55,20 @@ public class LoginPage extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login_page);
+    setUpDatabase();
+
     setUpGoogleAuth();
+
+    if (userSignedIn()) {
+      proceedToDashboarForUser(Database.FIREBASE_AUTH.getCurrentUser());
+    }
 
     loginButton = findViewById(R.id.buttonLogin);
     signInWithGoogle = findViewById(R.id.sign_up_with_google);
     email = findViewById(R.id.user_email);
     password = findViewById(R.id.user_password);
     showHidePassword = findViewById(R.id.show_password);
+    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
     loginButton.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -91,6 +98,14 @@ public class LoginPage extends AppCompatActivity {
        }
       }
     });
+  }
+
+  public void setUpDatabase() {
+    Database.getDatabase(this);
+  }
+
+  public Boolean userSignedIn() {
+    return Database.FIREBASE_AUTH.getCurrentUser() != null;
   }
 
   public void openSignUpActivity(View view) {
@@ -155,6 +170,17 @@ public class LoginPage extends AppCompatActivity {
     );
   }
 
+  @Override
+  protected void onResume() {
+    super.onResume();
+    reloadView();
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    reloadView();
+  }
 
   private void completeGoogleSignUp(GoogleSignInAccount account) {
     Log.i(TAG, "");
@@ -164,16 +190,16 @@ public class LoginPage extends AppCompatActivity {
       public void onComplete(@NonNull Task<AuthResult> task) {
         if (task.isSuccessful()) {
           Log.e(TAG, "AUTHENTICATE USING GOOGLE SUCCESSFUL");
-
+          reloadView();
           proceedToDashboarForUser(Database.FIREBASE_AUTH.getCurrentUser());
         } else {
+          reloadView();
           Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE");
           Helper.showToast(LoginPage.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nCREDENTIAL TASK FAILED: " + task.getException().getMessage());
         }
       }
     });
   }
-
 
   void reloadView() {
     email.getText().clear();

@@ -73,6 +73,7 @@ android:gravity="center_horizontal">
         android:maxLines="1"
         android:textColorHint="@color/light_blue"
         android:inputType="textEmailAddress"
+        android:layout_marginTop="8dp"
         />
 
     <LinearLayout
@@ -80,6 +81,7 @@ android:gravity="center_horizontal">
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:background="@drawable/bottom_border"
+        android:layout_marginBottom="32dp"
 
         >
         <EditText
@@ -107,7 +109,6 @@ android:gravity="center_horizontal">
             android:layout_height="wrap_content"
             style="?attr/materialIconButtonStyle"
             app:icon="@drawable/small_eye_closed"
-            app:iconSize="10dp"
             app:iconTint="@color/light_blue"
             app:iconPadding="0dp"/>
 

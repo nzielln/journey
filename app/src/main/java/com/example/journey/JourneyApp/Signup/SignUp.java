@@ -73,7 +73,7 @@ public class SignUp extends AppCompatActivity {
         email = findViewById(R.id.user_email);
         password = findViewById(R.id.user_password);
         showHidePassword = findViewById(R.id.show_password);
-
+        password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class SignUp extends AppCompatActivity {
                 googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Log.e(TAG, "SIGNED OUT GOOGLE");
+                        Log.i(TAG, "SIGNED OUT GOOGLE");
 
                     }
                 });
@@ -185,6 +185,7 @@ public class SignUp extends AppCompatActivity {
 
                             FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
                             assert user != null;
+                            reloadView();
                             addNewUserToDatabase(user, fullname);
                             proceedToDashboarForUser(user);
                         } else {
@@ -210,6 +211,18 @@ public class SignUp extends AppCompatActivity {
         } else if (taskAddUserTodB.isCanceled()) {
             Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadView();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reloadView();
     }
 
     void reloadView() {

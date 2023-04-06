@@ -34,7 +34,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journey_main);
-        setUpDatabase();
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
                 .requestEmail()
@@ -47,10 +46,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
 
         tabBarNavigation = findViewById(R.id.tab_nav);
         tabBarNavigation.setOnItemSelectedListener(this);
-    }
-
-    public void setUpDatabase() {
-        Database.getDatabase(this);
     }
 
     public void openProfileFragment() {
@@ -90,9 +85,11 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
         googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                Log.e(TAG, "SIGNED OUT GOOGLE");
+                Log.i(TAG, "SIGNED OUT GOOGLE");
             }
         });
+
+        finish();
     }
 
     @Override
