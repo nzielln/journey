@@ -8,13 +8,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.journey.JourneyApp.Chat.ChatFragment;
+import com.example.journey.JourneyApp.Chat.Fragments.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
-import com.example.journey.Sticker.Constants;
-import com.example.journey.Sticker.Framents.SignIn;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
