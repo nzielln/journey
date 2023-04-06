@@ -15,6 +15,8 @@ public class ApplicationModel {
     String dateComleted;
     Boolean isCompleted;
 
+    public ApplicationModel() {}
+
     public ApplicationModel(String applicationID, String applicationName, ApplicationStatus status, String dateCreated, String dateComleted, Boolean isCompleted) {
         this.applicationID = applicationID;
         this.applicationName = applicationName;
