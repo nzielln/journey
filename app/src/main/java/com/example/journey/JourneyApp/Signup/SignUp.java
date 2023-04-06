@@ -6,10 +6,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +27,7 @@ import com.example.journey.JourneyApp.Main.JourneyMain;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.example.journey.Sticker.Constants;
+import com.example.journey.Sticker.MessengerActivity;
 import com.example.journey.Sticker.SigninAuthenticate;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,6 +36,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,24 +50,21 @@ import java.util.Objects;
 public class SignUp extends AppCompatActivity {
 
     GoogleSignInClient googleSignInClient;
-    FirebaseAuth firebaseAuth;
     ActivityResultLauncher<Intent> googleIntentLauncher;
-    DatabaseReference databaseReference;
     Button signUpButton;
     Button signInWithGoogle;
     EditText fullName;
     EditText email;
+    MaterialButton showHidePassword;
+
     EditText password;
     private static final String TAG = SignUp.class.toGenericString();
-
-
     private Boolean isLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        setUpDatabase();
         setUpGoogleAuth();
 
         signUpButton = findViewById(R.id.sign_up_button);
@@ -69,6 +72,8 @@ public class SignUp extends AppCompatActivity {
         fullName = findViewById(R.id.user_full_name);
         email = findViewById(R.id.user_email);
         password = findViewById(R.id.user_password);
+        showHidePassword = findViewById(R.id.show_password);
+        password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,15 +88,30 @@ public class SignUp extends AppCompatActivity {
         signInWithGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Database.FIREBASE_AUTH.signOut();
+                googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.i(TAG, "SIGNED OUT GOOGLE");
+
+                    }
+                });
                 signUpWithGoogle();
             }
         });
 
-    }
-
-    public void setUpDatabase() {
-        databaseReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
-        firebaseAuth = FirebaseAuth.getInstance(Database.JOURNEYDB);
+        showHidePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+                    showHidePassword.setIcon(ContextCompat.getDrawable(SignUp.this, R.drawable.small_eye));
+                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    showHidePassword.setIcon(ContextCompat.getDrawable(SignUp.this, R.drawable.small_eye_closed));
+                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
     }
 
     public void setUpGoogleAuth() {
@@ -101,46 +121,31 @@ public class SignUp extends AppCompatActivity {
                 .build();
 
         googleSignInClient = GoogleSignIn.getClient(SignUp.this, options);
-
-//        googleIntentLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result == null) {
-//                            Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
-//                            return;
-//                        }
-//
-//                        if (result.getResultCode() == Database.GOOGLE_REQUEST_CODE) {
-//                            Log.i(TAG, "SUCCESSFULLY LOGGED IN USING GOOGLE");
-//
-//                            Intent data = result.getData();
-//                            completeGoogleSignUp(data);
-//
-//                        }
-//                    }
-//                }
-//        );
         googleIntentLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result == null) {
+                result -> {
+                    if (result == null) {
+                        Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+                        return;
+                    }
+
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                        if (task.isSuccessful()) {
+                              try {
+                                  GoogleSignInAccount account = task.getResult(ApiException.class);
+                                  completeGoogleSignUp(account);
+                              } catch (ApiException error) {
+                                  error.printStackTrace();
+                                  Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - APIEXCEPTION");
+
+                                  Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nERROR MESSAGE: " +  error.getMessage());
+                              }
+
+                        } else {
+                            Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - GOOGLE ACCOUNT TTASK FAILED");
+
                             Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
-                            return;
-                        }
-
-                        if (result.getResultCode() == Database.GOOGLE_REQUEST_CODE) {
-                            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                            if (task.isSuccessful()) {
-                                   GoogleSignInAccount data = task.getResult();
-                                   completeGoogleSignUp(data);
-
-                            } else {
-                                Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
-                            }
                         }
                     }
                 }
@@ -150,9 +155,19 @@ public class SignUp extends AppCompatActivity {
     private void completeGoogleSignUp(GoogleSignInAccount account) {
         Log.i(TAG, "");
         AuthCredential authCredential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        Database.FIREBASE_AUTH.signInWithCredential(authCredential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.e(TAG, "AUTHENTICATE USING GOOGLE SUCCESSFUL");
 
-
-
+                    proceedToDashboarForUser(Database.FIREBASE_AUTH.getCurrentUser());
+                } else {
+                    Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE");
+                    Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nCREDENTIAL TASK FAILED: " + task.getException().getMessage());
+                }
+            }
+        });
     }
 
     public void openLogInActivity(View view) {
@@ -161,15 +176,16 @@ public class SignUp extends AppCompatActivity {
     }
 
     void createNewUser(String fullname, String email, String password) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password) //change this
+        Database.FIREBASE_AUTH.createUserWithEmailAndPassword(email, password) //change this
                 .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.i(TAG, "SUCCESSFULLY CREATED NEW USER");
 
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
                             assert user != null;
+                            reloadView();
                             addNewUserToDatabase(user, fullname);
                             proceedToDashboarForUser(user);
                         } else {
@@ -188,7 +204,7 @@ public class SignUp extends AppCompatActivity {
         // TODO: Will need to handle edge cases - Tinashe, can you do this?
         userModel.addUserNameDetails(names[0], names[1]);
 
-        Task<Void> taskAddUserTodB = databaseReference.child(Database.USERS).child(userModel.getUserID()).setValue(userModel);
+        Task<Void> taskAddUserTodB = Database.DB_REFERENCE.child(Database.USERS).child(userModel.getUserID()).setValue(userModel);
 
         if (taskAddUserTodB.isSuccessful()) {
             Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
@@ -197,7 +213,17 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadView();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        reloadView();
+    }
 
     void reloadView() {
         fullName.getText().clear();
@@ -210,6 +236,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     void proceedToDashboarForUser(FirebaseUser user) {
+        Log.i(TAG, "PROCEED TO DASHBOARD");
         startActivity(new Intent(this, JourneyMain.class));
     }
 
