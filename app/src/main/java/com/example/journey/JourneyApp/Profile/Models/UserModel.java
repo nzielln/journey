@@ -12,18 +12,15 @@ public class UserModel {
     String username;
     String firstName;
     String lastName;
-    Integer age;
     ArrayList<String> applicationsIDs = new ArrayList<>();
     ArrayList<String> chatIDs = new ArrayList<>();
     Integer followers = 0;
     Integer following = 0;
-    String settingsID;
-    String profileImage;
+    String profileImage = "";
 
     public UserModel(String userID, String email) {
         this.userID = userID;
         this.email = email;
-        this.settingsID = UUID.randomUUID().toString();
     }
 
     public UserModel(
@@ -32,7 +29,6 @@ public class UserModel {
             String username,
             String firstName,
             String lastName,
-            Integer age,
             Integer followers,
             Integer following,
             String profileImage
@@ -42,11 +38,9 @@ public class UserModel {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
-        this.settingsID = UUID.randomUUID().toString();
 
     }
 
@@ -56,12 +50,10 @@ public class UserModel {
             String username,
             String firstName,
             String lastName,
-            Integer age,
             ArrayList<String> applicationsIDs,
             ArrayList<String> chatIDs,
             Integer followers,
             Integer following,
-            String settingsID,
             String profileImage
     ) {
         this.userID = userID;
@@ -69,12 +61,10 @@ public class UserModel {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = age;
         this.applicationsIDs = applicationsIDs;
         this.chatIDs = chatIDs;
         this.followers = followers;
         this.following = following;
-        this.settingsID = settingsID;
         this.profileImage = profileImage;
     }
 
@@ -121,10 +111,6 @@ public class UserModel {
         this.username = username;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
     }
@@ -149,10 +135,6 @@ public class UserModel {
         return lastName;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
     public ArrayList<String> getApplicationsIDs() {
         return applicationsIDs;
     }
@@ -169,9 +151,6 @@ public class UserModel {
         return following;
     }
 
-    public String getSettingsID() {
-        return settingsID;
-    }
 
     public String getProfileImage() {
         return profileImage;
@@ -179,6 +158,6 @@ public class UserModel {
 
     public static UserModel getMockUser() {
 
-        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 25, 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
+        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
     }
 }

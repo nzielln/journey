@@ -6,27 +6,40 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.journey.JourneyApp.Chat.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
+import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
+import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
-import com.example.journey.Sticker.Constants;
-import com.example.journey.Sticker.Framents.SignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
 public class JourneyMain extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
-    private FragmentManager fragmentManager;
+    private static final String TAG = JourneyMain.class.toGenericString();
 
+    private FragmentManager fragmentManager;
+    GoogleSignInClient googleSignInClient;
     private BottomNavigationView tabBarNavigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journey_main);
-        setUpDatabase();
+        GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(Database.CLIENT_ID)
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(JourneyMain.this, options);
 
         fragmentManager = getSupportFragmentManager();
         openDashboardFragment();
@@ -35,15 +48,17 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
         tabBarNavigation.setOnItemSelectedListener(this);
     }
 
-    public void setUpDatabase() {
-        Database.getDatabase(this);
-    }
-
     public void openProfileFragment() {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         ProfileFragment profileFragment = new ProfileFragment();
 
         transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
+    }
+    public void openNewPostFragment(){
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        CreateNewPost newPost = new CreateNewPost();
+
+        transaction.replace(R.id.journey_fragment_container,newPost).commit();
     }
 
     public void openDashboardFragment() {
@@ -61,10 +76,20 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openInsightsFragment() {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        InsightsFragment insightsFragment = new InsightsFragment();
+//        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        InsightsFragment insightsFragment = new InsightsFragment();
+//
+//        transaction.replace(R.id.journey_fragment_container, insightsFragment).commit();
 
-        transaction.replace(R.id.journey_fragment_container, insightsFragment).commit();
+        Database.FIREBASE_AUTH.signOut();
+        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Log.i(TAG, "SIGNED OUT GOOGLE");
+            }
+        });
+
+        finish();
     }
 
     @Override
@@ -77,6 +102,9 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 break;
             case R.id.profile_item:
                 openProfileFragment();
+                break;
+            case R.id.add_item:
+                openNewPostFragment();
                 break;
             case R.id.messages_item:
                 openChatFragment();

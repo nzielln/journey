@@ -5,131 +5,170 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="32dp"
+    android:gravity="center_horizontal"
     tools:context=".JourneyApp.Login.LoginPage">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_gravity="center_vertical">
 
         <ImageView
             android:id="@+id/journeyLogo"
-            android:layout_width="290dp"
-            android:layout_height="290dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_marginBottom="32dp"
             android:contentDescription="@string/logo_Journey"
             android:src="@drawable/logo_login_page"
-            android:layout_centerHorizontal="true"/>
+            />
 
         <TextView
             android:id="@+id/welcomeBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:lines="2"
             android:text="@string/welcome_back"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/dark_blue"
-            android:layout_marginTop="299dp"/>
+            android:theme="@style/heading"
+            android:layout_marginBottom="32dp"
+            android:textColor="@color/dark_blue" />
 
         <!-- Email -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="370dp">
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            >
 
             <EditText
+                android:id="@+id/user_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/email_JourneyUser"
-                android:drawableStart="@drawable/email_outline_icon"
-                android:drawablePadding="15dp"
+                android:hint="@string/email_JourneyUser"
+                android:drawableStart="@drawable/small_email"
+                android:drawablePadding="10dp"
                 android:textColor="@color/light_blue"
                 android:paddingBottom="20dp"
-                android:backgroundTint="@color/light_blue"/>
-        </RelativeLayout>
+                android:theme="@style/body_normal"
+                android:drawableTint="@color/light_blue"
+                android:background="@drawable/bottom_border"
+                android:lines="1"
+                android:maxLines="1"
+                android:textColorHint="@color/light_blue"
+                android:inputType="textEmailAddress"
+                />
 
-        <!-- Password -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="450dp">
-
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/password_JourneyPassword"
-                android:drawableStart="@drawable/email_outline_icon"
-                android:drawablePadding="15dp"
-                android:drawableEnd="@drawable/eye_invisible"
-                android:textColor="@color/light_blue"
-                android:paddingBottom="20dp"
-                android:backgroundTint="@color/light_blue"/>
+                android:orientation="horizontal"
+                android:background="@drawable/bottom_border"
+
+                >
+                <EditText
+                    android:id="@+id/user_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/password_JourneyPassword"
+                    android:drawableStart="@drawable/small_lock"
+                    android:drawablePadding="10dp"
+                    android:textColor="@color/light_blue"
+                    android:theme="@style/body_normal"
+                    android:drawableTint="@color/light_blue"
+                    android:background="@null"
+                    android:lines="1"
+                    android:paddingBottom="20dp"
+
+                    android:maxLines="1"
+                    android:textColorHint="@color/light_blue"
+                    android:inputType="textPassword"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/show_password"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="?attr/materialIconButtonStyle"
+                    app:icon="@drawable/small_eye_closed"
+                    app:iconTint="@color/light_blue"
+                    app:iconPadding="0dp"
+                    />
+
+            </LinearLayout>
+
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="55dp"
-                android:layout_marginLeft="230dp"
+                android:gravity="end"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="64dp"
                 android:text="@string/forgot_password"
+                android:theme="@style/tab_semi_small"
                 android:textColor="@color/dark_blue"
-                android:textSize="14sp"
-                android:textStyle="bold"/>
-        </RelativeLayout>
+                />
 
-        <!-- Buttons -->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="550dp">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:theme="@style/body_semi"
+                    android:text="@string/log_in"
+                    app:cornerRadius="10dp"
+                    android:textStyle="bold"/>
 
-            <Button
-                android:id="@+id/buttonLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:text="@string/log_in"
-                android:textStyle="bold"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sign_up_with_google"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAllCaps="false"
-                android:text="@string/continue_with_google"
-                android:textStyle="bold"
-                android:layout_marginTop="50dp"
-                android:drawableLeft="@drawable/common_google_signin_btn_icon_light"/>
-
-
-        </RelativeLayout>
+                    android:textAllCaps="false"
+                    android:text="@string/continue_with_google"
+                    android:theme="@style/body_semi"
+                    android:gravity="center"
+                    app:iconTint="@color/dark_blue"
+                    app:iconGravity="textStart"
+                    app:iconSize="15dp"
+                    app:icon="@drawable/googleg_standard_color_18"
+                    android:backgroundTint="@android:color/transparent"
+                    android:textColor="@color/dark_blue"
+                    app:strokeColor="@color/dark_blue"
+                    app:strokeWidth="1.5dp"
+                    app:cornerRadius="10dp"
+                    />
+        </LinearLayout>
 
         <!-- Singup -->
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="660dp"
+            android:clickable="true"
+            android:onClick="openSignUpActivity"
             android:gravity="center">
 
             <TextView
                 android:id="@+id/question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark_blue"
-                android:text="@string/don_t_have_an_account_already" />
+                android:text="@string/don_t_have_an_account_already"
+                android:gravity="center"
+                android:theme="@style/tab_normal"
+                />
+            <View
+                android:id="@+id/space_around"
+                android:layout_width="2dp"
+                android:layout_height="2dp"
+                />
 
             <TextView
                 android:id="@+id/signup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/dark_blue"
-                android:textStyle="bold"
-                android:text="@string/sign_up_here"
-                android:layout_toEndOf="@+id/question"/>
+                android:theme="@style/tab_bold_small"
+                android:text="@string/sign_up_here"/>
 
-        </RelativeLayout>
-
-    </RelativeLayout>
+        </LinearLayout>
 
 </LinearLayout>
 

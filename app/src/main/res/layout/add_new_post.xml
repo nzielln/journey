@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Add new Post"
+        android:text="Create New Post"
         android:theme="@style/subheading_medium"
         android:textColor="@color/dark_blue"
         android:gravity="center"

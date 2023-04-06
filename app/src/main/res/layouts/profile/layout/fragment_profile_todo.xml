@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
     android:orientation="vertical"
     tools:context=".JourneyApp.Profile.ProfileToDoFragment">
 
@@ -21,7 +20,7 @@
             android:text="@string/tasks"
             android:textAllCaps="true"
             android:textColor="@color/light_blue"
-            android:theme="@style/tab_semi" />
+            android:theme="@style/tab_semi_small" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/add_button"
@@ -51,7 +50,7 @@
         android:text="@string/completed"
         android:textAllCaps="true"
         android:textColor="@color/light_blue"
-        android:theme="@style/tab_semi" />
+        android:theme="@style/tab_semi_small" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todo_completed_recycler_view"

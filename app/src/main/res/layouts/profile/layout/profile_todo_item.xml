@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/todo_sample_title"
-            android:theme="@style/tab_semi"
+            android:theme="@style/tab_semi_small"
             android:maxLines="2"
 
             />

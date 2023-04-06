@@ -13,7 +13,7 @@
             android:id="@+id/timeline"
             android:layout_width="10dp"
             android:layout_height="match_parent"
-            android:background="@color/light_blue_10"
+            android:background="@drawable/timeline_bg"
             android:gravity="center_horizontal"
             >
                 <View
