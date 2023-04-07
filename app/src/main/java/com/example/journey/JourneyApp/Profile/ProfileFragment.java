@@ -1,5 +1,7 @@
 package com.example.journey.JourneyApp.Profile;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,10 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
-import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
+import com.example.journey.JourneyApp.Settings.Settings;
 import com.example.journey.R;
-import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileTopMenuLayoutBinding;
 import com.google.android.material.tabs.TabLayout;
@@ -29,133 +30,129 @@ import com.google.android.material.tabs.TabLayout;
  */
 public class ProfileFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
-    Button settingsTab;
-    FragmentManager fragmentManager;
-    TabLayout tabLayout;
-    Button addNewApplication;
-    FragmentProfileBinding binding;
-    View layoutInflater;
+  Button settingsTab;
+  FragmentManager fragmentManager;
+  TabLayout tabLayout;
+  Button addNewApplication;
+  FragmentProfileBinding binding;
+  View layoutInflater;
+  Activity activity;
 
-    public ProfileFragment() {
-        super(R.layout.fragment_profile);
-    }
-
-
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //settingsTab = findByView(R.id.settingsTab);
+  public ProfileFragment() {
+    super(R.layout.fragment_profile);
+  }
 
 
-    }
+  public static ProfileFragment newInstance(String param1, String param2) {
+    ProfileFragment fragment = new ProfileFragment();
+    Bundle args = new Bundle();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment\
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
+    return fragment;
+  }
 
-        fragmentManager = getChildFragmentManager();
-        showFragment(new ProfileToDoFragment());
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    //settingsTab = findByView(R.id.settingsTab);
+  }
+
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment\
+    binding = FragmentProfileBinding.inflate(inflater, container, false);
+
+    fragmentManager = getChildFragmentManager();
+    showFragment(new ProfileToDoFragment());
+
+    activity = getActivity();
+
+    //showFragment(new SettingsFragment());
+    return binding.getRoot();
+  }
 
 
-        //showFragment(new SettingsFragment());
-        return binding.getRoot();
-    }
 
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
 
+    tabLayout = binding.profileTab;
+    addNewApplication = binding.addNewApplicationButton;
+    tabLayout.addOnTabSelectedListener(this);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    ProfileTopMenuLayoutBinding topMenu = binding.includeProfileMenu;
 
-        tabLayout = binding.profileTab;
-        addNewApplication = binding.addNewApplicationButton;
-        tabLayout.addOnTabSelectedListener(this);
-
-        ProfileTopMenuLayoutBinding topMenu = binding.includeProfileMenu;
-
-        //layoutInflater = inflater.inflate(R.layout.fragment_profile, container, false);
-        settingsTab = topMenu.settingsTabNav;
-        settingsTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openSettingsFragment();
-            }
-        });
-
-        addNewApplication.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openAddApplicationModal();
+    addNewApplication.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        openAddApplicationModal();
 //                openUpdateApplicationModal();
-            }
-        });
-    }
+      }
+    });
+  }
 
-    public void showFragment(Fragment fragment) {
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.profile_fragment_container, fragment).commit();
-    }
+  public void showFragment(Fragment fragment) {
+    FragmentTransaction transaction = fragmentManager.beginTransaction();
+    transaction.replace(R.id.profile_fragment_container, fragment).commit();
+  }
 
-    public void openAddApplicationModal() {
-        AddApplicationModal addApplicationModal = new AddApplicationModal();
-        addApplicationModal.show(getChildFragmentManager(), AddApplicationModal.TAG);
-    }
+  public void openAddApplicationModal() {
+    AddApplicationModal addApplicationModal = new AddApplicationModal();
+    addApplicationModal.show(getChildFragmentManager(), AddApplicationModal.TAG);
+  }
 
-    public void openUpdateApplicationModal() {
-        UpdateApplicationModal updateApplicationModal = new UpdateApplicationModal();
-        updateApplicationModal.show(getChildFragmentManager(), UpdateApplicationModal.TAG);
-    }
+  public void openUpdateApplicationModal() {
+    UpdateApplicationModal updateApplicationModal = new UpdateApplicationModal();
+    updateApplicationModal.show(getChildFragmentManager(), UpdateApplicationModal.TAG);
+  }
 
-    /**
-     * The openSettingsFragment() method opens
-     * the settings fragment when the
-     * settings tab button is pressed.
-     */
-    public void openSettingsFragment() {
-        SettingsFragment settingsFragment = new SettingsFragment();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+  /**
+   * The openSettingsActivity() onStart() method opens
+   * the activity fragment when the
+   * activity tab button is pressed.
+   */
+  public void onStart() {
+    super.onStart();
 
-        transaction.replace(R.id.settingsLayout, settingsFragment).commit();
-    }
+    settingsTab = (Button) activity.findViewById(R.id.settingsTabNav);
+    settingsTab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //Intent i = new Intent(activity, Settings.class);
+        startActivity(new Intent(activity, Settings.class));
+      }
+    });
+  }
 
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        switch (tab.getPosition()) {
-            case 0:
-                showFragment(new ProfileToDoFragment());
-                break;
-            case 1:
-                showFragment(new ProfileTimelineFragment());
-                break;
-            case 2:
-                showFragment(new ProfileDocumentsFragment());
-                break;
+  @Override
+  public void onTabSelected(TabLayout.Tab tab) {
+    switch (tab.getPosition()) {
+      case 0:
+        showFragment(new ProfileToDoFragment());
+        break;
+      case 1:
+        showFragment(new ProfileTimelineFragment());
+        break;
+      case 2:
+        showFragment(new ProfileDocumentsFragment());
+        break;
 
                 /*case 3:
                 showFragment(new SettingsFragment());
                 break;
 
                  */
-        }
     }
+  }
 
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
+  @Override
+  public void onTabUnselected(TabLayout.Tab tab) {
 
-    }
+  }
 
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
+  @Override
+  public void onTabReselected(TabLayout.Tab tab) {
 
-    }
+  }
 }
