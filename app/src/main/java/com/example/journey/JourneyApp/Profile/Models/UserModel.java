@@ -17,6 +17,12 @@ public class UserModel {
     Integer followers = 0;
     Integer following = 0;
     String profileImage = "";
+    String imageURL;
+
+    String status;;
+
+    //Constructors
+    public UserModel(){}
 
     public UserModel(String userID, String email) {
         this.userID = userID;
@@ -31,7 +37,9 @@ public class UserModel {
             String lastName,
             Integer followers,
             Integer following,
-            String profileImage
+            String profileImage,
+            String imageURL,
+            String status
     ) {
         this.userID = userID;
         this.email = email;
@@ -41,6 +49,8 @@ public class UserModel {
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
+        this.imageURL = imageURL;
+        this.status = status;
 
     }
 
@@ -54,7 +64,9 @@ public class UserModel {
             ArrayList<String> chatIDs,
             Integer followers,
             Integer following,
-            String profileImage
+            String profileImage,
+            String imageURL,
+            String status
     ) {
         this.userID = userID;
         this.email = email;
@@ -66,6 +78,9 @@ public class UserModel {
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
+        this.imageURL = imageURL;
+        this.status = status;
+
     }
 
     public void addUserNameDetails(String firstName, String lastName) {
@@ -156,8 +171,24 @@ public class UserModel {
         return profileImage;
     }
 
-    public static UserModel getMockUser() {
+    public String getImageURL(){
+        return imageURL;
+    }
 
-        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
+    public void setImageURL(String imageURL){
+        this.imageURL = imageURL;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public static UserModel getMockUser() {
+        //return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
+        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "", "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3", "");
     }
 }

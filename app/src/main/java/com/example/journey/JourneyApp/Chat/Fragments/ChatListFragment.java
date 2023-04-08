@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import com.example.journey.JourneyApp.Chat.Adapter.UserAdapter;
 import com.example.journey.JourneyApp.Chat.Model.ChatList;
 import com.example.journey.JourneyApp.Chat.Model.Users;
+import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +36,7 @@ import java.util.List;
 public class ChatListFragment extends Fragment {
 
     private UserAdapter userAdapter;
-    private List<Users> mUsers;
+    private List<UserModel> mUsers;
     FirebaseUser fuser;
     DatabaseReference reference;
 
@@ -47,23 +49,20 @@ public class ChatListFragment extends Fragment {
         // Required empty public constructor
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_list, container, false);
         recyclerView = view.findViewById(R.id.recycler_view2);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
+        fuser = FirebaseAuth.getInstance(Database.JOURNEYDB).getCurrentUser();
 
         usersList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("ChatList").child(fuser.getUid());
+        reference = Database.DB_REFERENCE.child("ChatList").child(fuser.getUid());
 
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -90,15 +89,15 @@ public class ChatListFragment extends Fragment {
     public void chatList(){
         //Getting all recent chats
         mUsers = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("MyUsers");
+        reference = Database.DB_REFERENCE.child("MyUsers");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
-                    Users user = snapshot.getValue(Users.class);
+                    UserModel user = snapshot.getValue(UserModel.class);
                     for (ChatList chatlist : usersList){
-                        if (user.getId().equals(chatlist.getId())){
+                        if (user.getUserID().equals(chatlist.getId())){
                             mUsers.add(user);
                         }
                     }

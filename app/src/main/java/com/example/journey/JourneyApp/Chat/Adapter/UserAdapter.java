@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Chat.MessageActivity;
 import com.example.journey.JourneyApp.Chat.Model.Users;
+import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 
 import java.util.List;
@@ -21,14 +22,14 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private Context context;
-    private List<Users> mUsers;
+    private List<UserModel> mUsers;
 
     private boolean isChat;
 
 
 
     // Constructor
-    public UserAdapter(Context context, List<Users> mUsers, boolean isChat){
+    public UserAdapter(Context context, List<UserModel> mUsers, boolean isChat){
         this.context = context;
         this.mUsers = mUsers;
         this.isChat = isChat;
@@ -44,7 +45,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
 
-        Users users = mUsers.get(position);
+        UserModel users = mUsers.get(position);
         holder.username.setText(users.getUsername());
 
         if (users.getImageURL().equals("default")){
@@ -77,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             @Override
             public void onClick(View v){
                 Intent i = new Intent(context, MessageActivity.class);
-                i.putExtra("userid", users.getId());
+                i.putExtra("userid", users.getUserID());
                 context.startActivity(i);
             }
         });

@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -45,6 +46,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class SignUp extends AppCompatActivity {
@@ -75,13 +77,20 @@ public class SignUp extends AppCompatActivity {
         showHidePassword = findViewById(R.id.show_password);
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
+        //Adding Event Listener to Button Register
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String fullNameInput = String.valueOf(fullName.getText());
                 String emailInput = String.valueOf(email.getText());
                 String passwordInput = String.valueOf(password.getText());
-                createNewUser(fullNameInput, emailInput, passwordInput);
+
+                if (TextUtils.isEmpty(fullNameInput) || TextUtils.isEmpty(emailInput) || TextUtils.isEmpty(passwordInput)){
+                    Toast.makeText(SignUp.this, "All three fields are required", Toast.LENGTH_SHORT).show();
+                } else {
+                    createNewUser(fullNameInput, emailInput, passwordInput);
+                }
+
             }
         });
 
@@ -181,6 +190,8 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+
                             Log.i(TAG, "SUCCESSFULLY CREATED NEW USER");
 
                             FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
@@ -188,15 +199,18 @@ public class SignUp extends AppCompatActivity {
                             reloadView();
                             addNewUserToDatabase(user, fullname);
                             proceedToDashboarForUser(user);
+
                         } else {
                             Log.e(TAG, "FAILED TO CREATE NEW USER", task.getException());
-                            Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+                            Toast.makeText(SignUp.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                            //Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
                             reloadView();
                         }
                     }
                 });
 
     }
+
 
     void addNewUserToDatabase(FirebaseUser user, String fullname) {
         String[] names = fullname.split(" ");
@@ -212,6 +226,8 @@ public class SignUp extends AppCompatActivity {
             Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
         }
     }
+
+
 
     @Override
     protected void onResume() {
@@ -239,6 +255,8 @@ public class SignUp extends AppCompatActivity {
         Log.i(TAG, "PROCEED TO DASHBOARD");
         startActivity(new Intent(this, JourneyMain.class));
     }
+
+
 
     void signUpWithGoogle() {
         googleIntentLauncher.launch(new Intent(googleSignInClient.getSignInIntent()));

@@ -9,7 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.journey.JourneyApp.Chat.ChatFragment;
+//import com.example.journey.JourneyApp.Chat.ChatFragment;
+import com.example.journey.JourneyApp.Chat.Fragments.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
 import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;

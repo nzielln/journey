@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import com.example.journey.R;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
