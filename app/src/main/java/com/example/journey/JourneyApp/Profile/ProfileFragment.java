@@ -1,8 +1,13 @@
 package com.example.journey.JourneyApp.Profile;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -13,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +33,7 @@ import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Signup.SignUp;
 import com.example.journey.R;
 import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.Sticker.Constants;
@@ -34,16 +41,23 @@ import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileDetailsBinding;
 import com.example.journey.databinding.ProfileTopMenuLayoutBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,6 +66,7 @@ import java.util.Objects;
  */
 public class ProfileFragment extends Fragment implements TabLayout.OnTabSelectedListener {
     String TAG = ProfileFragment.class.toGenericString();
+    private final Integer SELECT_IMAGE = 33;
     Button settingsTab;
     FragmentManager fragmentManager;
     TabLayout tabLayout;
@@ -60,6 +75,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     View layoutInflater;
     FirebaseUser currentUser;
     UserModel currentUserModel;
+    ActivityResultLauncher<Intent> pickerLauncher;
 
     ShapeableImageView profilePicture;
     TextView followers;
@@ -80,13 +96,29 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     public static ProfileFragment newInstance(String param1, String param2) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
-
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        pickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result == null) {
+                        Helper.showToast(getContext(), "FAILED TO OPEN PICKER");
+                        return;
+                    }
+
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Intent intent = result.getData();
+                        Uri filePath = intent.getData();
+                        uploadImageToStorage(filePath);
+                    } else {
+                        Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
+                    }
+                }
+        );
     }
 
     @Override
@@ -140,14 +172,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             }
         });
 
-        profilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pickProfilePictureTapped();
-            }
-        });
-
-
         settingsTab = topMenu.settingsTabNav;
         settingsTab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,8 +186,16 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 openAddApplicationModal();
             }
         });
+
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickProfilePictureTapped();
+            }
+        });
     }
 
+    // Opening Fragments
     public void showFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.profile_fragment_container, fragment).commit();
@@ -186,6 +218,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         transaction.replace(R.id.settingsLayout, settingsFragment).commit();
     }
 
+    // Updating Profile View
     public void updateProfileView() {
 
         String fullName = currentUserModel.getFirstName() + " " + currentUserModel.getLastName();
@@ -196,31 +229,70 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         if (currentUserModel.getProfileImage() == null) {
             profilePicture.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.pick_photo));
         } else {
-            StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child("sample.jpeg");
+            StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
             Glide.with(requireActivity()).load(profileURL).into(profilePicture);
+            profilePicture.setClickable(false);
         }
-
     }
 
+    // Updating Profile Picture
     public void pickProfilePictureTapped() {
-        ActivityResultLauncher<PickVisualMediaRequest> pickerLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-           if (uri != null) {
-               Log.i(TAG, "SELECTED IMAGE WITH URI: " + uri);
-
-           } else {
-               Log.e(TAG, "NO IMAGE SELECTED");
-           }
-        });
-
-        pickerLauncher.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build()
-        );
-
-
-
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        pickerLauncher.launch(intent);
     }
 
+    private void uploadImageToStorage(Uri filepath) {
+        String filename = createFileName();
+        StorageReference storageReference = Database.DB_STORAGE_REFERENCE.child(filename);
+
+        storageReference.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i(TAG, "IMAGE SUCCESSFULLY UPLOADED TO FIREBASE");
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filepath);
+                    profilePicture.setImageBitmap(bitmap);
+                    saveUserProfilePicture(filename);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "FAILED TO UPLOAD IMAGE TO FIREBASE");
+            }
+        });
+    }
+
+    private String createFileName() {
+        return "profile_" + currentUser.getUid() + "_" + UUID.randomUUID().toString();
+    }
+
+    private void saveUserProfilePicture(String filename) {
+        Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                UserModel userModel = currentData.getValue(UserModel.class);
+
+                if (userModel != null) {
+                    userModel.setProfileImage(filename);
+                    currentData.setValue(userModel);
+                }
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                Log.e(TAG, "FAILED TO UPDATE USER WITH NEW PROFILE PICTURE");
+            }
+        });
+    }
+
+    // Profile Tab Menu
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         switch (tab.getPosition()) {
