@@ -2,6 +2,7 @@ package com.example.journey.JourneyApp.Profile;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -44,6 +46,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseUser;
@@ -55,7 +58,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -76,6 +81,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     FirebaseUser currentUser;
     UserModel currentUserModel;
     ActivityResultLauncher<Intent> pickerLauncher;
+    ActivityResultLauncher<Intent> captureLauncher;
 
     ShapeableImageView profilePicture;
     TextView followers;
@@ -114,6 +120,24 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                         Intent intent = result.getData();
                         Uri filePath = intent.getData();
                         uploadImageToStorage(filePath);
+                    } else {
+                        Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
+                    }
+                }
+        );
+
+        captureLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result == null) {
+                        Helper.showToast(getContext(), "FAILED TO OPEN PICKER");
+                        return;
+                    }
+
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Intent intent = result.getData();
+                            Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                            uploadImageToStorage(bitmap);
                     } else {
                         Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
                     }
@@ -237,10 +261,36 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
 
     // Updating Profile Picture
     public void pickProfilePictureTapped() {
+        AlertDialog builder = new MaterialAlertDialogBuilder(getContext())
+                .setTitle("Add profile picture")
+                .setMessage("Select the method you would prefer to add a picture to your profile.")
+                .setNeutralButton(getContext().getResources().getString(R.string.gallery), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        selectImage();
+                    }
+                })
+                .setNegativeButton(getContext().getResources().getString(R.string.camera), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        openImageCapture();
+                    }
+                })
+                .show();
+    }
+
+    public void selectImage() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_PICK);
         pickerLauncher.launch(intent);
+    }
+
+    private void openImageCapture() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            captureLauncher.launch(intent);
+        }
     }
 
     private void uploadImageToStorage(Uri filepath) {
@@ -258,6 +308,29 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "FAILED TO UPLOAD IMAGE TO FIREBASE");
+            }
+        });
+    }
+
+    private void uploadImageToStorage(Bitmap bitmap) {
+        String filename = createFileName();
+        StorageReference storageReference = Database.DB_STORAGE_REFERENCE.child(filename);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+
+        storageReference.putBytes(bytes).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.i(TAG, "IMAGE SUCCESSFULLY UPLOADED TO FIREBASE");
+                    profilePicture.setImageBitmap(bitmap);
+                    saveUserProfilePicture(filename);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

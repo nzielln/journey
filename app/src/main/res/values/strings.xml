@@ -123,4 +123,7 @@
     <string name="sign_up">Sign up</string>
     <string name="full_name">Full Name</string>
     <string name="user_name_format">Hi, %1$s! </string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+
 </resources>
