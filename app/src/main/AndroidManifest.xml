@@ -27,8 +27,15 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
+            android:name=".JourneyApp.Settings.Settings"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".JourneyApp.Signup.SignUp"
-            android:exported="false" >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
