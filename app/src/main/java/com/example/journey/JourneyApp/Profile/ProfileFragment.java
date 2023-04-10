@@ -29,8 +29,10 @@ import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
+import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Signup.SignUp;
 import com.example.journey.R;
 import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.databinding.FragmentProfileBinding;
@@ -122,16 +124,16 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                         return;
                     }
 
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Intent intent = result.getData();
-                            Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
-                            uploadImageToStorage(bitmap);
-                    } else {
-                        Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
-                    }
-                }
-        );
-    }
+                  if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                      Intent intent = result.getData();
+                          Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                          uploadImageToStorage(bitmap);
+                  } else {
+                      Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
+                  }
+              }
+      );
+  }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
