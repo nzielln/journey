@@ -1,16 +1,13 @@
 package com.example.journey.JourneyApp.Profile;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,13 +29,10 @@ import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
-import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
-import com.example.journey.JourneyApp.Signup.SignUp;
 import com.example.journey.R;
 import com.example.journey.JourneyApp.Settings.SettingsFragment;
-import com.example.journey.Sticker.Constants;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileDetailsBinding;
 import com.example.journey.databinding.ProfileTopMenuLayoutBinding;
@@ -60,8 +54,6 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -71,13 +63,11 @@ import java.util.UUID;
  */
 public class ProfileFragment extends Fragment implements TabLayout.OnTabSelectedListener {
     String TAG = ProfileFragment.class.toGenericString();
-    private final Integer SELECT_IMAGE = 33;
     Button settingsTab;
     FragmentManager fragmentManager;
     TabLayout tabLayout;
     Button addNewApplication;
     FragmentProfileBinding binding;
-    View layoutInflater;
     FirebaseUser currentUser;
     UserModel currentUserModel;
     ActivityResultLauncher<Intent> pickerLauncher;
@@ -87,10 +77,8 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     TextView followers;
     TextView following;
     TextView userProfileName;
-    /*
-    String text = getString(R.string.FORMAT_STRING, ARGUMENTS);
 
-     */
+    final String USER_MODEL = "USER_MODEL";
 
     // Listeners
     ValueEventListener userEventListener;
@@ -222,6 +210,8 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     // Opening Fragments
     public void showFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(USER_MODEL, currentUserModel);
         transaction.replace(R.id.profile_fragment_container, fragment).commit();
     }
 
@@ -304,6 +294,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filepath);
                     profilePicture.setImageBitmap(bitmap);
+                    profilePicture.setClickable(false);
                     saveUserProfilePicture(filename);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -330,6 +321,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(TAG, "IMAGE SUCCESSFULLY UPLOADED TO FIREBASE");
                     profilePicture.setImageBitmap(bitmap);
+                    profilePicture.setClickable(false);
                     saveUserProfilePicture(filename);
             }
         }).addOnFailureListener(new OnFailureListener() {

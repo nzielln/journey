@@ -21,11 +21,10 @@ import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentProfileTodoBinding;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +37,7 @@ public class ProfileToDoFragment extends Fragment {
     RecyclerView todoCompletedRecyclerView;
     ProfileTodoRecyclerViewAdapter profileTodoRecyclerViewAdapter;
     ProfileTodoCompletedRecyclerViewAdapter profileTodoCompletedRecyclerViewAdapter;
+    FirebaseUser currentUser;
 
     Button addButton;
 
@@ -57,22 +57,7 @@ public class ProfileToDoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addSamples();
         Bundle bundle = new Bundle();
-
-    }
-
-    public void addSamples() {
-
-        sample.add(TaskItemModel.getMockTask(false));
-        sample.add(TaskItemModel.getMockTask(false));
-        sample.add(TaskItemModel.getMockTask(true));
-        sample.add(TaskItemModel.getMockTask(true));
-        sample.add(TaskItemModel.getMockTask(false));
-
-        tasks = Helper.getToBeCompletedTasks(sample);
-        completed = Helper.getCompletedTasks(sample);
-
     }
 
     @Override
@@ -95,11 +80,15 @@ public class ProfileToDoFragment extends Fragment {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addNewTask();
-
-                openAddTaskModal();
+                addNewTask();
             }
         });
+
+        profileTodoRecyclerViewAdapter = new ProfileTodoRecyclerViewAdapter(tasks);
+        profileTodoCompletedRecyclerViewAdapter = new ProfileTodoCompletedRecyclerViewAdapter(completed);
+
+//        DatabaseReference userTasks = Database.DB_REFERENCE.child(Database.TASKS).child();
+
     }
 
     public void openAddTaskModal() {
@@ -115,15 +104,12 @@ public class ProfileToDoFragment extends Fragment {
     }
 
     public void createRecyclerView() {
-        profileTodoRecyclerViewAdapter = new ProfileTodoRecyclerViewAdapter(tasks);
-        profileTodoCompletedRecyclerViewAdapter = new ProfileTodoCompletedRecyclerViewAdapter(completed);
-
         todoRecyclerView.setHasFixedSize(true);
-        todoRecyclerView.setAdapter(profileTodoRecyclerViewAdapter);
+//        todoRecyclerView.setAdapter(profileTodoRecyclerViewAdapter);
         todoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         todoCompletedRecyclerView.setHasFixedSize(true);
-        todoCompletedRecyclerView.setAdapter(profileTodoCompletedRecyclerViewAdapter);
+//        todoCompletedRecyclerView.setAdapter(profileTodoCompletedRecyclerViewAdapter);
         todoCompletedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }

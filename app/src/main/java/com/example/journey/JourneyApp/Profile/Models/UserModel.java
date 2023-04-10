@@ -1,12 +1,17 @@
 package com.example.journey.JourneyApp.Profile.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.example.journey.JourneyApp.Main.Helper;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UserModel {
+public class UserModel implements Parcelable {
     String userID;
     String email;
     String username;
@@ -69,6 +74,39 @@ public class UserModel {
         this.following = following;
         this.profileImage = profileImage;
     }
+
+    protected UserModel(Parcel in) {
+        userID = in.readString();
+        email = in.readString();
+        username = in.readString();
+        firstName = in.readString();
+        lastName = in.readString();
+        applicationsIDs = in.createStringArrayList();
+        chatIDs = in.createStringArrayList();
+        if (in.readByte() == 0) {
+            followers = null;
+        } else {
+            followers = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            following = null;
+        } else {
+            following = in.readInt();
+        }
+        profileImage = in.readString();
+    }
+
+    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
+        @Override
+        public UserModel createFromParcel(Parcel in) {
+            return new UserModel(in);
+        }
+
+        @Override
+        public UserModel[] newArray(int size) {
+            return new UserModel[size];
+        }
+    };
 
     public void addUserNameDetails(String firstName, String lastName) {
         this.firstName= firstName;
@@ -161,5 +199,34 @@ public class UserModel {
     public static UserModel getMockUser() {
 
         return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(userID);
+        dest.writeString(email);
+        dest.writeString(username);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeStringList(applicationsIDs);
+        dest.writeStringList(chatIDs);
+        if (followers == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(followers);
+        }
+        if (following == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(following);
+        }
+        dest.writeString(profileImage);
     }
 }
