@@ -157,6 +157,7 @@
             android:layout_marginStart="70dp"
             android:layout_marginTop="40dp"
             android:theme="@style/all_caps"
+            android:textColor="@color/light_blue"
             android:text="MONDAY 12:33 PM"/>
         <TextView
             android:id="@+id/info_infoText"

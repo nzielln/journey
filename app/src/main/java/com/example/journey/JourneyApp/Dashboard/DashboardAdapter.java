@@ -1,6 +1,7 @@
 package com.example.journey.JourneyApp.Dashboard;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
     ArrayList<CardModel> items;
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameText;
@@ -50,6 +52,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     }
     @Override
     public int getItemCount(){return items.size();}
+
+
 
 
 
