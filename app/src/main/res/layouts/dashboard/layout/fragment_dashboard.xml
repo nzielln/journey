@@ -37,8 +37,8 @@
            android:theme="@style/subheading_medium"
            android:layout_weight="3"
            android:paddingStart="8dp"
-           android:layout_marginTop="8dp"
-           android:text="Hi, Jessica Jones"/>
+           android:layout_marginTop="6dp"
+           android:text="Hi, Jessica Jones!"/>
 
        <!--    <ImageButton-->
 <!--        android:id="@+id/notification_bell_IB"-->
@@ -149,14 +149,14 @@
             android:layout_marginStart="70dp"
             android:layout_marginTop="20dp"
             android:theme="@style/subheading_semi"
-            android:text="Samantha Greene"/>
+            android:text="Samantha Green"/>
         <TextView
             android:id="@+id/info_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
             android:layout_marginTop="40dp"
-            android:theme="@style/all_caps_medium"
+            android:theme="@style/all_caps"
             android:text="MONDAY 12:33 PM"/>
         <TextView
             android:id="@+id/info_infoText"
@@ -166,12 +166,14 @@
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
             android:paddingRight="20dp"
+
             android:text="Corem ipsum dotor sit amet, consecteur
              adipiscing elit. Corem ipsum dotor.Etism eu turpis molestie dictum hvhkjcdd est a,mttis tellus. Sed digm metus."/>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="15dp"
             android:layout_marginTop="130dp">
 
             <com.google.android.material.button.MaterialButton
@@ -182,6 +184,7 @@
                 app:icon="@drawable/dashb_comment"
                 android:layout_marginStart="180dp"
                 app:iconSize="14dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/heart_Btn"
                 style="?attr/materialIconButtonStyle"

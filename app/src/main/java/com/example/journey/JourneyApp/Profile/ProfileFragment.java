@@ -35,7 +35,7 @@ import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.JourneyApp.Signup.SignUp;
-import com.example.journey.JourneyApp.Settings.SettingsFragment;
+//import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.Sticker.Constants;
 import com.example.journey.JourneyApp.Settings.Settings;
 import com.example.journey.R;
@@ -195,14 +195,14 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             }
         }
     });
-
-    settingsTab = topMenu.settingsTabNav;
-    settingsTab.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            openSettingsFragment();
-        }
-    });
+//
+//    settingsTab = topMenu.settingsTabNav;
+//    settingsTab.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            openSettingsFragment();
+//        }
+//    });
 
     addNewApplication.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -235,12 +235,12 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
       updateApplicationModal.show(getChildFragmentManager(), UpdateApplicationModal.TAG);
   }
 
-  public void openSettingsFragment() {
-      SettingsFragment settingsFragment = new SettingsFragment();
-      FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-      transaction.replace(R.id.settingsLayout, settingsFragment).commit();
-  }
+//  public void openSettingsFragment() {
+//      SettingsFragment settingsFragment = new SettingsFragment();
+//      FragmentTransaction transaction = fragmentManager.beginTransaction();
+//
+//      transaction.replace(R.id.settingsLayout, settingsFragment).commit();
+//  }
 
   // Updating Profile View
   public void updateProfileView() {
@@ -380,7 +380,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
               break;
       }
   }
-}
+
 
 @Override
 public void onTabUnselected(TabLayout.Tab tab) {
