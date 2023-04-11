@@ -30,16 +30,24 @@
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
         android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:tabIndicator="@null"
+        app:tabBackground="@drawable/tab_selection"
+        app:tabSelectedTextColor="@color/dark_blue"
+        app:tabTextColor="@color/dark_blue"
+        app:tabGravity="fill"
+        app:tabTextAppearance="@style/tab_normal"
+        app:tabSelectedTextAppearance="@style/tab_active"
+        app:tabMode="fixed"
+        android:theme="@style/tab_active"
         android:layout_below="@id/toolbar"
-        app:tabTextColor="#77a3a7"
-        app:tabSelectedTextColor="@color/white"
         app:tabIndicatorColor="@color/white"
-        android:backgroundTint="#075e54"
         app:tabIndicatorHeight="3dp"
-        android:layout_marginTop="0dp" >
+        android:layout_marginBottom="16dp"
+        app:tabRippleColor="@null"
+        android:background="@android:color/transparent">
 
     </com.google.android.material.tabs.TabLayout>
 

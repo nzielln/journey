@@ -11,12 +11,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
@@ -50,6 +52,23 @@ public class LoginPage extends AppCompatActivity {
   EditText email;
   EditText password;
 
+  //Firebase
+  FirebaseAuth auth;
+  FirebaseUser firebaseUser;
+
+  @Override
+  protected void onStart(){
+    super.onStart();
+    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    //Checking for User Existence
+    if (firebaseUser != null){
+      Intent i = new Intent(LoginPage.this, JourneyMain.class);
+      startActivity(i);
+      finish();
+    }
+  }
+
   @SuppressLint("MissingInflatedId")
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -70,12 +89,48 @@ public class LoginPage extends AppCompatActivity {
     showHidePassword = findViewById(R.id.show_password);
     password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
+    //Firebase Authentication
+    auth = FirebaseAuth.getInstance();
+    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+    //Checking for User Existence
+    if (firebaseUser != null){
+      Intent i = new Intent(LoginPage.this, JourneyMain.class);
+      startActivity(i);
+      finish();
+    }
+
     loginButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        String emailInput = String.valueOf(email.getText());
-        String passwordInput = String.valueOf(password.getText());
-        signInUser(emailInput, passwordInput);
+
+        //String emailInput = String.valueOf(email.getText());
+        //String passwordInput = String.valueOf(password.getText());
+        //signInUser(emailInput, passwordInput);
+
+        String emailInput = email.getText().toString();
+        String passwordInput = password.getText().toString();
+
+        //Checking if it is Empty
+        if (TextUtils.isEmpty(emailInput) || TextUtils.isEmpty(passwordInput)){
+          Toast.makeText(LoginPage.this, "Please Enter UserName and Password", Toast.LENGTH_SHORT).show();
+        }
+        else {
+          auth.signInWithEmailAndPassword(emailInput, passwordInput)
+                  .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                      if (task.isSuccessful()) {
+                        Intent i = new Intent(LoginPage.this, JourneyMain.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                        finish();
+                      } else {
+                        Toast.makeText(LoginPage.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
+                      }
+                    }
+                  });
+        }
       }
     });
 
@@ -113,6 +168,7 @@ public class LoginPage extends AppCompatActivity {
   }
 
   void signInUser(String email, String password) {
+    /*
     Database.FIREBASE_AUTH.signInWithEmailAndPassword(email, password) //change this
             .addOnCompleteListener(LoginPage.this, new OnCompleteListener<AuthResult>() {
               @Override
@@ -130,6 +186,8 @@ public class LoginPage extends AppCompatActivity {
                 }
               }
             });
+
+     */
   }
 
   public void setUpGoogleAuth() {

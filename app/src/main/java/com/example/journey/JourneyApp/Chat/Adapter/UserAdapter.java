@@ -22,14 +22,14 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private Context context;
-    private List<UserModel> mUsers;
+    private List<Users> mUsers;
 
     private boolean isChat;
 
 
 
     // Constructor
-    public UserAdapter(Context context, List<UserModel> mUsers, boolean isChat){
+    public UserAdapter(Context context, List<Users> mUsers, boolean isChat){
         this.context = context;
         this.mUsers = mUsers;
         this.isChat = isChat;
@@ -45,22 +45,22 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
 
-        UserModel users = mUsers.get(position);
-        holder.username.setText(users.getUsername());
+        Users user = mUsers.get(position);
+        holder.username.setText(user.getUsername());
 
-        if (users.getImageURL().equals("default")){
+        if (user.getImageURL().equals("default")){
             holder.imageView.setImageResource(R.mipmap.ic_launcher);
         }else{
             //Adding Glide Library
             Glide.with(context)
-                    .load(users.getImageURL())
+                    .load(user.getImageURL())
                     .into(holder.imageView);
         }
 
 
         //Status Check
         if (isChat) {
-            if (users.getStatus().equals("online")) {
+            if (user.getStatus().equals("online")) {
                 holder.imageViewON.setVisibility(View.VISIBLE);
                 holder.imageViewOFF.setVisibility(View.GONE);
             } else {
@@ -78,7 +78,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             @Override
             public void onClick(View v){
                 Intent i = new Intent(context, MessageActivity.class);
-                i.putExtra("userid", users.getUserID());
+                i.putExtra("userid", user.getId());
                 context.startActivity(i);
             }
         });
@@ -109,7 +109,5 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
 
     }
-
-
 
 }

@@ -54,6 +54,7 @@ public class Settings extends AppCompatActivity {
   //@Override
   public void onSignOut(View view) {
     Database.FIREBASE_AUTH.signOut();
+    FirebaseAuth.getInstance().signOut();
 
     googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
       @Override

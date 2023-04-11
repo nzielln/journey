@@ -29,16 +29,16 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link FriendListFragment newInstance} factory method to
+ * Use the {@link UsersFragment newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FriendListFragment extends Fragment {
+public class UsersFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private List<UserModel> mUsers;
+    private List<Users> mUsers;
 
-    public FriendListFragment() {
+    public UsersFragment() {
         // Required empty public constructor
     }
 
@@ -47,7 +47,7 @@ public class FriendListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_friend_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_users, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -55,14 +55,14 @@ public class FriendListFragment extends Fragment {
 
         mUsers = new ArrayList<>();
 
-        Database.getDatabase(getContext());
+        //Database.getDatabase(getContext());
         ReadUsers();
         return view;
     }
 
     private void ReadUsers(){
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance(Database.JOURNEYDB).getCurrentUser();
-        DatabaseReference reference = Database.DB_REFERENCE.child(Database.USERS);
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("MyUsers");
 
         reference.addValueEventListener(new ValueEventListener(){
 
@@ -71,9 +71,12 @@ public class FriendListFragment extends Fragment {
                 mUsers.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    UserModel user = snapshot.getValue(UserModel.class);
+                    Users user = snapshot.getValue(Users.class);
 
-                    if (user != null && user.getUserID() != null) { // added null check
+                    //assert userModel != null;
+                    if (user != null && user.getId() != null &&
+                            !user.getId().equals(firebaseUser.getUid())) {
+                    //if (!userModel.getUserID().equals(firebaseUser.getUid())) {
                         mUsers.add(user);
                     }
                 }

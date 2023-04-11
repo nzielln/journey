@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 
 import com.example.journey.R;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 
@@ -29,8 +27,6 @@ public class ChatFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
-
 
     public ChatFragment() {
         super(R.layout.fragment_chat);
@@ -48,7 +44,7 @@ public class ChatFragment extends Fragment {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(new ChatListFragment(), "Chat");
-        viewPagerAdapter.addFragment(new FriendListFragment(), "Friends");
+        viewPagerAdapter.addFragment(new UsersFragment(), "Friends");
 
         // Set the adapter to the ViewPager
         viewPager.setAdapter(viewPagerAdapter);

@@ -58,8 +58,11 @@ public class SignUp extends AppCompatActivity {
     EditText fullName;
     EditText email;
     MaterialButton showHidePassword;
-
     EditText password;
+
+    //Firebase Authentication
+    FirebaseAuth auth;
+    DatabaseReference myRef;
     private static final String TAG = SignUp.class.toGenericString();
     private Boolean isLoggedIn;
 
@@ -76,6 +79,10 @@ public class SignUp extends AppCompatActivity {
         password = findViewById(R.id.user_password);
         showHidePassword = findViewById(R.id.show_password);
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
+        //Firebase Authentication
+        auth = FirebaseAuth.getInstance();
+        myRef = FirebaseDatabase.getInstance().getReference();
 
         //Adding Event Listener to Button Register
         signUpButton.setOnClickListener(new View.OnClickListener() {
@@ -185,20 +192,49 @@ public class SignUp extends AppCompatActivity {
     }
 
     void createNewUser(String fullname, String email, String password) {
-        Database.FIREBASE_AUTH.createUserWithEmailAndPassword(email, password) //change this
-                .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
+        //Database.FIREBASE_AUTH.createUserWithEmailAndPassword(email, password) //change this
+                //.addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
-
                             Log.i(TAG, "SUCCESSFULLY CREATED NEW USER");
+                            FirebaseUser firebaseUser = auth.getCurrentUser();
+                            String userid = firebaseUser.getUid();
 
-                            FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
+                            myRef = FirebaseDatabase.getInstance()
+                                    .getReference("MyUsers")
+                                    .child(userid);
+
+
+                            //HashMaps
+                            HashMap<String, String> hashMap = new HashMap<>();
+                            hashMap.put("id", userid);
+                            hashMap.put("username", fullname);
+                            hashMap.put("imageURL", "default");
+                            hashMap.put("status", "offline");
+
+                            //Opening the Main Activity after successful Login/Registration
+                            myRef.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>(){
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task){
+                                    if (task.isSuccessful()){
+                                        Intent i = new Intent(SignUp.this, JourneyMain.class);
+                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                }
+                            });
+
+                            /*FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
                             assert user != null;
                             reloadView();
                             addNewUserToDatabase(user, fullname);
                             proceedToDashboarForUser(user);
+
+                             */
 
                         } else {
                             Log.e(TAG, "FAILED TO CREATE NEW USER", task.getException());
