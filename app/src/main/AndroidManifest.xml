@@ -13,6 +13,7 @@
 
     <application
         android:allowBackup="true"
+        android:screenOrientation="portrait"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_journey"
@@ -31,6 +32,7 @@
         <activity
             android:name=".JourneyApp.Main.JourneyMain"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Journey.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
