@@ -16,13 +16,13 @@ public class UserModel {
     ArrayList<String> chatIDs = new ArrayList<>();
     Integer followers = 0;
     Integer following = 0;
-    String profileImage = "";
+    //String profileImage = "";
+    String profileImage;
     String imageURL;
-
     String status;;
 
     //Constructors
-    public UserModel(){}
+    public UserModel() { }
 
     public UserModel(String userID, String email) {
         this.userID = userID;
