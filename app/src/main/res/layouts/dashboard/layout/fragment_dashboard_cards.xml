@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="70dp"
             android:layout_marginTop="40dp"
-            android:theme="@style/all_caps_medium"
+            android:theme="@style/all_caps"
             android:text="MONDAY 12:33 PM"/>
         <TextView
             android:id="@+id/info_infoText"
@@ -55,6 +55,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:layout_marginTop="130dp">
 
             <com.google.android.material.button.MaterialButton

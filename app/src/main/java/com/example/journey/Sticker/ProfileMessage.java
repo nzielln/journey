@@ -10,8 +10,11 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.example.journey.Sticker.Models.StickerUser;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

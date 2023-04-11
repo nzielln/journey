@@ -160,7 +160,8 @@ public class SignUp extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.e(TAG, "AUTHENTICATE USING GOOGLE SUCCESSFUL");
-
+                    String fullname = account.getDisplayName();
+                    addNewUserToDatabase(Objects.requireNonNull(Database.FIREBASE_AUTH.getCurrentUser()), fullname == null ? "" : fullname);
                     proceedToDashboarForUser(Database.FIREBASE_AUTH.getCurrentUser());
                 } else {
                     Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE");
