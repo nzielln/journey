@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.R;
@@ -18,6 +19,8 @@ import com.example.journey.databinding.FragmentDashboardBinding;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +35,7 @@ public class DashboardFragment extends Fragment {
     FragmentDashboardBinding binding;
     static DatabaseReference dbReference;
     DashboardAdapter adapter;
+
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -50,6 +54,7 @@ public class DashboardFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
         adapter = new DashboardAdapter();
         //recyclerView.setAdapter(adapter);
         //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -64,8 +69,8 @@ public class DashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
-
-
+        //TextView wName = (TextView)findViewById(R.id.welcomeTv);
+        //wName.setText(currentUser.getDisplayName());
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 

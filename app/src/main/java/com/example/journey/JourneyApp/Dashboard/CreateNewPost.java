@@ -3,6 +3,7 @@ package com.example.journey.JourneyApp.Dashboard;
 import static com.example.journey.JourneyApp.Main.Helper.getShortTime;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ public class CreateNewPost extends BottomSheetDialogFragment {
     Button postAddPostButton;
     TextView postContent;
     TextView postTitle;
+    FragmentTransaction transaction;
+    DashboardFragment dashboardFragment;
 
     FirebaseUser currentUser;
     DatabaseReference dbReference;
@@ -59,11 +62,11 @@ public class CreateNewPost extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getParentFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                DashboardFragment dashboardFragment = new DashboardFragment();
+                transaction = fragmentManager.beginTransaction();
+                dashboardFragment = new DashboardFragment();
 
                 transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
-                //Toast.makeText(getActivity(), "Cancel",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Cancel",Toast.LENGTH_SHORT).show();
                 //Intent intent = new Intent(NewPost, JourneyMain.class);
                 //startActivity(intent);
             }
@@ -74,26 +77,30 @@ public class CreateNewPost extends BottomSheetDialogFragment {
         postAddPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
-                String postId= UUID.randomUUID().toString();
 
 
-                NewPost newPost = new NewPost(postId,postTitle.getText().toString(),
-                        authorId,timePosted,postContent.getText().toString());
+                Log.d("title",postTitle.getText().toString());
 
-               // newPost = Database.DB_REFERENCE.child(Database.POST_ID_TO_POST).child(newPost).setValue(newPost);
+                //postContent.getText().toString();
+                if(postTitle.getText().toString().trim().equals("") || postContent.getText().toString().trim().equals("")) {
+                   Toast.makeText(getActivity(),"Cannot Post Empty Content", Toast.LENGTH_SHORT).show();
 
-               //newPost = Database.DB_REFERENCE.child(Database("post")).child(newPost).setValue(newPost);
-               DatabaseReference postRef = dbReference.child("posts");
-               postRef.push().setValue(newPost);
+               } else {
+                   String postId= UUID.randomUUID().toString();
+
+                   NewPost newPost = new NewPost(postId,postTitle.getText().toString(),
+                           authorId,timePosted,postContent.getText().toString());
 
 
-                //newPost.push()
+                   DatabaseReference postRef = dbReference.child("posts");
+                   postRef.push().setValue(newPost);
+                   Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
+                   postTitle.setText(null);
+                   postContent.setText(null);
+                   //transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
 
-
-                postTitle.setText(null);
-                postContent.setText(null);
-
+               }
+                //transaction.replace(R.id.journey_fragment_container, a).commit();
             }
         });
         return view;
