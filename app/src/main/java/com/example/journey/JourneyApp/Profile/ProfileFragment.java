@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -29,12 +30,10 @@ import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
-import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
+import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
-import com.example.journey.JourneyApp.Signup.SignUp;
 import com.example.journey.R;
-import com.example.journey.JourneyApp.Settings.SettingsFragment;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileDetailsBinding;
 import com.example.journey.databinding.ProfileTopMenuLayoutBinding;
@@ -74,13 +73,12 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     UserModel currentUserModel;
     ActivityResultLauncher<Intent> pickerLauncher;
     ActivityResultLauncher<Intent> captureLauncher;
+    ProfileViewModel profileViewModel;
 
     ShapeableImageView profilePicture;
     TextView followers;
     TextView following;
     TextView userProfileName;
-
-    final String USER_MODEL = "USER_MODEL";
 
     // Listeners
     ValueEventListener userEventListener;
@@ -98,6 +96,9 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        currentUserModel = profileViewModel.getCurrentUserModel().getValue();
+
         pickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -174,17 +175,8 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             }
         };
 
-//        Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).addValueEventListener(userEventListener);
-        Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DataSnapshot results = task.getResult();
-                    currentUserModel = results.getValue(UserModel.class);
-                    updateProfileView();
-                }
-            }
-        });
+        updateProfileView();
+
 
         settingsTab = topMenu.settingsTabNav;
         settingsTab.setOnClickListener(new View.OnClickListener() {
@@ -213,7 +205,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     public void showFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
-        bundle.putParcelable(USER_MODEL, currentUserModel);
+
         transaction.replace(R.id.profile_fragment_container, fragment).commit();
     }
 
@@ -228,10 +220,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     }
 
     public void openSettingsFragment() {
-        SettingsFragment settingsFragment = new SettingsFragment();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
 
-        transaction.replace(R.id.settingsLayout, settingsFragment).commit();
     }
 
     // Updating Profile View
@@ -348,6 +337,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 if (userModel != null) {
                     userModel.setProfileImage(filename);
                     currentData.setValue(userModel);
+                    profileViewModel.updateCurrentUser(userModel);
                 }
                 return Transaction.success(currentData);
             }

@@ -44,7 +44,6 @@ public class SignIn extends Fragment {
 
   StickerAppDelegate delegate;
 
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

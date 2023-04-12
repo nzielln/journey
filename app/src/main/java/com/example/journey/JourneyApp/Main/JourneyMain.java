@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,8 @@ import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
 import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
 import com.example.journey.JourneyApp.Login.LoginPage;
+import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
+import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -23,13 +26,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 
 public class JourneyMain extends AppCompatActivity implements NavigationBarView.OnItemSelectedListener {
     private static final String TAG = JourneyMain.class.toGenericString();
-
+    ProfileViewModel profileViewModel;
     private FragmentManager fragmentManager;
     GoogleSignInClient googleSignInClient;
     private BottomNavigationView tabBarNavigation;
+    FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +52,20 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
 
         tabBarNavigation = findViewById(R.id.tab_nav);
         tabBarNavigation.setOnItemSelectedListener(this);
+
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
+        if (profileViewModel.getCurrentUserModel().getValue() == null) {
+            Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DataSnapshot results = task.getResult();
+                        profileViewModel.updateCurrentUser(results.getValue(UserModel.class));
+                    }
+                }
+            });
+        }
     }
 
     public void openProfileFragment() {

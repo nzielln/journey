@@ -1,7 +1,6 @@
 package com.example.journey.JourneyApp.Profile.Adapters;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.JourneyApp.Profile.Models.TimelineItemObject;
-import com.example.journey.JourneyApp.Profile.ViewHolders.ProdileTodoViewHolder;
 import com.example.journey.JourneyApp.Profile.ViewHolders.ProfileTimelineViewHolder;
 import com.example.journey.R;
 

@@ -28,6 +28,8 @@ public class Database {
     static public String USERS = "users";
     static public String APPLICATION = "applications";
     static public String TASKS = "tasks";
+    static public String COMPLETED_TASKS = "completedTasks";
+    static public String TODO_TASKS = "todoTasks";
     static public String POST_IDS = "post_ids";
     static public String LIKED_POSTS_ID = "liked_posts";
     static public String SHARED_POSTS_ID = "shared_posts";

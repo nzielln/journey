@@ -18,6 +18,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class Helper {
+    // KEYS
+    public static final String USER_MODEL = "USER_MODEL";
+
     public static String MOCK_USER_ID = UUID.randomUUID().toString();
     public static Integer RANK_NUMBER = 0;
     public static String todoISOToDate(String isoString) {
