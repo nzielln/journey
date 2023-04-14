@@ -60,31 +60,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull DashboardAdapter.ViewHolder holder, int position) {
         CardModel card = items.get(position);
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        userAuth = FirebaseAuth.getInstance();
-        user = userAuth.getCurrentUser();
-        //dbReference = database.getReference('posts');
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //userAuth = FirebaseAuth.getInstance();
+        //user = userAuth.getCurrentUser();
 
-
-        //holder.titleText.setText(dbReference.postTitle);
-        holder.nameText.setText(user.getDisplayName());
-       // holder.dateText.setText(dbReference.timePosted);
-       // holder.contentText.setText(dbReference.postContent);
+        holder.nameText.setText(card.getCardName());
+        holder.dateText.setText(card.getCardDate());
     }
 
     @Override
     public int getItemCount(){return items.size();}
-
-//    @Override
-//    public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState){
-//        super.onViewCreated(view, savedInstanceState);
-//        recyclerView = binding.dashboard_recycler_view;
-//        recyclerView.setAdapter()
-//    }
-
-
-
-
 
 
 }

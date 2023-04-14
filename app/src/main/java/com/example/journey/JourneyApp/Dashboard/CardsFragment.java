@@ -48,38 +48,21 @@ public class CardsFragment extends Fragment {
 
         binding = DashboardRvBinding.inflate(inflater, container, false);
         return binding.getRoot();
-        //return getView();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        //recyclerView = binding.dashboardRvContaine;
         recyclerView = binding.dashboardRecyclerView;
+        //dbReference = dbReference.child("post");
+        items.add(new CardModel("Samantha Greene","Monday 6:30PM","Hi this is my first post"));
+        items.add(new CardModel("Boe Jones","Monday 6:31PM","Hi this is my first post"));
+        items.add(new CardModel("Tasha Mac","Monday 7:00PM","Hi this is my first post"));
 
-        //adapter = new DashboardAdapter(items);
         adapter = new DashboardAdapter(items);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
-        //RecyclerView recyclerV = (RecyclerView) findViewById(R.id.dashboard_recycler_view);
-//        ArrayList<CardModel> recyclerVItems = new ArrayList<>();
-//        DashboardAdapter adapter = new DashboardAdapter();
-//        //recyclerV.setAdapter(adapter);
-//
-//        userAuth = FirebaseAuth.getInstance();
-//        user = userAuth.getCurrentUser();
-//        database = FirebaseDatabase.getInstance().getReference();
-//
-//        //database.child("posts").get(DataSnapshot);
-//        database = database.child("posts");
-
-//        adapter = new DashboardAdapter();
-//
-//
-//        View view = inflater.inflate(R.layout.fragment_dashboard,container, false);
-        //recyclerView.;
-
 
 }

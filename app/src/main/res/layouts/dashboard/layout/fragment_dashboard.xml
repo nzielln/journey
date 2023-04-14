@@ -7,11 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".JourneyApp.Dashboard.DashboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:text="@string/dashboard" />-->
+
    <LinearLayout
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
@@ -29,7 +25,6 @@
         android:layout_marginStart="30dp"
         app:shapeAppearanceOverlay="@style/round_dash"
          />
-<!--       app:shapeAppearanceOverlay="@style/round_dash"-->
 
        <TextView
            android:id="@+id/welcomeTv"
@@ -41,15 +36,7 @@
            android:layout_marginTop="6dp"
            android:text="Hi, Jessica Jones!"/>
 
-       <!--    <ImageButton-->
-<!--        android:id="@+id/notification_bell_IB"-->
-<!--        android:layout_width="10dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_marginEnd="30dp"-->
-<!--        android:src="@drawable/sample"-->
-<!--        android:layout_weight="1"-->
 
-<!--    />-->
        <com.google.android.material.button.MaterialButton
            android:id="@+id/notificationIconBtn"
            style="?attr/materialIconButtonStyle"
@@ -121,6 +108,7 @@
     </com.google.android.material.tabs.TabLayout>
 
     <FrameLayout
+        android:layout_marginTop="180dp"
         android:id="@+id/dashboard_rv_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
