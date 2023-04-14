@@ -10,7 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +24,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     ArrayList<CardModel> items;
 
 
+    DatabaseReference dbReference;
+    FirebaseUser user;
+    private FirebaseAuth userAuth;
+
+    public DashboardAdapter(ArrayList<CardModel> items) {
+        this.items = items;
+
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView nameText;
-        public TextView dateText;
+        private TextView nameText;
+        private TextView dateText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             nameText =(TextView)itemView.findViewById(R.id.info_name);
             dateText =(TextView)itemView.findViewById(R.id.info_date);
     }
@@ -46,12 +60,27 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public void onBindViewHolder(@NonNull DashboardAdapter.ViewHolder holder, int position) {
         CardModel card = items.get(position);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        userAuth = FirebaseAuth.getInstance();
+        user = userAuth.getCurrentUser();
+        //dbReference = database.getReference('posts');
 
-        holder.nameText.setText(card.getCardName());
-        holder.dateText.setText(card.getCardName());
+
+        //holder.titleText.setText(dbReference.postTitle);
+        holder.nameText.setText(user.getDisplayName());
+       // holder.dateText.setText(dbReference.timePosted);
+       // holder.contentText.setText(dbReference.postContent);
     }
+
     @Override
     public int getItemCount(){return items.size();}
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @NonNull Bundle savedInstanceState){
+//        super.onViewCreated(view, savedInstanceState);
+//        recyclerView = binding.dashboard_recycler_view;
+//        recyclerView.setAdapter()
+//    }
 
 
 

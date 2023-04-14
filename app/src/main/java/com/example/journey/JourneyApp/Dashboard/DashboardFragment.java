@@ -2,25 +2,40 @@ package com.example.journey.JourneyApp.Dashboard;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentDashboardBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,54 +45,79 @@ import org.w3c.dom.Text;
 public class DashboardFragment extends Fragment {
 
     FragmentManager fragmentManager;
+    DatabaseReference dbReference;
     FirebaseUser currentUser;
-    RecyclerView recyclerView;
     FragmentDashboardBinding binding;
-    static DatabaseReference dbReference;
-    DashboardAdapter adapter;
+    UserModel currentUserModel;
+    ShapeableImageView image;
+    //DatabaseReference dbReference;
+    //DashboardAdapter adapter;
+    //ArrayList<CardModel> items;
 
 
     public DashboardFragment() {
+        super(R.layout.fragment_dashboard);
         // Required empty public constructor
     }
 
-    public static DashboardFragment newInstance(String param1, String param2) {
-        DashboardFragment fragment = new DashboardFragment();
-        getDB();
-        return fragment;
-    }
-     public static void getDB(){
-         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
-     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
-
-        adapter = new DashboardAdapter();
-        //recyclerView.setAdapter(adapter);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
     }
     public void displayFragment(Fragment fragment){
+        //CardsFragment fragment = new CardsFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
+        transaction.replace(R.id.dashboard_rv_container, fragment).commit();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
-        //TextView wName = (TextView)findViewById(R.id.welcomeTv);
-        //wName.setText(currentUser.getDisplayName());
-        return inflater.inflate(R.layout.fragment_dashboard, container, false);
+        fragmentManager = getChildFragmentManager();
+
+        //View view = inflater.inflate(R.layout.fragment_dashboard,container, false);
+        displayFragment(new CardsFragment());
+        return binding.getRoot();
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.
+
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
+        dbReference.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    DataSnapshot results = task.getResult();
+
+                    currentUserModel = results.getValue(UserModel.class);
+                    ImageView image = getView().findViewById(R.id.dash_image);
+                    TextView wName = getView().findViewById (R.id.welcomeTv);
+                    wName.setText("Hi," + currentUserModel.getFirstName() + "!");
+
+                    if(currentUserModel.getProfileImage() == null) {
+                        image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
+                    }else{
+                        StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
+                        Glide.with(requireActivity()).load(profileURL).into(image);
+                        image.setClickable(false);
+                    }
+                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                }
+            }
+        });
+
+
+
+
+
 
     }
 
