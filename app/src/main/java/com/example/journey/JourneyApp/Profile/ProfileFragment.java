@@ -53,7 +53,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    //settingsTab = findByView(R.id.settingsTab);
   }
 
   @Override
@@ -108,9 +107,9 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
   }
 
   /**
-   * The openSettingsActivity() onStart() method opens
-   * the activity fragment when the
-   * activity tab button is pressed.
+   * The onStart() method opens
+   * the settings activity  when the
+   * settings button is pressed.
    */
   public void onStart() {
     super.onStart();
@@ -138,11 +137,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         showFragment(new ProfileDocumentsFragment());
         break;
 
-                /*case 3:
-                showFragment(new SettingsFragment());
-                break;
-
-                 */
     }
   }
 
