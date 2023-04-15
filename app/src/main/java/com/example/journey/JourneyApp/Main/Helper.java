@@ -57,6 +57,39 @@ public class Helper {
         return DateFormat.getTimeInstance(DateFormat.SHORT).format(date);
     }
 
+    static public String getDateFrom(Date date) {
+        return DateFormat.getDateInstance(DateFormat.LONG).format(date);
+    }
+
+    static public String getTimeFrom(int hour, int minute) {
+        String time = "AM";
+        if (hour > 12) {
+            hour -= 12;
+            time = "PM";
+        } else if (hour == 0) {
+            hour += 12;
+
+        } else if (hour == 12) {
+            time = "PM";
+        }
+
+        String hourString;
+        if (hour < 10) {
+            hourString = "0" + hour;
+        } else {
+            hourString = "" + hour;
+        }
+
+        String timeString;
+        if (minute < 10) {
+            timeString = "0" + minute;
+        } else {
+            timeString = "" + minute;
+        }
+
+        return hourString + ":" + timeString + " " + time;
+    }
+
     static public String getLongTime() {
         Date date = new Date();
         return DateFormat.getTimeInstance(DateFormat.LONG).format(date);

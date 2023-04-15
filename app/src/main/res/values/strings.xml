@@ -126,4 +126,5 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="sign_out">Sign Out</string>
+    <string name="title">Application Name</string>
 </resources>

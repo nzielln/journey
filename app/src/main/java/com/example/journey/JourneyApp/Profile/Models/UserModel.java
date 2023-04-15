@@ -17,7 +17,6 @@ public class UserModel implements Parcelable {
     String username;
     String firstName;
     String lastName;
-    ArrayList<String> applicationsIDs = new ArrayList<>();
     ArrayList<String> chatIDs = new ArrayList<>();
     Integer followers = 0;
     Integer following = 0;
@@ -68,7 +67,6 @@ public class UserModel implements Parcelable {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.applicationsIDs = applicationsIDs;
         this.chatIDs = chatIDs;
         this.followers = followers;
         this.following = following;
@@ -81,7 +79,6 @@ public class UserModel implements Parcelable {
         username = in.readString();
         firstName = in.readString();
         lastName = in.readString();
-        applicationsIDs = in.createStringArrayList();
         chatIDs = in.createStringArrayList();
         if (in.readByte() == 0) {
             followers = null;
@@ -112,16 +109,6 @@ public class UserModel implements Parcelable {
         this.firstName= firstName;
         this.lastName = lastName;
     }
-
-    public void addApplicationID(String applicationsID) {
-        this.applicationsIDs.add(applicationsID);
-    }
-
-
-    public void deleteApplication(String applicationsID) {
-        this.applicationsIDs.removeIf(uuid -> Objects.equals(uuid, applicationsID));
-    }
-
 
     public void deleteChat(String chatID) {
         this.chatIDs.removeIf(uuid -> Objects.equals(uuid, chatID));
@@ -175,9 +162,6 @@ public class UserModel implements Parcelable {
         return lastName;
     }
 
-    public ArrayList<String> getApplicationsIDs() {
-        return applicationsIDs;
-    }
 
     public ArrayList<String> getChatIDs() {
         return chatIDs;
@@ -213,7 +197,6 @@ public class UserModel implements Parcelable {
         dest.writeString(username);
         dest.writeString(firstName);
         dest.writeString(lastName);
-        dest.writeStringList(applicationsIDs);
         dest.writeStringList(chatIDs);
         if (followers == null) {
             dest.writeByte((byte) 0);

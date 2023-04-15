@@ -9,11 +9,72 @@
     android:background="@drawable/rounded_15_white_top"
     tools:context=".JourneyApp.Profile.ProfileTimelineFragment"
     >
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:alignContent="center"
+            app:justifyContent="space_between"
+            app:alignItems="center"
+            app:flexDirection="row"
+            android:layout_gravity="center"
+            >
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/application_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@null"
+                    android:backgroundTint="@color/dark_blue"
+                    android:foregroundTint="@color/dark_blue"
+                    android:textColorHint="@color/dark_blue"
+                    android:theme="@style/subheading_medium"
+                    android:gravity="start"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    app:boxStrokeWidthFocused="0dp"
+                    app:boxStrokeColor="@android:color/transparent"
+                    app:boxStrokeWidth="0dp"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:endIconDrawable="@drawable/down_chevron_arrow"
+                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    >
+
+                        <AutoCompleteTextView
+                            android:id="@+id/application_name_options"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:inputType="none"
+                            android:paddingBottom="16dp"
+                            android:theme="@style/content_medium"
+                            android:foregroundTint="@color/dark_blue"
+                            android:elevation="@null"
+                            android:hint="@null"
+                            android:layout_gravity="start"
+                            android:gravity="start"
+                            android:background="@android:color/transparent"
+                            android:backgroundTint="@android:color/transparent"
+                            android:shadowColor="@android:color/transparent"
+                            app:boxBackgroundColor="@android:color/transparent"
+
+                            />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/update_application_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/edit_icon"
+                    style="?attr/materialIconButtonStyle"
+                    app:iconTint="@color/light_blue"
+
+                    />
+        </com.google.android.flexbox.FlexboxLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/timeline_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 
             />
 </LinearLayout>

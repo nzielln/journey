@@ -16,7 +16,6 @@ import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
-import com.example.journey.JourneyApp.Profile.Models.TaskModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,11 +23,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 
 import java.util.UUID;
 
@@ -86,7 +80,7 @@ public class AddTaskModal extends BottomSheetDialogFragment {
     }
 
     public void addTask(TaskItemModel taskItemModel) {
-        String key = profileViewModel.todoUserTasksRef.push().getKey();
+        String key = profileViewModel.todoTasksRef.push().getKey();
         taskItemModel.setPushKey(key);
 
         assert key != null;

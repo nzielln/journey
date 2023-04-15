@@ -22,7 +22,9 @@ import com.example.journey.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -39,6 +41,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_journey_main);
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
@@ -46,7 +49,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 .build();
 
         googleSignInClient = GoogleSignIn.getClient(JourneyMain.this, options);
-
         fragmentManager = getSupportFragmentManager();
         openDashboardFragment();
 
@@ -62,10 +64,25 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                     if (task.isSuccessful()) {
                         DataSnapshot results = task.getResult();
                         profileViewModel.updateCurrentUser(results.getValue(UserModel.class));
+                        Log.i(TAG, "USER UPDATED");
+                    } else {
+                        Log.e(TAG, "SOMETHING WENT WRONG");
                     }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            }).addOnCanceledListener(new OnCanceledListener() {
+                @Override
+                public void onCanceled() {
+                    Log.e(TAG, "SOMETHING WENT TERRIBLY WRONG");
                 }
             });
         }
+
+
     }
 
     public void openProfileFragment() {

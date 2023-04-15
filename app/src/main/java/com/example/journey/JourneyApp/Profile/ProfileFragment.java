@@ -37,6 +37,7 @@ import com.example.journey.R;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileDetailsBinding;
 import com.example.journey.databinding.ProfileTopMenuLayoutBinding;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -134,6 +135,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                   }
               }
       );
+
   }
 
     @Override
@@ -337,7 +339,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 if (userModel != null) {
                     userModel.setProfileImage(filename);
                     currentData.setValue(userModel);
-                    profileViewModel.updateCurrentUser(userModel);
+                    profileViewModel.updateUserBackground(userModel);
                 }
                 return Transaction.success(currentData);
             }
@@ -358,9 +360,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 break;
             case 1:
                 showFragment(new ProfileTimelineFragment());
-                break;
-            case 2:
-                showFragment(new ProfileDocumentsFragment());
                 break;
         }
     }
