@@ -16,7 +16,9 @@ public class UserModel {
     ArrayList<String> chatIDs = new ArrayList<>();
     Integer followers = 0;
     Integer following = 0;
-    String profileImage = "";
+    String profileImage;
+
+    public UserModel() { }
 
     public UserModel(String userID, String email) {
         this.userID = userID;

@@ -59,7 +59,7 @@ public class Helper {
         return DateFormat.getTimeInstance(DateFormat.LONG).format(date);
     }
 
-    static void loadImage(Context context, String imageURL, ImageView imageView) {
+    static public void loadImage(Context context, String imageURL, ImageView imageView) {
         Glide.with(context).load(imageURL).into(imageView);
     }
 
