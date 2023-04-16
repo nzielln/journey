@@ -33,6 +33,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * The Settings class represents a Settings activity
+ * where users can change their information
+ * such as their name or password. Users can get help, or report
+ * suspicious activity. Users can also sign out or delete their account.
+ */
 public class Settings extends AppCompatActivity {
   private static final String TAG = Settings.class.toGenericString();
 
@@ -44,9 +50,9 @@ public class Settings extends AppCompatActivity {
   AlertDialog.Builder confirmMessage;
   RelativeLayout deleteRelLay;
 
+  OnBackPressedCallback callback;
   FragmentManager fragmentManager;
 
-  private int layout = 1;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,30 @@ public class Settings extends AppCompatActivity {
 
     fragmentManager = getSupportFragmentManager();
 
+    backButton = (ImageView) findViewById(R.id.backToProfile);
+    backButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onBackProfile();
+      }
+    });
+
+
+    // Back to Profile Fragment
+    /*
+    backButton = (ImageView) findViewById(R.id.backToProfile);
+    backButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //onBackPressed();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        ProfileFragment profileFragment = new ProfileFragment();
+
+        transaction.replace(R.id.profileFragment, profileFragment).commit();
+      }
+    });*/
+
+    // Sign out a user
     signOutRelLay = findViewById(R.id.signOutRL);
     signOutRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -65,6 +95,7 @@ public class Settings extends AppCompatActivity {
       }
     });
 
+    // Delete User Account
     deleteRelLay = findViewById(R.id.deactivateUserAccount);
     deleteRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
@@ -102,6 +133,17 @@ public class Settings extends AppCompatActivity {
     finish();
   }
 
+  private void onBackProfile() {
+    getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+      @Override
+      public void handleOnBackPressed() {
+        if (isEnabled()) {
+          setEnabled(true);
+
+        }
+      }
+    });
+  }
 
   /**
    * The openSettingsActivity() onStart() method opens
@@ -109,28 +151,12 @@ public class Settings extends AppCompatActivity {
    * activity tab button is pressed.
 
   public void back() {
-    /*
+
     ProfileFragment profileFragment = new ProfileFragment();
     FragmentManager fragmentManager = getSupportFragmentManager();
     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
     fragmentTransaction.add(R.id.profile_fragment_container, profileFragment, "Profile Fragment");
     fragmentTransaction.commit();
-
-
-
-    backButton = (ImageView) findViewById(R.id.backToProfile);
-    backButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        //onBackPressed();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        ProfileFragment profileFragment = new ProfileFragment();
-
-        transaction.replace(R.id.profile_fragment_container, profileFragment).commit();
-
-
-      }
-    });
 
   }*/
 

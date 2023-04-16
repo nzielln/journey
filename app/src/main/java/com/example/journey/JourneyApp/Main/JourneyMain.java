@@ -42,6 +42,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_journey_main);
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
