@@ -7,34 +7,49 @@
     android:layout_height="match_parent"
     tools:context=".JourneyApp.Dashboard.DashboardFragment">
 
-
-   <LinearLayout
-       android:layout_width="fill_parent"
+   <com.google.android.flexbox.FlexboxLayout
+       android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_marginTop="30dp"
-       android:orientation="horizontal">
+       app:justifyContent="space_between"
+       app:alignItems="center"
+       app:alignContent="center"
 
+       >
 
-       <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/dash_image"
-        android:layout_width="10dp"
-        android:layout_height="32dp"
-        android:src="@drawable/sample"
-        android:layout_weight="1"
-        android:scaleType="centerCrop"
-        android:layout_marginStart="30dp"
-        app:shapeAppearanceOverlay="@style/round_dash"
-         />
-
-       <TextView
-           android:id="@+id/welcomeTv"
-           android:layout_height="wrap_content"
+       <LinearLayout
            android:layout_width="wrap_content"
-           android:theme="@style/subheading_medium"
-           android:layout_weight="3"
-           android:paddingStart="8dp"
-           android:layout_marginTop="6dp"
-           android:text="Hi, Jessica Jones!"/>
+           android:layout_height="wrap_content"
+           android:orientation="horizontal"
+           android:layout_gravity="center"
+           android:gravity="center"
+
+           >
+           <com.google.android.material.imageview.ShapeableImageView
+               android:id="@+id/dash_image"
+               android:layout_width="32dp"
+               android:layout_height="32dp"
+               android:src="@drawable/sample"
+               android:layout_weight="1"
+               android:scaleType="centerCrop"
+               android:layout_marginStart="30dp"
+               android:layout_gravity="center"
+               app:shapeAppearanceOverlay="@style/round_dash"
+               />
+
+           <TextView
+               android:id="@+id/welcomeTv"
+               android:layout_height="wrap_content"
+               android:layout_width="wrap_content"
+               android:theme="@style/subheading_medium"
+               android:layout_weight="3"
+               android:paddingStart="8dp"
+               android:layout_marginTop="6dp"
+               android:layout_gravity="center"
+               android:gravity="center"
+               android:textAlignment="center"
+               android:text="Hi, Jessica Jones!"/>
+       </LinearLayout>
 
 
        <com.google.android.material.button.MaterialButton
@@ -52,7 +67,7 @@
 
            />
 
-   </LinearLayout>
+   </com.google.android.flexbox.FlexboxLayout>
 
 
     <SearchView

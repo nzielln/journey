@@ -106,7 +106,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         super.onCreate(savedInstanceState);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         currentUserModel = profileViewModel.getCurrentUserModel().getValue();
-
+        activity = getActivity();
         pickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -235,18 +235,18 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
      * the settings activity  when the
      * settings button is pressed.
      */
-//    public void onStart() {
-//        super.onStart();
-//
-//        settingsTab = (Button) activity.findViewById(R.id.settingsTabNav);
-//        settingsTab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //Intent i = new Intent(activity, Settings.class);
-//                startActivity(new Intent(activity, Settings.class));
-//            }
-//        });
-//    }
+    public void onStart() {
+        super.onStart();
+
+        settingsTab = (Button) activity.findViewById(R.id.settingsTabNav);
+        settingsTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent i = new Intent(activity, Settings.class);
+                startActivity(new Intent(activity, Settings.class));
+            }
+        });
+    }
 
     public void openAddApplicationModal() {
         AddApplicationModal addApplicationModal = new AddApplicationModal();
