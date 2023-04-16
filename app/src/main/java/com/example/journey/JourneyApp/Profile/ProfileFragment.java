@@ -133,17 +133,17 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                         return;
                     }
 
-                  if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                      Intent intent = result.getData();
-                          Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
-                          uploadImageToStorage(bitmap);
-                  } else {
-                      Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
-                  }
-              }
-      );
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                        Intent intent = result.getData();
+                        Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+                        uploadImageToStorage(bitmap);
+                    } else {
+                        Helper.showToast(getContext(), "INVALID RESULT CODE OR DATA IS NULL");
+                    }
+                }
+        );
 
-  }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -183,34 +183,22 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        }
-    });
-//
-//    settingsTab = topMenu.settingsTabNav;
-//    settingsTab.setOnClickListener(new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            openSettingsFragment();
-//        }
-//    });
 
-    addNewApplication.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            openAddApplicationModal();
-        }
-    });
+        addNewApplication.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAddApplicationModal();
+            }
+        });
 
-    profilePicture.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            pickProfilePictureTapped();
-        }
-    });
-}
+        profilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickProfilePictureTapped();
+            }
+        });
 
         updateProfileView();
-
 
         settingsTab = topMenu.settingsTabNav;
         settingsTab.setOnClickListener(new View.OnClickListener() {
@@ -242,41 +230,23 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         transaction.replace(R.id.profile_fragment_container, fragment).commit();
     }
 
-/**
-   * The onStart() method opens
-   * the settings activity  when the
-   * settings button is pressed.
-   */
-  public void onStart() {
-    super.onStart();
-
-    settingsTab = (Button) activity.findViewById(R.id.settingsTabNav);
-    settingsTab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        //Intent i = new Intent(activity, Settings.class);
-        startActivity(new Intent(activity, Settings.class));
-      }
-    });
-  }
-
-  // Updating Profile View
-  public void updateProfileView() {
-
-
-      String fullName = currentUserModel.getFirstName() + " " + currentUserModel.getLastName();
-      userProfileName.setText(getString(R.string.user_name_format, fullName));
-      following.setText(String.valueOf(currentUserModel.getFollowing()));
-      followers.setText(String.valueOf(currentUserModel.getFollowers()));
-
-      if (currentUserModel.getProfileImage() == null) {
-          profilePicture.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.pick_photo));
-      } else {
-          StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
-          Glide.with(requireActivity()).load(profileURL).into(profilePicture);
-          profilePicture.setClickable(false);
-      }
-  }
+    /**
+     * The onStart() method opens
+     * the settings activity  when the
+     * settings button is pressed.
+     */
+//    public void onStart() {
+//        super.onStart();
+//
+//        settingsTab = (Button) activity.findViewById(R.id.settingsTabNav);
+//        settingsTab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                //Intent i = new Intent(activity, Settings.class);
+//                startActivity(new Intent(activity, Settings.class));
+//            }
+//        });
+//    }
 
     public void openAddApplicationModal() {
         AddApplicationModal addApplicationModal = new AddApplicationModal();
@@ -287,7 +257,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         UpdateApplicationModal updateApplicationModal = new UpdateApplicationModal();
         updateApplicationModal.show(getChildFragmentManager(), UpdateApplicationModal.TAG);
     }
-
 
     public void openSettingsFragment() {
 
@@ -381,9 +350,9 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Log.i(TAG, "IMAGE SUCCESSFULLY UPLOADED TO FIREBASE");
-                    profilePicture.setImageBitmap(bitmap);
-                    profilePicture.setClickable(false);
-                    saveUserProfilePicture(filename);
+                profilePicture.setImageBitmap(bitmap);
+                profilePicture.setClickable(false);
+                saveUserProfilePicture(filename);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
