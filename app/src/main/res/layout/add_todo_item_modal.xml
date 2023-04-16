@@ -51,6 +51,7 @@
             app:boxCornerRadiusBottomStart="10dp"
             app:boxCornerRadiusTopEnd="10dp"
             app:boxCornerRadiusTopStart="10dp"
+            android:theme="@style/tab_normal"
 
             >
 
@@ -60,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/light_blue"
                 android:padding="10dp"
+                android:theme="@style/tab_normal"
 
                 />
 
@@ -72,6 +74,7 @@
             android:layout_marginVertical="32dp"
             android:layout_gravity="end"
             android:gravity="end"
+
             >
 
             <com.google.android.material.button.MaterialButton

@@ -7,6 +7,7 @@
     android:orientation="horizontal"
     android:layout_gravity="center"
     android:gravity="center_horizontal"
+    android:layout_marginHorizontal="8dp"
     >
 
         <LinearLayout
@@ -15,12 +16,13 @@
             android:layout_height="match_parent"
             android:background="@drawable/timeline_bg"
             android:gravity="center_horizontal"
+
             >
                 <View
                     android:id="@+id/timeline_rank_circle"
                     android:layout_width="8dp"
                     android:layout_height="8dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="24dp"
                     />
 
         </LinearLayout>
@@ -33,7 +35,7 @@
             android:orientation="vertical"
             android:background="@drawable/rounded_15_white_border_dark"
             android:layout_marginStart="12dp"
-            android:layout_marginBottom="48dp"
+            android:layout_marginBottom="32dp"
 
             >
                 <TextView

@@ -100,7 +100,7 @@ public class DashboardFragment extends Fragment {
                     currentUserModel = results.getValue(UserModel.class);
                     ImageView image = getView().findViewById(R.id.dash_image);
                     TextView wName = getView().findViewById (R.id.welcomeTv);
-                    wName.setText("Hi," + currentUserModel.getFirstName() + "!");
+                    wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
 
                     if(currentUserModel.getProfileImage() == null) {
                         image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));

@@ -7,11 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Models.DocumentItemModel;
-import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
-import com.example.journey.JourneyApp.Profile.Models.TimelineItemObject;
-import com.example.journey.JourneyApp.Profile.ViewHolders.ProdileTodoViewHolder;
 import com.example.journey.JourneyApp.Profile.ViewHolders.ProfileDocumentViewHolder;
 import com.example.journey.R;
 

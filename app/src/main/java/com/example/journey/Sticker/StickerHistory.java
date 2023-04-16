@@ -44,7 +44,7 @@ public class StickerHistory extends AppCompatActivity {
 //        historyItems.add(new HistoryContact("test@email.com", "tired", "2/23/2023 10:00PM"));
 //        historyItems.add(new HistoryContact("janedoe@email.com", "boring", "2/23/2023 10:00PM"));
 
-        MessageHistoryAdapter adapter = new MessageHistoryAdapter(this,historyItems);
+        MessageHistoryAdapter adapter = new MessageHistoryAdapter(this, historyItems);
         history.setAdapter(adapter);
 
         history.setLayoutManager(new LinearLayoutManager(this));
