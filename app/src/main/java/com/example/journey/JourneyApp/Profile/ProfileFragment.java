@@ -33,6 +33,10 @@ import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Signup.SignUp;
+//import com.example.journey.JourneyApp.Settings.SettingsFragment;
+import com.example.journey.Sticker.Constants;
+import com.example.journey.JourneyApp.Settings.Settings;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileDetailsBinding;
@@ -70,6 +74,9 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     TabLayout tabLayout;
     Button addNewApplication;
     FragmentProfileBinding binding;
+
+    View layoutInflater;
+    Activity activity;
     FirebaseUser currentUser;
     UserModel currentUserModel;
     ActivityResultLauncher<Intent> pickerLauncher;
@@ -176,6 +183,31 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
+        }
+    });
+//
+//    settingsTab = topMenu.settingsTabNav;
+//    settingsTab.setOnClickListener(new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            openSettingsFragment();
+//        }
+//    });
+
+    addNewApplication.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openAddApplicationModal();
+        }
+    });
+
+    profilePicture.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            pickProfilePictureTapped();
+        }
+    });
+}
 
         updateProfileView();
 
@@ -207,9 +239,44 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     public void showFragment(Fragment fragment) {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         Bundle bundle = new Bundle();
-
         transaction.replace(R.id.profile_fragment_container, fragment).commit();
     }
+
+/**
+   * The onStart() method opens
+   * the settings activity  when the
+   * settings button is pressed.
+   */
+  public void onStart() {
+    super.onStart();
+
+    settingsTab = (Button) activity.findViewById(R.id.settingsTabNav);
+    settingsTab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //Intent i = new Intent(activity, Settings.class);
+        startActivity(new Intent(activity, Settings.class));
+      }
+    });
+  }
+
+  // Updating Profile View
+  public void updateProfileView() {
+
+
+      String fullName = currentUserModel.getFirstName() + " " + currentUserModel.getLastName();
+      userProfileName.setText(getString(R.string.user_name_format, fullName));
+      following.setText(String.valueOf(currentUserModel.getFollowing()));
+      followers.setText(String.valueOf(currentUserModel.getFollowers()));
+
+      if (currentUserModel.getProfileImage() == null) {
+          profilePicture.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.pick_photo));
+      } else {
+          StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
+          Glide.with(requireActivity()).load(profileURL).into(profilePicture);
+          profilePicture.setClickable(false);
+      }
+  }
 
     public void openAddApplicationModal() {
         AddApplicationModal addApplicationModal = new AddApplicationModal();
@@ -220,6 +287,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         UpdateApplicationModal updateApplicationModal = new UpdateApplicationModal();
         updateApplicationModal.show(getChildFragmentManager(), UpdateApplicationModal.TAG);
     }
+
 
     public void openSettingsFragment() {
 
@@ -363,6 +431,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 break;
         }
     }
+
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
