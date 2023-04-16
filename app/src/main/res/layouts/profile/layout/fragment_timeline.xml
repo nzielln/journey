@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/rounded_15_white_top"
+    android:background="@drawable/rounded_15_white"
     tools:context=".JourneyApp.Profile.ProfileTimelineFragment"
     >
         <com.google.android.flexbox.FlexboxLayout
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             app:alignContent="center"
             app:justifyContent="space_between"
-            app:alignItems="center"
+            app:alignItems="baseline"
             app:flexDirection="row"
             android:layout_gravity="center"
             >
@@ -30,7 +30,6 @@
                     android:theme="@style/subheading_medium"
                     android:gravity="start"
                     android:background="@android:color/transparent"
-                    android:padding="8dp"
                     app:boxStrokeWidthFocused="0dp"
                     app:boxStrokeColor="@android:color/transparent"
                     app:boxStrokeWidth="0dp"
@@ -74,72 +73,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/timeline_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-
-            />
-</LinearLayout>
-
-
-<!--
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_marginVertical="16dp"
-    >
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/application_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="@null"
-        android:backgroundTint="@color/dark_blue"
-        android:foregroundTint="@color/dark_blue"
-        android:textColorHint="@color/dark_blue"
-        android:theme="@style/subheading_medium"
-        android:gravity="center"
-        android:layout_gravity="start"
-        android:background="@android:color/transparent"
-
-        app:boxStrokeWidthFocused="0dp"
-        app:boxStrokeColor="@android:color/transparent"
-        app:boxStrokeWidth="0dp"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:endIconDrawable="@drawable/down_chevron_arrow"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        >
-
-        <AutoCompleteTextView
-            android:id="@+id/application_name_options"
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none"
-            android:padding="10dp"
-            android:theme="@style/subheading_medium"
-            android:foregroundTint="@color/dark_blue"
-            android:elevation="@null"
-            android:hint="@null"
-            android:layout_gravity="start"
-            android:gravity="center"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
-            android:shadowColor="@android:color/transparent"
-            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginBottom="32dp"
 
             />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/edit_application"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="?attr/materialIconButtonStyle"
-        app:icon="@drawable/edit_icon"
-        app:iconSize="24dp"
-        app:iconPadding="0dp"
-        android:padding="0dp"
-        android:minHeight="0dp"
-        android:minWidth="0dp"
-        />
 </LinearLayout>
--->

@@ -32,22 +32,17 @@ public class ProfileViewModel extends ViewModel {
     public DatabaseReference todoTasksRef = Database.DB_REFERENCE.child(Database.TASKS).child(currentUser.getUid()).child(Database.TODO_TASKS);
     public DatabaseReference completedTasksRef = Database.DB_REFERENCE.child(Database.TASKS).child(currentUser.getUid()).child(Database.COMPLETED_TASKS);
     public DatabaseReference applicationsRef = Database.DB_REFERENCE.child(Database.APPLICATIONS).child(currentUser.getUid());
-    public DatabaseReference timelineRef = Database.DB_REFERENCE
-            .child(Database.APPLICATIONS)
-            .child(currentUser.getUid())
-            .child(currentApplication.getValue() == null ? "" : currentApplication.getValue().getPushKey())
-            .child(Database.TIMELINE);
+    public DatabaseReference timelineRef;
 
     public FirebaseArray<TaskItemModel> tasks = new FirebaseArray<>(todoTasksRef, new ClassSnapshotParser<>(TaskItemModel.class));
     public FirebaseArray<TaskItemModel> completedTasks = new FirebaseArray<>(completedTasksRef, new ClassSnapshotParser<>(TaskItemModel.class));
-    public FirebaseArray<TimelineItemObject> timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
+    public FirebaseArray<TimelineItemObject> timeline;
     public FirebaseArray<ApplicationModel> applications = new FirebaseArray<>(applicationsRef, new ClassSnapshotParser<>(ApplicationModel.class));
 
     public ProfileViewModel() {
         tasks.addChangeEventListener(new ChangeListener());
         completedTasks.addChangeEventListener(new ChangeListener());
         applications.addChangeEventListener(new ChangeListener());
-        timeline.addChangeEventListener(new ChangeListener());
     }
 
     @Override
@@ -72,10 +67,18 @@ public class ProfileViewModel extends ViewModel {
                     assert applications != null;
                     ArrayList<ApplicationModel> applicationModels = new ArrayList<ApplicationModel>(applications.values());
                     currentApplication.setValue(applicationModels.get(0));
+
+                    timelineRef = Database.DB_REFERENCE
+                            .child(Database.APPLICATIONS)
+                            .child(currentUser.getUid())
+                            .child(currentApplication.getValue().getPushKey())
+                            .child(Database.TIMELINE);
+
+                    timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
+                    timeline.addChangeEventListener(new ChangeListener());
                 }
             }
         });
-
     }
 
     public void updateUserBackground(UserModel user) {
@@ -83,6 +86,14 @@ public class ProfileViewModel extends ViewModel {
     }
     public void updateCurrentApplication(ApplicationModel applicationModel) {
         currentApplication.postValue(applicationModel);
+        timelineRef = Database.DB_REFERENCE
+                .child(Database.APPLICATIONS)
+                .child(currentUser.getUid())
+                .child(applicationModel.getPushKey())
+                .child(Database.TIMELINE);
+
+        timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
+        timeline.addChangeEventListener(new ChangeListener());
     }
 
     public MutableLiveData<UserModel> getCurrentUserModel() {

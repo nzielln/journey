@@ -24,6 +24,7 @@ import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Profile.ViewHolders.JourneyLinearLayoutManager;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentProfileTodoBinding;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -231,9 +232,9 @@ public class ProfileToDoFragment extends Fragment {
 
     public void createRecyclerView() {
         todoRecyclerView.setHasFixedSize(false);
-        todoRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
+        todoRecyclerView.setLayoutManager(new JourneyLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
 
         completedRecyclerView.setHasFixedSize(false);
-        completedRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
+        completedRecyclerView.setLayoutManager(new JourneyLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
     }
 }

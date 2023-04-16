@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.journey.JourneyApp.Profile.Listeners.TaskOnClickListener;
+import com.example.journey.JourneyApp.Profile.Listeners.TimelineOnClickListener;
 import com.example.journey.JourneyApp.Profile.Models.TimelineItemObject;
 import com.example.journey.JourneyApp.Profile.ViewHolders.ProfileTimelineViewHolder;
 import com.example.journey.R;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 public class ProfileTimelineRecyclerViewAdapter extends FirebaseRecyclerAdapter<TimelineItemObject, ProfileTimelineViewHolder> {
     ArrayList<TimelineItemObject> items;
     Context context;
+    TimelineOnClickListener onClickListener;
 
     static final Integer TOP = 0;
     static final Integer MIDDLE = 1;
@@ -30,37 +33,16 @@ public class ProfileTimelineRecyclerViewAdapter extends FirebaseRecyclerAdapter<
         this.context = context;
     }
 
+    public void setOnClickListener(TimelineOnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
 
     @NonNull
     @Override
     public ProfileTimelineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_item, parent, false);
-        return new ProfileTimelineViewHolder(view);
+        return new ProfileTimelineViewHolder(view, onClickListener);
     }
-
-//    @Override
-//    public void onBindViewHolder(@NonNull ProfileTimelineViewHolder holder, int position) {
-//        TimelineItemObject itemModel = items.get(position);
-//        holder.timelineTitle.setText(itemModel.getTitle());
-//        holder.timelineTime.setText(itemModel.getDateAdded());
-////         Set circle color here
-//        if (itemModel.getCompleted()) {
-//
-//            holder.timelineContent.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_15_gray_15));
-//            holder.timelineCirle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle));
-//        } else {
-//            holder.timelineCirle.setBackground(ContextCompat.getDrawable(context, R.drawable.circle_complete));
-//            holder.timelineContent.setBackground(ContextCompat.getDrawable(context, R.drawable.rounded_15_white_border_dark));
-//
-//        }
-//
-//        if (getItemViewType(position) == TOP) {
-//            holder.timeline.setBackground(ContextCompat.getDrawable(context, R.drawable.timeline_bg_round));
-//        } else {
-//            holder.timeline.setBackground(ContextCompat.getDrawable(context, R.drawable.timeline_bg));
-//
-//        }
-//    }
 
     @Override
     protected void onBindViewHolder(@NonNull ProfileTimelineViewHolder holder, int position, @NonNull TimelineItemObject model) {
@@ -87,7 +69,7 @@ public class ProfileTimelineRecyclerViewAdapter extends FirebaseRecyclerAdapter<
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
+        if (position == getSnapshots().size() - 1) {
             return TOP;
         } else {
             return MIDDLE;

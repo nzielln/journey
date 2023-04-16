@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class Helper {
     // KEYS
     public static final String USER_MODEL = "USER_MODEL";
+    public static final String TIMELINE_DELEGATE = "TIMELINE_DELEGATE";
 
     public static String MOCK_USER_ID = UUID.randomUUID().toString();
     public static Integer RANK_NUMBER = 0;

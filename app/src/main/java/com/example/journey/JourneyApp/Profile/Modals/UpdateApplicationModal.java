@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Adapters.DropdownArrayAdapter;
+import com.example.journey.JourneyApp.Profile.Listeners.TimelineDelegate;
 import com.example.journey.JourneyApp.Profile.Models.ApplicationModel;
 import com.example.journey.JourneyApp.Profile.Models.ApplicationStatus;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
@@ -62,10 +63,14 @@ public class UpdateApplicationModal extends BottomSheetDialogFragment {
     ProfileViewModel profileViewModel;
     UserModel currentUserModel;
     ApplicationModel currentApplication;
+    TimelineDelegate delegate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        assert bundle != null;
+        delegate = bundle.getParcelable(Helper.TIMELINE_DELEGATE);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         currentUserModel = profileViewModel.getCurrentUserModel().getValue();
         currentApplication = profileViewModel.getCurrentApplication().getValue();
@@ -122,6 +127,9 @@ public class UpdateApplicationModal extends BottomSheetDialogFragment {
         datePicker = datePickerInput.getEditText();
         timePicker = timePickerInput.getEditText();
 
+        datePicker.setText(Helper.getLongDate());
+        timePicker.setText(Helper.getShortTime());
+
         datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,6 +161,7 @@ public class UpdateApplicationModal extends BottomSheetDialogFragment {
                     task.getException().printStackTrace();
                 } else {
                     Log.i(TAG, "UPDATED APPLICATION WITH TIMELINE OBJECT");
+                    delegate.newItemAdded();
                 }
             }
         });
