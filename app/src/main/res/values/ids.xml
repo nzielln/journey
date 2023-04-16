@@ -11,4 +11,5 @@
     <item name="todo_item_title" type="id" />
     <item name="add_application" type="id" />
     <item name="sign_up_button" type="id" />
+    <item name="status_edit_text" type="id" />
 </resources>

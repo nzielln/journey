@@ -50,6 +50,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/todo_description"
         app:layout_constraintTop_toTopOf="@+id/todo_description"
+        android:gravity="center"
         >
 
         <com.google.android.material.checkbox.MaterialCheckBox
@@ -61,12 +62,13 @@
             android:minWidth="0dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/more_button"
+            android:id="@+id/delete_button"
             style="?attr/materialIconButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:icon="@drawable/ellipsis_vert"
-            app:iconTint="@color/light_blue"
+            app:icon="@drawable/delete_icon"
+            app:iconTint="@color/burnt_orange"
+            app:iconSize="24dp"
 
             />
 
