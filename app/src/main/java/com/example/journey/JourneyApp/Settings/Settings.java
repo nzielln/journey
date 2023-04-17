@@ -50,7 +50,6 @@ public class Settings extends AppCompatActivity {
   AlertDialog.Builder confirmMessage;
   RelativeLayout deleteRelLay;
 
-  OnBackPressedCallback callback;
   FragmentManager fragmentManager;
 
 
@@ -60,31 +59,18 @@ public class Settings extends AppCompatActivity {
     setContentView(R.layout.activity_settings);
 
     fbAuth = FirebaseAuth.getInstance();
+    fbUser = Database.FIREBASE_AUTH.getCurrentUser();
 
     fragmentManager = getSupportFragmentManager();
 
+    // Back to Profile Fragment
     backButton = (ImageView) findViewById(R.id.backToProfile);
     backButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        onBackProfile();
+        navigateUpTo(new Intent(Settings.this,ProfileFragment.class));
       }
     });
-
-
-    // Back to Profile Fragment
-    /*
-    backButton = (ImageView) findViewById(R.id.backToProfile);
-    backButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        //onBackPressed();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        ProfileFragment profileFragment = new ProfileFragment();
-
-        transaction.replace(R.id.profileFragment, profileFragment).commit();
-      }
-    });*/
 
     // Sign out a user
     signOutRelLay = findViewById(R.id.signOutRL);
@@ -111,7 +97,34 @@ public class Settings extends AppCompatActivity {
 
     googleSignInClient = GoogleSignIn.getClient(Settings.this, options);
 
+    // Alert Dialog - Confirmation Dialog for user
     confirmMessage = new AlertDialog.Builder(this);
+  }
+
+  /**
+   * The updatePassword() method updates the
+   * user's password.
+   */
+  public void updatePassword() {
+    // Confirm that user wants to deactivate account
+    confirmMessage.setTitle("Update Password")
+            .setMessage("Are you sure you want to update your password?")
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                //fbUser = Database.FIREBASE_AUTH.getCurrentUser();
+                fbUser.updatePassword("").addOnSuccessListener(new OnSuccessListener<Void>() {
+                  @Override
+                  public void onSuccess(Void unused) {
+                    Toast.makeText(Settings.this, "Your password had been updated", Toast.LENGTH_LONG).show();
+                  }
+                });
+              }
+            }).setNegativeButton("Cancel", null)
+            .create()
+            .show();
+
+
   }
 
 
@@ -133,34 +146,6 @@ public class Settings extends AppCompatActivity {
     finish();
   }
 
-  private void onBackProfile() {
-    getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
-      @Override
-      public void handleOnBackPressed() {
-        if (isEnabled()) {
-          setEnabled(true);
-
-        }
-      }
-    });
-  }
-
-  /**
-   * The openSettingsActivity() onStart() method opens
-   * the activity fragment when the
-   * activity tab button is pressed.
-
-  public void back() {
-
-    ProfileFragment profileFragment = new ProfileFragment();
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-    fragmentTransaction.add(R.id.profile_fragment_container, profileFragment, "Profile Fragment");
-    fragmentTransaction.commit();
-
-  }*/
-
-
   /**
    * The deleteAccount() method deletes
    * a users account and logs the user out.
@@ -173,8 +158,6 @@ public class Settings extends AppCompatActivity {
               .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                  fbUser = Database.FIREBASE_AUTH.getCurrentUser();
-                  //fbUser = fbAuth.getCurrentUser();
                   fbUser.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

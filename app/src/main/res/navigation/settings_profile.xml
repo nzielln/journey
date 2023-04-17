@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_profile"
+    app:startDestination="@id/settings">
+
+    <activity
+        android:id="@+id/settings"
+        android:name="com.example.journey.JourneyApp.Settings.Settings"
+        android:label="activity_settings"
+        tools:layout="@layout/activity_settings" >
+        <action
+            android:id="@+id/action_Settings_to_Profile"
+            app:destination="@+id/profileFragment2"/>
+    </activity>
+    <fragment
+        android:id="@+id/profileFragment2"
+        android:name="com.example.journey.JourneyApp.Profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+</navigation>
