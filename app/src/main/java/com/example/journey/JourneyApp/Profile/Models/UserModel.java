@@ -19,7 +19,7 @@ public class UserModel {
     //String profileImage = "";
     String profileImage;
     String imageURL;
-    String status;;
+    String status;
 
     //Constructors
     public UserModel() { }
