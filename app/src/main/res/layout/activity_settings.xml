@@ -19,8 +19,8 @@
             android:layout_height="50dp"
             android:contentDescription="@string/back"
             android:padding="10dp"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            android:onClick="onBackPressed"/>
+            android:src="@drawable/ic_baseline_arrow_back_24"/>
+        <!-- android:onClick="back"-->
 
         <!-- Settings Header -->
         <TextView
@@ -111,6 +111,7 @@
 
             <!-- Follow/Invite Friends -->
             <RelativeLayout
+                android:id="@+id/inviteRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -120,7 +121,7 @@
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/friends_people_icon" />
+                    android:src="@drawable/add_friend_icon" />
 
                 <TextView
                     android:id="@+id/friends"
@@ -150,7 +151,7 @@
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/ic_baseline_location_on_24" />
+                    android:src="@drawable/new_location_icon" />
 
                 <TextView
                     android:id="@+id/location"
@@ -171,6 +172,7 @@
 
             <!-- Notification -->
             <RelativeLayout
+                android:id="@+id/notificationRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -201,6 +203,7 @@
 
             <!-- Help -->
             <RelativeLayout
+                android:id="@+id/helpRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -261,6 +264,7 @@
 
             <!-- Delete Account -->
             <RelativeLayout
+                android:id="@+id/deactivateUserAccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -295,8 +299,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator"
-                android:onClick="onSignOut"
                 >
+                <!--android:onClick="onSignOut"-->
 
                 <ImageView
                     android:id="@+id/signoutIcon"

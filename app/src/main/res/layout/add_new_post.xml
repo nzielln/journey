@@ -19,6 +19,8 @@
         android:layout_marginVertical="16dp"
         />
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,9 +31,59 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Title"
+            android:theme="@style/all_caps"
+            android:textColor="@color/dark_blue"
+            android:paddingStart="12dp"
+            android:paddingEnd="0dp"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/title_post_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@null"
+            android:backgroundTint="@color/light_blue"
+            android:foregroundTint="@color/light_blue"
+            app:boxStrokeColor="@color/light_blue"
+            android:textColorHint="@color/light_blue"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="1dp"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/title_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:foregroundTint="@color/light_blue"
+                android:padding="10dp"
+
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        android:layout_marginTop="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Post"
             android:theme="@style/all_caps"
-            android:textColor="@color/light_blue"
+            android:textColor="@color/dark_blue"
             android:paddingStart="12dp"
             android:paddingEnd="0dp"
             />
@@ -55,11 +107,12 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text"
+                android:id="@+id/post_edit_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="170dp"
                 android:foregroundTint="@color/light_blue"
                 android:padding="10dp"
+                android:gravity="top|start"
 
                 />
 
@@ -104,6 +157,8 @@
 
                 />
 
-        </LinearLayout>
+
+    </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

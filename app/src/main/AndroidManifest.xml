@@ -10,26 +10,36 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
         android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
         tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.READ_PRIVILEGE_PHONE_STATE" />
-    <uses-feature android:name="android.hardware.camera"
+
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="true" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher_journey"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_journey_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
+        <activity
+            android:name=".JourneyApp.Settings.UpdatePasswordAlert"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <!-- tools:targetApi="33" -->
         <activity
             android:name=".JourneyApp.Settings.Settings"
             android:exported="false">
@@ -47,6 +57,7 @@
         <activity
             android:name=".JourneyApp.Main.JourneyMain"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Journey.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
@@ -172,7 +183,6 @@
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
-
     </application>
 
 </manifest>

@@ -48,6 +48,7 @@
             android:shadowColor="@android:color/transparent"
             app:boxBackgroundColor="@android:color/transparent"
 
+
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -71,7 +72,7 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/status_input"
+            android:id="@+id/title_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@null"
@@ -87,15 +88,17 @@
             app:boxCornerRadiusTopStart="10dp"
             android:layout_marginBottom="12dp"
             android:clickable="false"
+            android:theme="@style/tab_normal"
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/status_edit_text"
+                android:id="@+id/title_input_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:foregroundTint="@color/light_blue"
                 android:padding="10dp"
                 android:clickable="false"
+                android:theme="@style/tab_normal"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -146,6 +149,7 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:theme="@style/tab_normal"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -158,6 +162,7 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:theme="@style/tab_normal"
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -200,6 +205,7 @@
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
+                    android:theme="@style/tab_normal"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -212,6 +218,7 @@
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:theme="@style/tab_normal"
 
                         />
                 </com.google.android.material.textfield.TextInputLayout>
