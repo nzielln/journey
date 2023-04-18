@@ -50,9 +50,10 @@ public class CreateNewPost extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup bucket, @NonNull Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.add_new_post, bucket,false);
-
-        mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
+//
+//        mAuth = FirebaseAuth.getInstance();
+//        currentUser = mAuth.getCurrentUser();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
         if(currentUser!=null){
             currentUserId = currentUser.getUid();
@@ -65,9 +66,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
         postContent = view.findViewById(R.id.post_edit_text);
         postTitle = view.findViewById(R.id.title_edit_text);
 
-
-
-        String timePosted = helper.getShortTime();
 
         postCancelButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -89,6 +87,7 @@ public class CreateNewPost extends BottomSheetDialogFragment {
         postAddPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String timePosted = helper.getShortTime();
 
 
                 Log.d("title",postTitle.getText().toString());
