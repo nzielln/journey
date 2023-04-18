@@ -29,7 +29,8 @@ public class SendNewStickerNotification extends AppCompatActivity {
 
     setContentView(R.layout.activity_profile_message);
   }
-
+  private final String notificationGroupID = "notification_Group_ID";
+  private final CharSequence notificationGroupName = "Notification Group";
   /**
    * The createStickerNotificationChannel() method
    * creates a notification channel and must be called
