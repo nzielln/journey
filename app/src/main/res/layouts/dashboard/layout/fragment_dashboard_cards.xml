@@ -34,7 +34,7 @@
             android:layout_marginStart="70dp"
             android:layout_marginTop="20dp"
             android:theme="@style/subheading_semi"
-            android:text="Samantha Greene"/>
+            android:text="Name goes here"/>
         <TextView
             android:id="@+id/info_date"
             android:layout_width="match_parent"
@@ -42,7 +42,8 @@
             android:layout_marginStart="70dp"
             android:layout_marginTop="40dp"
             android:theme="@style/all_caps"
-            android:text="MONDAY 12:33 PM"/>
+            android:text="Day/Time goes here"/>
+
         <TextView
             android:id="@+id/info_infoText"
             android:layout_width="match_parent"
@@ -51,8 +52,7 @@
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
             android:paddingRight="20dp"
-            android:text="Corem ipsum dotor sit amet, consecteur
-             adipiscing elit. Corem ipsum dotor.Etism eu turpis molestie dictum hvhkjcdd est a,mttis tellus. Sed digm metus."/>
+            android:text="Content goes here"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                 app:icon="@drawable/heart"
                 app:iconSize="14dp" />
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/share_tBtn"
+                android:id="@+id/share_Btn"
                 style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -41,6 +41,8 @@ public class CreateNewPost extends BottomSheetDialogFragment {
     DatabaseReference dbReference;
     Helper helper;
 
+    FirebaseAuth mAuth;
+    String currentUserId;
 
     public static String TAG = CreateNewPost.class.toGenericString();
 
@@ -48,14 +50,23 @@ public class CreateNewPost extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup bucket, @NonNull Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.add_new_post, bucket,false);
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+
+        if(currentUser!=null){
+            currentUserId = currentUser.getUid();
+            Log.d("current Id",currentUserId);
+        }
+
 
         postCancelButton = view.findViewById(R.id.post_cancel_button);
         postAddPostButton = view.findViewById(R.id.post_add_button);
         postContent = view.findViewById(R.id.post_edit_text);
         postTitle = view.findViewById(R.id.title_edit_text);
 
-        String authorId = currentUser.getUid();
+
+
         String timePosted = helper.getShortTime();
 
         postCancelButton.setOnClickListener(new View.OnClickListener(){
@@ -73,6 +84,7 @@ public class CreateNewPost extends BottomSheetDialogFragment {
         });
 
 
+
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         postAddPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +99,7 @@ public class CreateNewPost extends BottomSheetDialogFragment {
 
                } else {
                    String postId= UUID.randomUUID().toString();
+                    String authorId = currentUser.getUid();
 
                    NewPost newPost = new NewPost(postId,postTitle.getText().toString(),
                            authorId,timePosted,postContent.getText().toString());

@@ -63,15 +63,15 @@ public class ProfileViewModel extends ViewModel {
                     DataSnapshot results = task.getResult();
                     GenericTypeIndicator<HashMap<String, ApplicationModel>> type = new GenericTypeIndicator<HashMap<String, ApplicationModel>>() {};
 
-                    Map<String, ApplicationModel> applications = (HashMap<String, ApplicationModel>) results.getValue(type);
-                    assert applications != null;
-                    ArrayList<ApplicationModel> applicationModels = new ArrayList<ApplicationModel>(applications.values());
-                    currentApplication.setValue(applicationModels.get(0));
+//                    Map<String, ApplicationModel> applications = (HashMap<String, ApplicationModel>) results.getValue(type);
+//                    assert applications != null;
+//                    ArrayList<ApplicationModel> applicationModels = new ArrayList<ApplicationModel>(applications.values());
+//                    currentApplication.setValue(applicationModels.get(0));
 
                     timelineRef = Database.DB_REFERENCE
                             .child(Database.APPLICATIONS)
                             .child(currentUser.getUid())
-                            .child(currentApplication.getValue().getPushKey())
+//                            .child(currentApplication.getValue().getPushKey())
                             .child(Database.TIMELINE);
 
                     timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
