@@ -401,7 +401,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         }
     }
 
-
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
 
