@@ -1,4 +1,4 @@
-package com.example.journey.JourneyApp.Chat.Fragments;
+/*package com.example.journey.JourneyApp.Fragments.Chat;
 
 import android.os.Bundle;
 
@@ -23,8 +23,7 @@ import java.util.ArrayList;
  * Use the {@link ChatFragment newInstance} factory method to
  * create an instance of this fragment.
  */
-
-
+/*
 public class ChatFragment extends Fragment {
 
     private TabLayout tabLayout;
@@ -98,3 +97,4 @@ public class ChatFragment extends Fragment {
     }
 }
 
+ */
