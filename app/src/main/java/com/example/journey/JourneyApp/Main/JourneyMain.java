@@ -48,10 +48,10 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 .requestIdToken(Database.CLIENT_ID)
                 .requestEmail()
                 .build();
-
+        openProfileFragment();
         googleSignInClient = GoogleSignIn.getClient(JourneyMain.this, options);
         fragmentManager = getSupportFragmentManager();
-        openDashboardFragment();
+        //openDashboardFragment();
 
         tabBarNavigation = findViewById(R.id.tab_nav);
         tabBarNavigation.setOnItemSelectedListener(this);

@@ -56,6 +56,7 @@ public class Settings extends AppCompatActivity {
   // Clickables
   ImageView backButton;
   RelativeLayout notificationRelLay;
+  RelativeLayout helpRelLay;
   RelativeLayout signOutRelLay;
   RelativeLayout deleteRelLay;
 
@@ -89,6 +90,15 @@ public class Settings extends AppCompatActivity {
       public void onClick(View v) {
         //sendNotification(v);
         createJNotificationChannel();
+      }
+    });
+
+    // Help
+    helpRelLay = (RelativeLayout) findViewById(R.id.helpRL);
+    helpRelLay.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        onGetHelp();
       }
     });
 
@@ -205,6 +215,14 @@ public class Settings extends AppCompatActivity {
   public void sendNotification(View view) {
     // Build notification
     //Notification pause
+  }
+
+  /**
+   * The onGetHelp() method
+   * allows users to contact support for help.
+   */
+  public void onGetHelp() {
+
   }
 
 
