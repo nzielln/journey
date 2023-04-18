@@ -1,27 +1,26 @@
 package com.example.journey.JourneyApp.Settings;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationChannelGroup;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Main.Database;
-import com.example.journey.JourneyApp.Main.JourneyMain;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -42,15 +41,23 @@ import com.google.firebase.auth.FirebaseUser;
 public class Settings extends AppCompatActivity {
   private static final String TAG = Settings.class.toGenericString();
 
+  private static final String NOTIFICATION_GROUP_ID = "notificationGroupID";
+  private static final CharSequence notificationGroupName = "Journey Notification Group";
+  private static final String PAUSE_ALL_CHANNEL_ID = "pauseAllChannel";
+  private static final String POST_CHANNEL_ID = "postChannel";
+  private static final String MESSAGE_CHANNEL_ID = "messageChannel";
+
   GoogleSignInClient googleSignInClient;
   FirebaseAuth fbAuth;
   FirebaseUser fbUser;
-  RelativeLayout signOutRelLay;
-  ImageView backButton;
   AlertDialog.Builder confirmMessage;
-  RelativeLayout deleteRelLay;
-
   FragmentManager fragmentManager;
+
+  // Clickables
+  ImageView backButton;
+  RelativeLayout notificationRelLay;
+  RelativeLayout signOutRelLay;
+  RelativeLayout deleteRelLay;
 
 
   @Override
@@ -58,10 +65,13 @@ public class Settings extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_settings);
 
-    fbAuth = FirebaseAuth.getInstance();
+    //fbAuth = FirebaseAuth.getInstance();
     fbUser = Database.FIREBASE_AUTH.getCurrentUser();
 
     fragmentManager = getSupportFragmentManager();
+
+    // Calling the createNotificationChannel method
+    //createJNotificationChannel();
 
     // Back to Profile Fragment
     backButton = (ImageView) findViewById(R.id.backToProfile);
@@ -72,8 +82,18 @@ public class Settings extends AppCompatActivity {
       }
     });
 
+    // Notification
+    notificationRelLay = (RelativeLayout) findViewById(R.id.notificationRL);
+    notificationRelLay.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        //sendNotification(v);
+        createJNotificationChannel();
+      }
+    });
+
     // Sign out a user
-    signOutRelLay = findViewById(R.id.signOutRL);
+    signOutRelLay = (RelativeLayout) findViewById(R.id.signOutRL);
     signOutRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -82,7 +102,7 @@ public class Settings extends AppCompatActivity {
     });
 
     // Delete User Account
-    deleteRelLay = findViewById(R.id.deactivateUserAccount);
+    deleteRelLay = (RelativeLayout) findViewById(R.id.deactivateUserAccount);
     deleteRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -124,7 +144,67 @@ public class Settings extends AppCompatActivity {
             .create()
             .show();
 
+  }
 
+  /**
+   * The createJNotificationChannel() method
+   * creates a notification channel and must be called
+   * before the notification is send.
+   */
+  public void createJNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      NotificationChannelGroup jNotificationChannelGroup =
+              new NotificationChannelGroup(NOTIFICATION_GROUP_ID, notificationGroupName);
+
+      // Pause all
+      CharSequence nameChannel1 = "Pause all";
+      String descriptionChannel1 = "Temporarily pause notifications";
+      int priorityChannel1 = NotificationManager.IMPORTANCE_DEFAULT; // priority level
+      // Pause all Notification Channel
+      NotificationChannel pauseNotificationChannel = new NotificationChannel(
+              PAUSE_ALL_CHANNEL_ID, nameChannel1, priorityChannel1);
+      pauseNotificationChannel.setDescription(descriptionChannel1);
+      pauseNotificationChannel.setGroup(NOTIFICATION_GROUP_ID);
+
+      // Post
+      CharSequence nameChannel2 = "Posts";
+      String descriptionChannel2 = "Temporarily pause post notifications";
+      int priorityChannel2 = NotificationManager.IMPORTANCE_DEFAULT; // priority level
+      // Post Notification Channel
+      NotificationChannel postNotificationChannel = new NotificationChannel(
+              POST_CHANNEL_ID, nameChannel2, priorityChannel2);
+      postNotificationChannel.setDescription(descriptionChannel2);
+      postNotificationChannel.setGroup(NOTIFICATION_GROUP_ID);
+
+      // Message
+      CharSequence nameChannel3 = "Messages";
+      String descriptionChannel3 = "Temporarily pause messages notifications";
+      int priorityChannel3 = NotificationManager.IMPORTANCE_DEFAULT; // priority level
+      // Message Notification Channel
+      NotificationChannel messageNotificationChannel = new NotificationChannel(
+              MESSAGE_CHANNEL_ID, nameChannel3, priorityChannel3);
+      messageNotificationChannel.setDescription(descriptionChannel3);
+      messageNotificationChannel.setGroup(NOTIFICATION_GROUP_ID);
+
+      //notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+      NotificationManager notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
+      notificationManager.createNotificationChannelGroup(jNotificationChannelGroup);
+      notificationManager.createNotificationChannel(postNotificationChannel);
+      notificationManager.createNotificationChannel(postNotificationChannel);
+      notificationManager.createNotificationChannel(messageNotificationChannel);
+    }
+
+  }
+
+
+
+  /**
+   * The sendNotification() method sends a
+   * notification to the user.
+   */
+  public void sendNotification(View view) {
+    // Build notification
+    //Notification pause
   }
 
 
