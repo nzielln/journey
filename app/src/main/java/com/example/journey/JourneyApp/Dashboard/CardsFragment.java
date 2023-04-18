@@ -67,7 +67,8 @@ public class CardsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = binding.dashboardRecyclerView;
 
-        Map<String, UserModel> myUsers = new HashMap<>();
+        Map<String, UserModel> allUsers = new HashMap<>();
+        ImageView image = getView().findViewById(R.id.dash_image);
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -75,10 +76,17 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         UserModel user = inner.getValue(UserModel.class);
 
-                        myUsers.put(user.getUserID(), user);
+                        allUsers.put(user.getUserID(), user);
+                        Log.d("allusers",user.getProfileImage());
+//                        if(user.getProfileImage() == null) {
+//                            image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
+//                        }else {
+//                            Glide.with(requireActivity()).load(user.getProfileImage()).into(image);
+//                            allUsers.put(user.getProfileImage(), user);
+//                        }
                     }
 
-                    retrievePost(myUsers);
+                    retrievePost(allUsers);
                 }
             }
         });
@@ -96,11 +104,12 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
+                        StorageReference userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
 
-                        items.add(new CardModel(user.getFirstName() + " " + user.getLastName(), post.getTimePosted(), post.getPostContent()));
+                        items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
                     }
 
-                    adapter = new DashboardAdapter(items);
+                    adapter = new DashboardAdapter(items, requireActivity());
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }

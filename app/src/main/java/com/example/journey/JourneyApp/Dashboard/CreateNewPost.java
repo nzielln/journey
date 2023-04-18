@@ -110,7 +110,7 @@ public class CreateNewPost extends BottomSheetDialogFragment {
                    Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
                    postTitle.setText(null);
                    postContent.setText(null);
-                   //transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
+                   transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
 
                }
                 //transaction.replace(R.id.journey_fragment_container, a).commit();
