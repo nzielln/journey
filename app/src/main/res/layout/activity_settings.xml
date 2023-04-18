@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/settingsLayout"
-    tools:context=".JourneyApp.Settings.SettingsFragment"
+    tools:context=".JourneyApp.Settings.Settings"
     android:background="@color/gray">
 
     <RelativeLayout
@@ -14,11 +14,13 @@
 
         <!-- Back Button -->
         <ImageView
+            android:id="@+id/backToProfile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:contentDescription="@string/back"
             android:padding="10dp"
             android:src="@drawable/ic_baseline_arrow_back_24"/>
+        <!-- android:onClick="back"-->
 
         <!-- Settings Header -->
         <TextView
@@ -39,11 +41,11 @@
         <LinearLayout
             android:id="@+id/firstSettingOptions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="10dp"
             android:padding="20dp"
             android:background="@drawable/setting_background_color">
 
@@ -73,36 +75,6 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/profileIcon"
-                    android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
-            </RelativeLayout>
-
-            <!-- Reminders -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
-
-                <ImageView
-                    android:id="@+id/remindersIcon"
-                    android:layout_width="77dp"
-                    android:layout_height="77dp"
-                    android:padding="20dp"
-                    android:src="@drawable/reminder_builder_icon" />
-
-                <TextView
-                    android:id="@+id/reminders"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/reminders"
-                    android:layout_toEndOf="@+id/remindersIcon"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/remindersIcon"
                     android:layout_marginStart="205dp"
                     android:src="@drawable/small_arrow_forward_ios_24"/>
             </RelativeLayout>
@@ -139,6 +111,7 @@
 
             <!-- Follow/Invite Friends -->
             <RelativeLayout
+                android:id="@+id/inviteRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -148,7 +121,7 @@
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/friends_people_icon" />
+                    android:src="@drawable/add_friend_icon" />
 
                 <TextView
                     android:id="@+id/friends"
@@ -178,7 +151,7 @@
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/ic_baseline_location_on_24" />
+                    android:src="@drawable/new_location_icon" />
 
                 <TextView
                     android:id="@+id/location"
@@ -199,6 +172,7 @@
 
             <!-- Notification -->
             <RelativeLayout
+                android:id="@+id/notificationRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -229,6 +203,7 @@
 
             <!-- Help -->
             <RelativeLayout
+                android:id="@+id/helpRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -289,6 +264,7 @@
 
             <!-- Delete Account -->
             <RelativeLayout
+                android:id="@+id/deactivateUserAccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/settings_line_separator">
@@ -319,32 +295,35 @@
 
             <!-- Signout -->
             <RelativeLayout
+                android:id="@+id/signOutRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_line_separator"
+                >
+                <!--android:onClick="onSignOut"-->
 
                 <ImageView
                     android:id="@+id/signoutIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/small_arrow_forward_ios_24" />
+                    android:src="@drawable/exit_to_app_icon" />
 
                 <TextView
                     android:id="@+id/signout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="@string/signout"
-                    android:layout_toEndOf="@+id/signoutIcon"/>
+                    android:layout_toEndOf="@+id/signoutIcon"
+                    android:text="@string/sign_out" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/signoutIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/signoutIcon"
+                    android:src="@drawable/small_arrow_forward_ios_24" />
             </RelativeLayout>
 
         </LinearLayout>

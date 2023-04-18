@@ -1,7 +1,5 @@
 package com.example.journey.JourneyApp.Signup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -9,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
@@ -18,34 +15,37 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Main.JourneyMain;
+import com.example.journey.JourneyApp.Profile.Models.ApplicationModel;
+import com.example.journey.JourneyApp.Profile.Models.ApplicationStatus;
+import com.example.journey.JourneyApp.Profile.Models.TaskModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.example.journey.Sticker.Constants;
-import com.example.journey.Sticker.MessengerActivity;
-import com.example.journey.Sticker.SigninAuthenticate;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Objects;
+import java.util.UUID;
 
 public class SignUp extends AppCompatActivity {
 
@@ -93,7 +93,6 @@ public class SignUp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.i(TAG, "SIGNED OUT GOOGLE");
-
                     }
                 });
                 signUpWithGoogle();
@@ -160,7 +159,8 @@ public class SignUp extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Log.e(TAG, "AUTHENTICATE USING GOOGLE SUCCESSFUL");
-
+                    String fullname = account.getDisplayName();
+                    addNewUserToDatabase(Objects.requireNonNull(Database.FIREBASE_AUTH.getCurrentUser()), fullname == null ? "" : fullname);
                     proceedToDashboarForUser(Database.FIREBASE_AUTH.getCurrentUser());
                 } else {
                     Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE");
@@ -172,7 +172,6 @@ public class SignUp extends AppCompatActivity {
 
     public void openLogInActivity(View view) {
         startActivity(new Intent(this, LoginPage.class));
-
     }
 
     void createNewUser(String fullname, String email, String password) {
@@ -186,8 +185,16 @@ public class SignUp extends AppCompatActivity {
                             FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
                             assert user != null;
                             reloadView();
-                            addNewUserToDatabase(user, fullname);
-                            proceedToDashboarForUser(user);
+                            addNewUserToDatabase(user, fullname).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        proceedToDashboarForUser(user);
+                                    } else {
+                                        task.getException().printStackTrace();
+                                    }
+                                }
+                            });
                         } else {
                             Log.e(TAG, "FAILED TO CREATE NEW USER", task.getException());
                             Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
@@ -195,22 +202,78 @@ public class SignUp extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
-    void addNewUserToDatabase(FirebaseUser user, String fullname) {
+    Task<Void> addNewUserToDatabase(FirebaseUser user, String fullname) {
         String[] names = fullname.split(" ");
         UserModel userModel = new UserModel(user.getUid(), user.getEmail());
         // TODO: Will need to handle edge cases - Tinashe, can you do this?
         userModel.addUserNameDetails(names[0], names[1]);
 
         Task<Void> taskAddUserTodB = Database.DB_REFERENCE.child(Database.USERS).child(userModel.getUserID()).setValue(userModel);
+        return taskAddUserTodB.continueWithTask(new Continuation<Void, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    task.getException().printStackTrace();
+                }
+                return addNewTaskModel(userModel);
+            }
+        });
 
-        if (taskAddUserTodB.isSuccessful()) {
-            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
-        } else if (taskAddUserTodB.isCanceled()) {
-            Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
-        }
+
+                /*
+                .addOnSuccessListener(new OnSuccessListener<Task<Void>>() {
+            @Override
+            public void onSuccess(Task<Void> voidTask) {
+                Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
+                e.printStackTrace();
+            }
+        });
+                 */
+//
+//        if (taskAddUserTodB.isSuccessful()) {
+//            Log.i(TAG, "SUCCESSFULLY ADDED NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
+//            addNewTaskModel(userModel);
+//        } else if (taskAddUserTodB.isCanceled()) {
+//            Log.e(TAG, "FAILED TO ADD NEW USER WITH UUID: " + user.getUid() + " TO DATABASE");
+//        }
+    }
+
+    public Task<Void> addNewTaskModel(UserModel userModel) {
+        TaskModel taskModel = new TaskModel(UUID.randomUUID().toString(), userModel.getUserID());
+        Task<Void> addTaskModel = Database.DB_REFERENCE.child(Database.TASKS).child(userModel.getUserID()).setValue(taskModel);
+        final ArrayList<Task<Void>> result = new ArrayList<Task<Void>>();
+        return addTaskModel.continueWithTask(new Continuation<Void, Task<Void>>() {
+            @Override
+            public Task<Void> then(@NonNull Task<Void> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    task.getException().printStackTrace();
+                }
+                return addDefaultApplication(userModel);
+            }
+        }).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (!task.isSuccessful()) {
+                    task.getException().printStackTrace();
+                }
+                Log.i(TAG, "COMPLETED");
+            }
+        });
+    }
+
+    public Task<Void> addDefaultApplication(UserModel userModel) {
+        DatabaseReference ref = Database.DB_REFERENCE.child(Database.APPLICATIONS).child(userModel.getUserID());
+        String key = ref.push().getKey();
+        ApplicationModel applicationModel = new ApplicationModel(UUID.randomUUID().toString(), "Default Application", Helper.getLongDateTime());
+        applicationModel.setPushKey(key);
+        return Database.DB_REFERENCE.child(Database.APPLICATIONS).child(userModel.getUserID()).child(applicationModel.getPushKey()).setValue(applicationModel);
     }
 
     @Override

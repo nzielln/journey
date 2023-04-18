@@ -3,11 +3,14 @@ package com.example.journey.JourneyApp.Dashboard;
 import java.util.ArrayList;
 
 public class NewPost {
-    private String postID;
-    private String postTitle;
-    private String authorID;
-    private String timePosted;
-    private String postContent;
+    String postID;
+    String postTitle;
+    String authorID;
+    String timePosted;
+    String postContent;
+
+    public NewPost() {}
+
    // private ArrayList<comments>;
     public NewPost( String postID,String postTitle, String authorID, String timePosted, String postContent){
         this.postID = postID;

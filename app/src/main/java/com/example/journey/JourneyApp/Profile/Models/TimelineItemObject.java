@@ -2,7 +2,6 @@ package com.example.journey.JourneyApp.Profile.Models;
 
 import com.example.journey.JourneyApp.Main.Helper;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class TimelineItemObject {
@@ -11,25 +10,28 @@ public class TimelineItemObject {
     String id;
     String dateAdded; // ISO String
     Integer rank;
-    Boolean isCompleted;
+    Boolean completed;
+    String pushKey;
 
     public TimelineItemObject(){}
-    public TimelineItemObject(String id, String title, String applicationId, String dateAdded, Integer rank) {
+    public TimelineItemObject(String id, String title, String applicationId, String dateAdded, Integer rank, String pushKey) {
         this.id = id;
         this.title = title;
         this.applicationId = applicationId;
         this.dateAdded = dateAdded;
         this.rank = rank;
-        this.isCompleted = false;
+        this.completed = false;
+        this.pushKey = pushKey;
     }
 
-    public TimelineItemObject(String title, String applicationId, String id, String dateAdded, Integer rank, Boolean isCompleted) {
+    public TimelineItemObject(String title, String applicationId, String id, String dateAdded, Integer rank, Boolean completed, String pushKey) {
         this.title = title;
         this.applicationId = applicationId;
         this.id = id;
         this.dateAdded = dateAdded;
         this.rank = rank;
-        this.isCompleted = isCompleted;
+        this.completed = completed;
+        this.pushKey = pushKey;
     }
 
     public String getId() {
@@ -53,11 +55,19 @@ public class TimelineItemObject {
     }
 
     public Boolean getCompleted() {
-        return isCompleted;
+        return completed;
     }
 
     public void setCompleted(Boolean completed) {
-        isCompleted = completed;
+        this.completed = completed;
+    }
+
+    public String getPushKey() {
+        return pushKey;
+    }
+
+    public void setPushKey(String pushKey) {
+        this.pushKey = pushKey;
     }
 
     public static TimelineItemObject getMockTimelineItem(Boolean isCompleted) {
@@ -65,6 +75,6 @@ public class TimelineItemObject {
         Integer rank = Helper.RANK_NUMBER;
         Helper.RANK_NUMBER++;
 
-        return new TimelineItemObject(UUID.randomUUID().toString(), timelineTitle, UUID.randomUUID().toString(), Helper.getLongDateTime(), rank, isCompleted);
+        return new TimelineItemObject(UUID.randomUUID().toString(), timelineTitle, UUID.randomUUID().toString(), Helper.getLongDateTime(), rank, isCompleted, "");
     }
 }

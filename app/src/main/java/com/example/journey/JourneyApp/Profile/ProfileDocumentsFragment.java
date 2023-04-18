@@ -14,13 +14,9 @@ import android.view.ViewGroup;
 
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Adapters.ProfileDocumentRecyclerViewAdapter;
-import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoCompletedRecyclerViewAdapter;
-import com.example.journey.JourneyApp.Profile.Adapters.ProfileTodoRecyclerViewAdapter;
 import com.example.journey.JourneyApp.Profile.Models.DocumentItemModel;
-import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentProfileDocumentsBinding;
-import com.example.journey.databinding.FragmentProfileTodoBinding;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -38,16 +34,10 @@ public class ProfileDocumentsFragment extends Fragment {
     ProfileDocumentRecyclerViewAdapter adapter;
 
     ArrayList<DocumentItemModel> documents = new ArrayList<>();
-
     DatabaseReference databaseReference;
 
     public ProfileDocumentsFragment() {
         super(R.layout.fragment_profile_documents);
-    }
-
-    public static ProfileDocumentsFragment newInstance(String param1, String param2) {
-        ProfileDocumentsFragment fragment = new ProfileDocumentsFragment();
-        return fragment;
     }
 
     @Override
