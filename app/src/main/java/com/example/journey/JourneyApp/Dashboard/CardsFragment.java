@@ -96,6 +96,7 @@ public class CardsFragment extends Fragment {
     {
         dbReference.child("posts").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
+            //public void onSuccess(@NonNull Task<DataSnapshot> task) {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
                     Log.e("firebase", "Error getting data", task.getException());

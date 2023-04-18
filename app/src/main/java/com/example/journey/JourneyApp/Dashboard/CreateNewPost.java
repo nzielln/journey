@@ -99,7 +99,11 @@ public class CreateNewPost extends BottomSheetDialogFragment {
 
                } else {
                    String postId= UUID.randomUUID().toString();
-                    String authorId = currentUser.getUid();
+                   Log.d("postID",postId);
+                   String authorId = currentUser.getUid();
+                    Log.d("authorID",authorId);
+
+                    //String authorId = currentUser.;
 
                    NewPost newPost = new NewPost(postId,postTitle.getText().toString(),
                            authorId,timePosted,postContent.getText().toString());
@@ -110,7 +114,7 @@ public class CreateNewPost extends BottomSheetDialogFragment {
                    Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
                    postTitle.setText(null);
                    postContent.setText(null);
-                   transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
+                   //transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
 
                }
                 //transaction.replace(R.id.journey_fragment_container, a).commit();
