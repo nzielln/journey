@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Main.Database;
@@ -40,9 +41,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -256,8 +259,7 @@ public class SignUp extends AppCompatActivity {
     }
 
     Task<Void> addNewUserToDatabase(FirebaseUser user, String fullname) {
-
-    void addNewUserToDatabase(FirebaseUser user, String fullname) {
+    //void addNewUserToDatabase(FirebaseUser user, String fullname) {
         String[] names = fullname.split(" ");
         UserModel userModel = new UserModel(user.getUid(), user.getEmail());
         // TODO: Will need to handle edge cases - Tinashe, can you do this?
