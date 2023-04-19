@@ -42,7 +42,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Database.FIREBASE_AUTH.signOut();
         setContentView(R.layout.activity_journey_main);
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
@@ -50,14 +49,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 .build();
 
         googleSignInClient = GoogleSignIn.getClient(JourneyMain.this, options);
-        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.i(TAG, "SIGNED OUT GOOGLE");
-            }
-        });
-
-        finish();
         fragmentManager = getSupportFragmentManager();
         openDashboardFragment();
 

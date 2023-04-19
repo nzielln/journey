@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Chat.Model.Chat;
+import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,11 +26,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private String imgURL;
 
     //Firebase
-    FirebaseUser fuser;
+    FirebaseUser fuser = Database.FIREBASE_AUTH.getCurrentUser();
 
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
-
 
     // Constructor
     public MessageAdapter(Context context, List<Chat> mChat, String imgURL){
@@ -104,7 +104,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position){
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
         if (mChat.get(position).getSender().equals(fuser.getUid())){
             return MSG_TYPE_RIGHT;
         }

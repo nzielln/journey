@@ -22,7 +22,6 @@ public class UserModel implements Parcelable {
     Integer following = 0;
     //String profileImage = "";
     String profileImage;
-    String imageURL;
     String status;
 
     //Constructors
@@ -53,7 +52,6 @@ public class UserModel implements Parcelable {
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
-        this.imageURL = imageURL;
         this.status = status;
 
     }
@@ -81,7 +79,6 @@ public class UserModel implements Parcelable {
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
-        this.imageURL = imageURL;
         this.status = status;
 
     }
@@ -188,17 +185,8 @@ public class UserModel implements Parcelable {
         return following;
     }
 
-
     public String getProfileImage() {
         return profileImage;
-    }
-
-    public String getImageURL(){
-        return imageURL;
-    }
-
-    public void setImageURL(String imageURL){
-        this.imageURL = imageURL;
     }
 
     public String getStatus() {

@@ -77,7 +77,7 @@ public class CardsFragment extends Fragment {
                         UserModel user = inner.getValue(UserModel.class);
 
                         allUsers.put(user.getUserID(), user);
-                        Log.d("allusers",user.getProfileImage());
+//                        Log.d("allusers", user.getProfileImage());
 //                        if(user.getProfileImage() == null) {
 //                            image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
 //                        }else {
