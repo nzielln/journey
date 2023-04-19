@@ -24,7 +24,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     private Context context;
     private List<UserModel> mUsers;
     private boolean isChat;
-    String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_2YunYJpvCPd0qv9CB5oIrqvT5h92_cc68d573-29e2-497d-9995-4d4c74ffe4bf?alt=media&token=f9447699-5e6f-40d6-82c9-fcf4f6011aac";
+    //String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_2YunYJpvCPd0qv9CB5oIrqvT5h92_cc68d573-29e2-497d-9995-4d4c74ffe4bf?alt=media&token=f9447699-5e6f-40d6-82c9-fcf4f6011aac";
 
     // Constructor
     public UserAdapter(Context context, List<UserModel> mUsers, boolean isChat){
@@ -46,10 +46,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         UserModel user = mUsers.get(position);
         holder.username.setText(user.getUsername());
 
+        //if (user.getProfileImage().equals("default")){
         if (user.getProfileImage() == null){
-            Glide.with(context)
-                    .load(defaultImage)
-                    .into(holder.imageView);        }else{
+            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+            /*Glide.with(context)
+                    .load(R.mipmap.ic_launcher)
+                    .into(holder.imageView);
+
+             */
+        }else{
             //Adding Glide Library
             Glide.with(context)
                     .load(user.getProfileImage())

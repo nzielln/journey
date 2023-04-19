@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Chat.Adapter.MessageAdapter;
 import com.example.journey.JourneyApp.Chat.Model.Chat;
+import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +53,7 @@ public class MessageActivity extends AppCompatActivity {
     String userid;
 
     ValueEventListener seenListener;
+    FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
 
 
@@ -80,10 +82,10 @@ public class MessageActivity extends AppCompatActivity {
         intent = getIntent();
         userid = intent.getStringExtra("userid");
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-        reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
+        //fuser = FirebaseAuth.getInstance().getCurrentUser();
+        //reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
 
-        reference.addValueEventListener(new ValueEventListener() {
+        Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);

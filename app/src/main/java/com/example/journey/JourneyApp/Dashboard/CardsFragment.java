@@ -73,10 +73,11 @@ public class CardsFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (final DataSnapshot inner : task.getResult().getChildren()) {
-                        UserModel user = inner.getValue(UserModel.class);
+                    /*
+                 //   for (final DataSnapshot inner : task.getResult().getChildren()) {
+                    //    UserModel user = inner.getValue(UserModel.class);
 
-                        allUsers.put(user.getUserID(), user);
+                     //   allUsers.put(user.getUserID(), user);
 //                        Log.d("allusers", user.getProfileImage());
 //                        if(user.getProfileImage() == null) {
 //                            image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
@@ -85,6 +86,7 @@ public class CardsFragment extends Fragment {
 //                            allUsers.put(user.getProfileImage(), user);
 //                        }
                     }
+                */
 
                     retrievePost(allUsers);
                 }
@@ -105,17 +107,24 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
-                        StorageReference userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
+                        //StorageReference userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
 
-                        items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
+                       // items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
                     }
 
                     adapter = new DashboardAdapter(items, requireActivity());
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
+
             }
+
+
         });
+
+
     }
+
+
 
 }
