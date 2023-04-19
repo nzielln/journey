@@ -1,5 +1,6 @@
 package com.example.journey.JourneyApp.Dashboard;
 
+import static com.example.journey.JourneyApp.Main.Helper.getShortDate;
 import static com.example.journey.JourneyApp.Main.Helper.getShortTime;
 
 import android.os.Bundle;
@@ -87,7 +88,8 @@ public class CreateNewPost extends BottomSheetDialogFragment {
         postAddPostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String timePosted = helper.getShortTime();
+
+                String timePosted = getShortDate() + " " + getShortTime();
 
 
                 Log.d("title",postTitle.getText().toString());
