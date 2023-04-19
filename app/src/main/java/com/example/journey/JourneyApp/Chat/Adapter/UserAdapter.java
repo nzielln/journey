@@ -24,7 +24,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     private Context context;
     private List<UserModel> mUsers;
     private boolean isChat;
+
     //String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_2YunYJpvCPd0qv9CB5oIrqvT5h92_cc68d573-29e2-497d-9995-4d4c74ffe4bf?alt=media&token=f9447699-5e6f-40d6-82c9-fcf4f6011aac";
+    String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_q3XSGj0VfqO9iseYRQ2cL9jN2K33_d1357f54-84b5-4a44-a6fe-6da239b6c448?alt=media&token=6702bac9-9131-4e2c-8911-2ee45e5b1cf4";
 
     // Constructor
     public UserAdapter(Context context, List<UserModel> mUsers, boolean isChat){
@@ -48,9 +50,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         //if (user.getProfileImage().equals("default")){
         if (user.getProfileImage() == null){
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
+            holder.imageView.setImageResource(R.drawable.person_image);
             /*Glide.with(context)
-                    .load(R.mipmap.ic_launcher)
+                    .load(defaultImage)
                     .into(holder.imageView);
 
              */

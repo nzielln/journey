@@ -42,7 +42,7 @@ public class MessageActivity extends AppCompatActivity {
     ImageButton sendBtn;
 
 
-    FirebaseUser fuser;
+    FirebaseUser currentUser;
     DatabaseReference reference;
     Intent intent;
 
@@ -53,7 +53,7 @@ public class MessageActivity extends AppCompatActivity {
     String userid;
 
     ValueEventListener seenListener;
-    FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
 
 
 
@@ -84,6 +84,7 @@ public class MessageActivity extends AppCompatActivity {
 
         //fuser = FirebaseAuth.getInstance().getCurrentUser();
         //reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
         Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -92,12 +93,12 @@ public class MessageActivity extends AppCompatActivity {
                 username.setText(userModel.getUsername());
 
                 if (userModel.getProfileImage().equals("default")){
-                    imageView.setImageResource(R.mipmap.ic_launcher);
+                    imageView.setImageResource(R.drawable.person_image);
                 } else{
                     Glide.with(MessageActivity.this).load(userModel.getProfileImage()).into(imageView);
                 }
 
-                readMessages(fuser.getUid(), userid, userModel.getProfileImage());
+                readMessages(currentUser.getUid(), userid, userModel.getProfileImage());
             }
 
             @Override
@@ -111,7 +112,7 @@ public class MessageActivity extends AppCompatActivity {
             public void onClick(View v){
                 String msg = msg_editText.getText().toString();
                 if (!msg.equals("")){
-                    sendMessage(fuser.getUid(), userid, msg);
+                    sendMessage(currentUser.getUid(), userid, msg);
                 } else{
                     Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
                 }
@@ -134,7 +135,7 @@ public class MessageActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
 
-                    if (chat.getReceiver().equals(fuser.getUid()) && chat.getSender().equals(userid)){
+                    if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)){
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         snapshot.getRef().updateChildren(hashMap);
@@ -166,7 +167,7 @@ public class MessageActivity extends AppCompatActivity {
 
         //Adding user to chat fragment: latest chat with contacts
         final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference("ChatList")
-                .child(fuser.getUid())
+                .child(currentUser.getUid())
                 .child(userid);
 
         chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -214,7 +215,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void CheckStatus(String status){
-        reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(fuser.getUid());
+        reference = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
