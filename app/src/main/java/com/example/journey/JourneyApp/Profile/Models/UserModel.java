@@ -41,7 +41,6 @@ public class UserModel implements Parcelable {
             Integer followers,
             Integer following,
             String profileImage,
-            String imageURL,
             String status
     ) {
         this.userID = userID;
@@ -67,7 +66,6 @@ public class UserModel implements Parcelable {
             Integer followers,
             Integer following,
             String profileImage,
-            String imageURL,
             String status
     ) {
         this.userID = userID;
@@ -198,8 +196,8 @@ public class UserModel implements Parcelable {
     }
 
     public static UserModel getMockUser() {
-        //return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
-        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "", "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3", "");
+        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3", "");
+        //return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "", "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3", "");
     }
 
     @Override
