@@ -1,6 +1,8 @@
 package com.example.journey.JourneyApp.Dashboard;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -61,6 +63,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         Button like;
         Button comment;
 
+
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameText =(TextView)itemView.findViewById(R.id.info_name);
@@ -103,19 +107,42 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             Glide.with(ctx).load(card.getCardImage()).into(holder.userImage);
         }
 
-//        holder.share.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //String item = items.get(position);
-//                Log.d("share clicked","shared clicked");
-//                //Toast.makeText("shared clieked",share, Toast.LENGTH_LONG).show();
-//            }
-//        });
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("share clicked","shared clicked");
+                Intent sharingIntent = null;
+
+                sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+
+                String shareTitle = "title";
+                String shareContent = "content";
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
+                v.getContext().startActivity(Intent.createChooser(sharingIntent, "Share using"));
+            }
+        });
+        holder.like.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Boolean check = false;
+
+                Log.d("like button","heart button clicked");
+                if (!check) {
+                    v.setBackgroundColor(Color.RED);
+                }
+                v.setBackgroundColor(Color.WHITE);
+//                if (!check){
+//                    v.setBackgroundResource(R.drawable.red_heart);
+//                }
+//                v.setBackgroundResource(R.drawable.heart);
+            }
+        });
+
 
     }
-
-
 
 
     @Override

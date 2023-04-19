@@ -99,8 +99,7 @@ public class CardsFragment extends Fragment {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
                     Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
+                } else {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
@@ -108,7 +107,7 @@ public class CardsFragment extends Fragment {
                         StorageReference userPic;
                         if (user.getProfileImage() == null ){
                             userPic= null;
-                        }else{
+                        } else {
                             userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
                         }
 
