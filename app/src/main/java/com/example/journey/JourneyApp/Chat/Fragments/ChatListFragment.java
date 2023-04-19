@@ -3,6 +3,7 @@ package com.example.journey.JourneyApp.Chat.Fragments;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +37,8 @@ import java.util.List;
 public class ChatListFragment extends Fragment {
 
     private UserAdapter userAdapter;
-    private List<Users> mUsers;
+    private List<UserModel> mUsers;
     FirebaseUser fuser;
-    DatabaseReference reference;
 
     private List<ChatList> usersList;
     //private List<Users> mUsers = new ArrayList<>();
@@ -50,6 +50,12 @@ public class ChatListFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        fuser = Database.FIREBASE_AUTH.getCurrentUser();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -58,18 +64,9 @@ public class ChatListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        fuser = FirebaseAuth.getInstance().getCurrentUser();
-
         usersList = new ArrayList<>();
 
-        reference = FirebaseDatabase.getInstance().getReference("ChatList").child(fuser.getUid());
-
-        //fuser = FirebaseAuth.getInstance(Database.JOURNEYDB).getCurrentUser();
-
-
-        //reference = Database.DB_REFERENCE.child("ChatList").child(fuser.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
+        Database.DB_REFERENCE.child(Database.CHAT_LIST).child(fuser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -94,16 +91,17 @@ public class ChatListFragment extends Fragment {
     public void chatList(){
         //Getting all recent chats
         mUsers = new ArrayList<>();
-        reference = FirebaseDatabase.getInstance().getReference("MyUsers");
+
         //reference = Database.DB_REFERENCE.child("MyUsers");
-        reference.addValueEventListener(new ValueEventListener() {
+        Database.DB_REFERENCE.child(Database.USERS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mUsers.clear();
                 for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
-                    Users user = snapshot.getValue(Users.class);
+                    UserModel user = snapshot.getValue(UserModel.class);
                     for (ChatList chatlist : usersList){
-                        if (user.getId().equals(chatlist.getId())){
+                        assert user != null;
+                        if (user.getUserID().equals(chatlist.getId())){
                             mUsers.add(user);
                         }
                     }

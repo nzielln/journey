@@ -9,14 +9,12 @@ import androidx.core.content.ContextCompat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Main.Database;
@@ -41,13 +39,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
@@ -61,11 +56,8 @@ public class SignUp extends AppCompatActivity {
     EditText fullName;
     EditText email;
     MaterialButton showHidePassword;
-    EditText password;
 
-    //Firebase Authentication
-    FirebaseAuth auth;
-    DatabaseReference myRef;
+    EditText password;
     private static final String TAG = SignUp.class.toGenericString();
     private Boolean isLoggedIn;
 
@@ -83,24 +75,13 @@ public class SignUp extends AppCompatActivity {
         showHidePassword = findViewById(R.id.show_password);
         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
 
-        //Firebase Authentication
-        auth = FirebaseAuth.getInstance();
-        myRef = FirebaseDatabase.getInstance().getReference();
-
-        //Adding Event Listener to Button Register
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String fullNameInput = String.valueOf(fullName.getText());
                 String emailInput = String.valueOf(email.getText());
                 String passwordInput = String.valueOf(password.getText());
-
-                if (TextUtils.isEmpty(fullNameInput) || TextUtils.isEmpty(emailInput) || TextUtils.isEmpty(passwordInput)){
-                    Toast.makeText(SignUp.this, "All three fields are required", Toast.LENGTH_SHORT).show();
-                } else {
-                    createNewUser(fullNameInput, emailInput, passwordInput);
-                }
-
+                createNewUser(fullNameInput, emailInput, passwordInput);
             }
         });
 
@@ -150,15 +131,15 @@ public class SignUp extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                         if (task.isSuccessful()) {
-                              try {
-                                  GoogleSignInAccount account = task.getResult(ApiException.class);
-                                  completeGoogleSignUp(account);
-                              } catch (ApiException error) {
-                                  error.printStackTrace();
-                                  Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - APIEXCEPTION");
+                            try {
+                                GoogleSignInAccount account = task.getResult(ApiException.class);
+                                completeGoogleSignUp(account);
+                            } catch (ApiException error) {
+                                error.printStackTrace();
+                                Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - APIEXCEPTION");
 
-                                  Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nERROR MESSAGE: " +  error.getMessage());
-                              }
+                                Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nERROR MESSAGE: " +  error.getMessage());
+                            }
 
                         } else {
                             Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - GOOGLE ACCOUNT TTASK FAILED");
@@ -194,43 +175,14 @@ public class SignUp extends AppCompatActivity {
     }
 
     void createNewUser(String fullname, String email, String password) {
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>(){
-        //Database.FIREBASE_AUTH.createUserWithEmailAndPassword(email, password) //change this
-                //.addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+        Database.FIREBASE_AUTH.createUserWithEmailAndPassword(email, password) //change this
+                .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.i(TAG, "SUCCESSFULLY CREATED NEW USER");
-                            FirebaseUser firebaseUser = auth.getCurrentUser();
-                            String userid = firebaseUser.getUid();
 
-                            myRef = FirebaseDatabase.getInstance()
-                                    .getReference("MyUsers")
-                                    .child(userid);
-
-
-                            //HashMaps
-                            HashMap<String, String> hashMap = new HashMap<>();
-                            hashMap.put("id", userid);
-                            hashMap.put("username", fullname);
-                            hashMap.put("imageURL", "default");
-                            hashMap.put("status", "offline");
-
-                            //Opening the Main Activity after successful Login/Registration
-                            myRef.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>(){
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task){
-                                    if (task.isSuccessful()){
-                                        Intent i = new Intent(SignUp.this, JourneyMain.class);
-                                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(i);
-                                        finish();
-                                    }
-                                }
-                            });
-
-                            /*FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
+                            FirebaseUser user = Database.FIREBASE_AUTH.getCurrentUser();
                             assert user != null;
                             reloadView();
                             addNewUserToDatabase(user, fullname).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -243,15 +195,9 @@ public class SignUp extends AppCompatActivity {
                                     }
                                 }
                             });
-                            addNewUserToDatabase(user, fullname);
-                            proceedToDashboarForUser(user);
-
-                             */
-
                         } else {
                             Log.e(TAG, "FAILED TO CREATE NEW USER", task.getException());
-                            Toast.makeText(SignUp.this, "Invalid Email or Password", Toast.LENGTH_SHORT).show();
-                            //Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
+                            Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE);
                             reloadView();
                         }
                     }
@@ -259,7 +205,6 @@ public class SignUp extends AppCompatActivity {
     }
 
     Task<Void> addNewUserToDatabase(FirebaseUser user, String fullname) {
-    //void addNewUserToDatabase(FirebaseUser user, String fullname) {
         String[] names = fullname.split(" ");
         UserModel userModel = new UserModel(user.getUid(), user.getEmail());
         // TODO: Will need to handle edge cases - Tinashe, can you do this?
@@ -331,8 +276,6 @@ public class SignUp extends AppCompatActivity {
         return Database.DB_REFERENCE.child(Database.APPLICATIONS).child(userModel.getUserID()).child(applicationModel.getPushKey()).setValue(applicationModel);
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -359,8 +302,6 @@ public class SignUp extends AppCompatActivity {
         Log.i(TAG, "PROCEED TO DASHBOARD");
         startActivity(new Intent(this, JourneyMain.class));
     }
-
-
 
     void signUpWithGoogle() {
         googleIntentLauncher.launch(new Intent(googleSignInClient.getSignInIntent()));

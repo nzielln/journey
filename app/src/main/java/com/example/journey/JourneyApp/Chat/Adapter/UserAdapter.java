@@ -22,14 +22,12 @@ import java.util.List;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private Context context;
-    private List<Users> mUsers;
-
+    private List<UserModel> mUsers;
     private boolean isChat;
-
-
+    String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_2YunYJpvCPd0qv9CB5oIrqvT5h92_cc68d573-29e2-497d-9995-4d4c74ffe4bf?alt=media&token=f9447699-5e6f-40d6-82c9-fcf4f6011aac";
 
     // Constructor
-    public UserAdapter(Context context, List<Users> mUsers, boolean isChat){
+    public UserAdapter(Context context, List<UserModel> mUsers, boolean isChat){
         this.context = context;
         this.mUsers = mUsers;
         this.isChat = isChat;
@@ -45,18 +43,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
 
-        Users user = mUsers.get(position);
+        UserModel user = mUsers.get(position);
         holder.username.setText(user.getUsername());
 
-        if (user.getImageURL().equals("default")){
-            holder.imageView.setImageResource(R.mipmap.ic_launcher);
-        }else{
+        if (user.getProfileImage() == null){
+            Glide.with(context)
+                    .load(defaultImage)
+                    .into(holder.imageView);        }else{
             //Adding Glide Library
             Glide.with(context)
-                    .load(user.getImageURL())
+                    .load(user.getProfileImage())
                     .into(holder.imageView);
         }
-
 
         //Status Check
         if (isChat) {
@@ -78,7 +76,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             @Override
             public void onClick(View v){
                 Intent i = new Intent(context, MessageActivity.class);
-                i.putExtra("userid", user.getId());
+                i.putExtra("userid", user.getUserID());
                 context.startActivity(i);
             }
         });
@@ -95,8 +93,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         public ImageView imageView;
         public ImageView imageViewON;
         public ImageView imageViewOFF;
-
-
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);

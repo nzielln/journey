@@ -89,13 +89,13 @@ public class MessageActivity extends AppCompatActivity {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
                 username.setText(userModel.getUsername());
 
-                if (userModel.getImageURL().equals("default")){
+                if (userModel.getProfileImage().equals("default")){
                     imageView.setImageResource(R.mipmap.ic_launcher);
                 } else{
-                    Glide.with(MessageActivity.this).load(userModel.getImageURL()).into(imageView);
+                    Glide.with(MessageActivity.this).load(userModel.getProfileImage()).into(imageView);
                 }
 
-                readMessages(fuser.getUid(), userid, userModel.getImageURL());
+                readMessages(fuser.getUid(), userid, userModel.getProfileImage());
             }
 
             @Override
