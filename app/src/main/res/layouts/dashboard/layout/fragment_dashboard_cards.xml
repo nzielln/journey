@@ -73,10 +73,14 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/heart_Btn"
                 style="?attr/materialIconButtonStyle"
+                app:icon="@drawable/liked_hearted_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/heart"
+                android:backgroundTint="@color/pure_white"
+
+                android:checkable="true"
                 app:iconSize="14dp" />
+            <!--                -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/share_Btn"
                 style="?attr/materialIconButtonStyle"

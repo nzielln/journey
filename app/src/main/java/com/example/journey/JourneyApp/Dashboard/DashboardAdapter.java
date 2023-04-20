@@ -116,30 +116,24 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
                 sharingIntent = new Intent(Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
 
-                String shareTitle = "title";
-                String shareContent = "content";
+                //String shareTitle = "title";
+                String shareContent = card.getCardSummary();
                 sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
-                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
+               // sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
                 v.getContext().startActivity(Intent.createChooser(sharingIntent, "Share using"));
             }
         });
+
         holder.like.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                Boolean check = false;
-
                 Log.d("like button","heart button clicked");
-                if (!check) {
-                    v.setBackgroundColor(Color.RED);
-                }
-                v.setBackgroundColor(Color.WHITE);
-//                if (!check){
-//                    v.setBackgroundResource(R.drawable.red_heart);
-//                }
-//                v.setBackgroundResource(R.drawable.heart);
+
             }
         });
+
+
 
 
     }

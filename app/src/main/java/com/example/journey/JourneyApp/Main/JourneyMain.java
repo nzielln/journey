@@ -116,20 +116,20 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openInsightsFragment() {
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        InsightsFragment insightsFragment = new InsightsFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        InsightsFragment insightsFragment = new InsightsFragment();
+
+        transaction.replace(R.id.journey_fragment_container, insightsFragment).commit();
+
+//        Database.FIREBASE_AUTH.signOut();
+//        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                Log.i(TAG, "SIGNED OUT GOOGLE");
+//            }
+//        });
 //
-//        transaction.replace(R.id.journey_fragment_container, insightsFragment).commit();
-
-        Database.FIREBASE_AUTH.signOut();
-        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.i(TAG, "SIGNED OUT GOOGLE");
-            }
-        });
-
-        finish();
+//        finish();
     }
 
     @Override

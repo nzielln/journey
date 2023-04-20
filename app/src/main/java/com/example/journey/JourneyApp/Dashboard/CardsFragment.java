@@ -76,6 +76,8 @@ public class CardsFragment extends Fragment {
         recyclerView = binding.dashboardRecyclerView;
 
         Map<String, UserModel> allUsers = new HashMap<>();
+        Map<String, UserModel> usersFollowing = new HashMap<>();
+
         //ImageView image = getView().findViewById(R.id.dash_image);
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -86,13 +88,13 @@ public class CardsFragment extends Fragment {
 
                         allUsers.put(user.getUserID(), user);
                     }
-                    retrievePost(allUsers);
+                    retrieveNewPost(allUsers);
                 }
             }
         });
     }
 
-    private void retrievePost(Map<String, UserModel> users) {
+    private void retrieveNewPost(Map<String, UserModel> users) {
         dbReference.child("posts").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             //public void onSuccess(@NonNull Task<DataSnapshot> task) {
