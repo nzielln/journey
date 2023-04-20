@@ -154,8 +154,6 @@ public class MessageActivity extends AppCompatActivity {
 
     private void sendMessage(String sender, String receiver, String message){
         //DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference reference = Database.DB_REFERENCE;
-
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
@@ -163,7 +161,7 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put("message", message);
         //hashMap.put("isseen", false);
 
-        reference.child(Database.CHATS).push().setValue(hashMap);
+        Database.DB_REFERENCE.child(Database.CHATS).push().setValue(hashMap);
         //reference.child("Chats").push().setValue(hashMap);
 
         //Adding user to chat fragment: latest chat with contacts
@@ -191,9 +189,8 @@ public class MessageActivity extends AppCompatActivity {
     private void readMessages(String myid, String userid, String profileImage){
 
         mChat = new ArrayList<>();
-        reference = Database.DB_REFERENCE.child(Database.CHATS);
         //reference = FirebaseDatabase.getInstance().getReference(Database.CHATS);
-        reference.addValueEventListener(new ValueEventListener() {
+        Database.DB_REFERENCE.child(Database.CHATS).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mChat.clear();
