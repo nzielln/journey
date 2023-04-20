@@ -114,7 +114,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         }
 
 
-
         if (card.getCardImage() == null) {
             holder.userImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.pick_photo));
         } else {

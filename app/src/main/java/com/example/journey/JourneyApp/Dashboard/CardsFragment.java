@@ -112,7 +112,11 @@ public class CardsFragment extends Fragment {
                             userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
                         }
 
-                        Boolean isPostLikedByUser = post.liked.get(currentUser.getUid());
+                        Boolean isPostLikedByUser = false;
+
+                        if (post.liked.containsKey(currentUser.getUid()) && post.liked.get(currentUser.getUid()) == true) {
+                            isPostLikedByUser = true;
+                        }
 
                        items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser));
                     }
