@@ -1,6 +1,7 @@
 package com.example.journey.JourneyApp.Dashboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NewPost {
     String postID;
@@ -9,15 +10,18 @@ public class NewPost {
     String timePosted;
     String postContent;
 
+    HashMap<String,Boolean> liked;
+
     public NewPost() {}
 
    // private ArrayList<comments>;
-    public NewPost( String postID,String postTitle, String authorID, String timePosted, String postContent){
+    public NewPost( String postID,String postTitle, String authorID, String timePosted, String postContent,HashMap<String,Boolean> liked){
         this.postID = postID;
         this.postTitle = postTitle;
         this.authorID = authorID;
         this.timePosted = timePosted;
         this.postContent = postContent;
+        this.liked = liked;
 
     }
     public String getPostID(){return postID;}
@@ -26,5 +30,8 @@ public class NewPost {
     public String getTimePosted(){return timePosted;}
     public String getPostContent(){return postContent;}
 
+    public HashMap<String,Boolean> getLiked() {
+        return liked;
+    }
 }
 

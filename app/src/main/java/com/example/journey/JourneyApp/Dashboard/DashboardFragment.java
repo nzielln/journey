@@ -13,9 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -26,6 +28,7 @@ import com.example.journey.databinding.FragmentDashboardBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -35,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -50,22 +54,28 @@ public class DashboardFragment extends Fragment {
     FragmentDashboardBinding binding;
     UserModel currentUserModel;
     ShapeableImageView image;
+    DashboardAdapter adapter;
     //DatabaseReference dbReference;
     //DashboardAdapter adapter;
     //ArrayList<CardModel> items;
+    SearchView searchInput;
+
 
 
     public DashboardFragment() {
         super(R.layout.fragment_dashboard);
         // Required empty public constructor
+
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
     public void displayFragment(Fragment fragment){
-        //CardsFragment fragment = new CardsFragment();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboard_rv_container, fragment).commit();
     }
@@ -85,6 +95,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
@@ -116,11 +127,20 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-
-
-
-
-
     }
+//    public boolean onSearchChange() {
+//        searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
+//        //SearchView searchView = (SearchView) searchInput.getActionView();
+//
+//       // searchInput.setOnQueryTextListener();
+//        return true;
+//    }
+//
+//    public boolean onQueryTextChange(String query){
+//        return false;
+//    }
+//    public boolean onQueryTextSubmit(String query){
+//        return false;
+//    }
 
 }
