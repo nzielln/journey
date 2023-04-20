@@ -1,6 +1,8 @@
 package com.example.journey.JourneyApp.Dashboard;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -40,12 +43,14 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     DatabaseReference dbReference;
     FirebaseUser user;
     private FirebaseAuth userAuth;
+    private CardClickListener listener;
 
     FragmentActivity ctx;
 
     public DashboardAdapter(ArrayList<CardModel> items, FragmentActivity context) {
         this.items = items;
         this.ctx = context;
+        //this.listener = listener;
     }
 
 
@@ -54,9 +59,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         private TextView dateText;
         private TextView contentText;
         private ImageView userImage;
-        private Button share;
-        private Button like;
-        private Button comment;
+        Button share;
+        Button like;
+        Button comment;
+
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,18 +71,23 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             dateText =(TextView)itemView.findViewById(R.id.info_date);
             contentText=(TextView)itemView.findViewById(R.id.info_infoText);
             userImage=(ImageView)itemView.findViewById(R.id.info_image);
-            //userImage =(ImageView).findViewById(R.id.dash_image);
+            share =(Button)itemView.findViewById(R.id.share_Btn);
+            like =(Button) itemView.findViewById(R.id.heart_Btn);
+            comment = (Button) itemView.findViewById(R.id.comment_Btn);
+            //itemView.setOnClickListener(this);
+
     }
 
 }
-
-    @NonNull
+    //private final OnClickListener mOnClickListener = new CardClickListener();
+    //@NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.fragment_dashboard_cards,parent, false);
+       // view.setOnClickListener(mOnClickListener);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -88,23 +100,55 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.dateText.setText(card.getCardDate());
         holder.contentText.setText(card.getCardSummary());
 
-        if (card.getCardImage() == null)
-        {
+
+        if (card.getCardImage() == null) {
             holder.userImage.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.pick_photo));
         } else {
-            //StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(card.getCardImage());
-            Log.d("debug", ctx.toString());
-            Log.d("debug", card.getCardImage().toString());
-            Log.d("debug", holder.userImage.toString());
-
             Glide.with(ctx).load(card.getCardImage()).into(holder.userImage);
         }
-    }
 
+        holder.share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("share clicked","shared clicked");
+                Intent sharingIntent = null;
+
+                sharingIntent = new Intent(Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+
+                String shareTitle = "title";
+                String shareContent = "content";
+                sharingIntent.putExtra(Intent.EXTRA_TEXT, shareContent);
+                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, shareTitle);
+                v.getContext().startActivity(Intent.createChooser(sharingIntent, "Share using"));
+            }
+        });
+        holder.like.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Boolean check = false;
+
+                Log.d("like button","heart button clicked");
+                if (!check) {
+                    v.setBackgroundColor(Color.RED);
+                }
+                v.setBackgroundColor(Color.WHITE);
+//                if (!check){
+//                    v.setBackgroundResource(R.drawable.red_heart);
+//                }
+//                v.setBackgroundResource(R.drawable.heart);
+            }
+        });
+
+
+    }
 
 
     @Override
     public int getItemCount(){return items.size();}
+
+
 
 
 }
