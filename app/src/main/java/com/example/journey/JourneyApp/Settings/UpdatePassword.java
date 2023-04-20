@@ -70,15 +70,6 @@ public class UpdatePassword extends AppCompatActivity {
   }
 
   /**
-   * The handleUpdatePassword() method handles
-   * checking that the user typed in the current and
-   * new password before taping the update button.
-   */
-  public void handleUpdatePassword() {
-
-  }
-
-  /**
    * The updatePassword() method updates the
    * user's password.
    */

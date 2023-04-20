@@ -53,45 +53,6 @@
             android:padding="20dp"
             android:background="@drawable/setting_background_color">
 
-            <!-- Edit Profile -->
-            <RelativeLayout
-                android:id="@+id/editProfileRL"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/settings_bottom_borderline">
-
-                <ImageView
-                    android:id="@+id/profileIcon"
-                    android:layout_width="77dp"
-                    android:layout_height="77dp"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:padding="20dp"
-                    android:src="@drawable/settings_person_icon"
-                    android:contentDescription="@string/profileIconDescrip" />
-
-                <TextView
-                    android:id="@+id/editProfile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/edit_profile"
-                    android:textColor="@color/dark_blue"
-                    android:layout_toEndOf="@+id/profileIcon"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="205dp"
-                    android:layout_toEndOf="@+id/profileIcon"
-                    android:contentDescription="@string/arrowForwardProfile"
-                    android:src="@drawable/small_arrow_forward_ios_24"
-                    tools:ignore="ImageContrastCheck" />
-            </RelativeLayout>
-
             <!-- Change Password -->
             <RelativeLayout
                 android:id="@+id/changePasswordRL"
@@ -123,76 +84,6 @@
                     android:layout_marginStart="205dp"
                     android:layout_toEndOf="@+id/passwordIcon"
                     android:contentDescription="@string/arrowForwardPassword"
-                    android:src="@drawable/small_arrow_forward_ios_24"
-                    tools:ignore="ImageContrastCheck" />
-            </RelativeLayout>
-
-            <!-- Follow/Invite Friends -->
-            <RelativeLayout
-                android:id="@+id/inviteRL"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/settings_bottom_borderline">
-
-                <ImageView
-                    android:id="@+id/friendsIcon"
-                    android:layout_width="77dp"
-                    android:layout_height="77dp"
-                    android:padding="20dp"
-                    android:src="@drawable/add_friend_icon"
-                    android:contentDescription="@string/friendsIconDescrp" />
-
-                <TextView
-                    android:id="@+id/friends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/invite_friends"
-                    android:textColor="@color/dark_blue"
-                    android:layout_toEndOf="@+id/friendsIcon"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="205dp"
-                    android:layout_toEndOf="@+id/friendsIcon"
-                    android:contentDescription="@string/arrowForwardFriends"
-                    android:src="@drawable/small_arrow_forward_ios_24"
-                    tools:ignore="ImageContrastCheck" />
-            </RelativeLayout>
-
-            <!-- Location -->
-            <RelativeLayout
-                android:id="@+id/locationRL"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/settings_bottom_borderline">
-
-                <ImageView
-                    android:id="@+id/locationIcon"
-                    android:layout_width="77dp"
-                    android:layout_height="77dp"
-                    android:padding="20dp"
-                    android:src="@drawable/new_location_icon"
-                    android:contentDescription="@string/locationIconDesc" />
-
-                <TextView
-                    android:id="@+id/location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/location"
-                    android:textColor="@color/dark_blue"
-                    android:layout_toEndOf="@+id/locationIcon"/>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="205dp"
-                    android:layout_toEndOf="@+id/locationIcon"
-                    android:contentDescription="@string/arrowForwardLocation"
                     android:src="@drawable/small_arrow_forward_ios_24"
                     tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
