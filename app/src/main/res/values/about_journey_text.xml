@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aboutJourneyText">TextView</string>
+    <string name="services">The place where you can track your journey to green card and citizenship. The place where you can connect with people who are on a similar USCIS journey as you!
+
+Journey performs case tracking analysis and predicts your case timeline by comparing your immigration case with similar applicants.
+
+The road to USCIS green card and citizenship is long but sharing and walking together with fellow applicants will make the journey fun.
+    </string>
+
+    <string name="disclaimer">Journey is not affiliated with or endorsed by any government entity. The content in this app is not legal advice. The case prediction timeline are based on case registered data in Journey and the results are not guaranteed. The posts from all the users in this app and all information, content, materials available in this app are for general informational purposes only. This app contains links to third party websites and such links are only for the convenience of the user. Users should consult their attorney for any particular legal matter.
+    </string>
+</resources>

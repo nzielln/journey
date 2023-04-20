@@ -109,6 +109,8 @@ public class DashboardFragment extends Fragment {
                         Glide.with(requireActivity()).load(profileURL).into(image);
                         image.setClickable(false);
                     }
+
+
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
             }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
 import android.app.NotificationManager;
@@ -29,7 +28,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 /**
@@ -48,7 +46,6 @@ public class Settings extends AppCompatActivity {
   private static final String MESSAGE_CHANNEL_ID = "messageChannel";
 
   GoogleSignInClient googleSignInClient;
-  FirebaseAuth fbAuth;
   FirebaseUser fbUser;
   AlertDialog.Builder confirmMessage;
   FragmentManager fragmentManager;
@@ -57,6 +54,7 @@ public class Settings extends AppCompatActivity {
   ImageView backButton;
   RelativeLayout notificationRelLay;
   RelativeLayout helpRelLay;
+  RelativeLayout aboutRelLay;
   RelativeLayout signOutRelLay;
   RelativeLayout deleteRelLay;
 
@@ -88,8 +86,7 @@ public class Settings extends AppCompatActivity {
     notificationRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //sendNotification(v);
-        createJNotificationChannel();
+        startActivity(new Intent(Settings.this, Notifications.class));
       }
     });
 
@@ -98,7 +95,16 @@ public class Settings extends AppCompatActivity {
     helpRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        onGetHelp();
+        startActivity(new Intent(Settings.this, Help.class));
+      }
+    });
+
+    // About
+    aboutRelLay = (RelativeLayout) findViewById(R.id.aboutRL);
+    aboutRelLay.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        startActivity(new Intent(Settings.this, AboutJourneyApp.class));
       }
     });
 
@@ -215,14 +221,6 @@ public class Settings extends AppCompatActivity {
   public void sendNotification(View view) {
     // Build notification
     //Notification pause
-  }
-
-  /**
-   * The onGetHelp() method
-   * allows users to contact support for help.
-   */
-  public void onGetHelp() {
-
   }
 
 

@@ -6,6 +6,9 @@
     android:orientation="vertical"
     android:id="@+id/settingsLayout"
     tools:context=".JourneyApp.Settings.Settings"
+    android:layout_gravity="center"
+    android:paddingTop="32dp"
+    android:gravity="center_horizontal"
     android:background="@color/gray">
 
     <RelativeLayout
@@ -19,6 +22,7 @@
             android:layout_height="50dp"
             android:contentDescription="@string/back"
             android:padding="10dp"
+            android:layout_marginStart="15dp"
             android:src="@drawable/ic_baseline_arrow_back_24"/>
         <!-- android:onClick="back"-->
 
@@ -41,7 +45,7 @@
         <LinearLayout
             android:id="@+id/firstSettingOptions"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
@@ -51,16 +55,22 @@
 
             <!-- Edit Profile -->
             <RelativeLayout
+                android:id="@+id/editProfileRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/profileIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginBottom="0dp"
                     android:padding="20dp"
-                    android:src="@drawable/profile_tab_icon_foreground" />
+                    android:src="@drawable/settings_person_icon"
+                    android:contentDescription="@string/profileIconDescrip" />
 
                 <TextView
                     android:id="@+id/editProfile"
@@ -68,29 +78,34 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/edit_profile"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/profileIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/profileIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/profileIcon"
+                    android:contentDescription="@string/arrowForwardProfile"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Change Password -->
             <RelativeLayout
+                android:id="@+id/changePasswordRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/passwordIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/change_password_icon" />
+                    android:src="@drawable/change_password_icon"
+                    android:contentDescription="@string/passwordIconDescrip" />
 
                 <TextView
                     android:id="@+id/changePassword"
@@ -98,15 +113,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/change_password"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/passwordIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/passwordIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/passwordIcon"
+                    android:contentDescription="@string/arrowForwardPassword"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Follow/Invite Friends -->
@@ -114,14 +132,15 @@
                 android:id="@+id/inviteRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/friendsIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/add_friend_icon" />
+                    android:src="@drawable/add_friend_icon"
+                    android:contentDescription="@string/friendsIconDescrp" />
 
                 <TextView
                     android:id="@+id/friends"
@@ -129,29 +148,34 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/invite_friends"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/friendsIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/friendsIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/friendsIcon"
+                    android:contentDescription="@string/arrowForwardFriends"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Location -->
             <RelativeLayout
+                android:id="@+id/locationRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/locationIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/new_location_icon" />
+                    android:src="@drawable/new_location_icon"
+                    android:contentDescription="@string/locationIconDesc" />
 
                 <TextView
                     android:id="@+id/location"
@@ -159,15 +183,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/location"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/locationIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/locationIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/locationIcon"
+                    android:contentDescription="@string/arrowForwardLocation"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Notification -->
@@ -175,14 +202,15 @@
                 android:id="@+id/notificationRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/notificationIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/notifications_icon" />
+                    android:src="@drawable/notifications_icon"
+                    android:contentDescription="@string/notificationIconDescrip" />
 
                 <TextView
                     android:id="@+id/notification"
@@ -190,15 +218,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/notification"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/notificationIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/notificationIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/notificationIcon"
+                    android:contentDescription="@string/arrowForwardNotification"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Help -->
@@ -206,14 +237,15 @@
                 android:id="@+id/helpRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/helpIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/new_help_icon" />
+                    android:src="@drawable/new_help_icon"
+                    android:contentDescription="@string/helpIconDescrip" />
 
                 <TextView
                     android:id="@+id/help"
@@ -221,29 +253,34 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/help"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/helpIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/helpIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/helpIcon"
+                    android:contentDescription="@string/arrowForwardHelp"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- About -->
             <RelativeLayout
+                android:id="@+id/aboutRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/aboutIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/temporary_about_icon" />
+                    android:src="@drawable/temporary_about_icon"
+                    android:contentDescription="@string/aboutIcondescrip" />
 
                 <TextView
                     android:id="@+id/about"
@@ -251,15 +288,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/about_JourneyApp"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/aboutIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/aboutIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/aboutIcon"
+                    android:contentDescription="@string/arrowForwardAbout"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Delete Account -->
@@ -267,14 +307,15 @@
                 android:id="@+id/deactivateUserAccount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator">
+                android:background="@drawable/settings_bottom_borderline">
 
                 <ImageView
                     android:id="@+id/deleteAccountIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/delete_icon" />
+                    android:src="@drawable/delete_icon"
+                    android:contentDescription="@string/deletIconDescrip" />
 
                 <TextView
                     android:id="@+id/deleteAccount"
@@ -282,15 +323,18 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="@string/delete_account"
+                    android:textColor="@color/dark_blue"
                     android:layout_toEndOf="@+id/deleteAccountIcon"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/deleteAccountIcon"
                     android:layout_marginStart="205dp"
-                    android:src="@drawable/small_arrow_forward_ios_24"/>
+                    android:layout_toEndOf="@+id/deleteAccountIcon"
+                    android:contentDescription="@string/arrowForwardDelete"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
             <!-- Signout -->
@@ -298,16 +342,16 @@
                 android:id="@+id/signOutRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/settings_line_separator"
-                >
-                <!--android:onClick="onSignOut"-->
+                android:background="@drawable/settings_line_separator">
+
 
                 <ImageView
                     android:id="@+id/signoutIcon"
                     android:layout_width="77dp"
                     android:layout_height="77dp"
                     android:padding="20dp"
-                    android:src="@drawable/exit_to_app_icon" />
+                    android:src="@drawable/exit_to_app_icon"
+                    android:contentDescription="@string/signoutIconDescrip" />
 
                 <TextView
                     android:id="@+id/signout"
@@ -315,7 +359,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/signoutIcon"
-                    android:text="@string/sign_out" />
+                    android:text="@string/sign_out"
+                    android:textColor="@color/dark_blue"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -323,7 +368,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="205dp"
                     android:layout_toEndOf="@+id/signoutIcon"
-                    android:src="@drawable/small_arrow_forward_ios_24" />
+                    android:contentDescription="@string/arrowForwardSignout"
+                    android:src="@drawable/small_arrow_forward_ios_24"
+                    tools:ignore="ImageContrastCheck" />
             </RelativeLayout>
 
         </LinearLayout>

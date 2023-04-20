@@ -29,13 +29,33 @@
         android:theme="@style/Theme.Journey"
         tools:targetApi="31">
         <activity
-            android:name=".JourneyApp.Settings.UpdatePasswordAlert"
+            android:name=".JourneyApp.Settings.Notifications"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <!-- tools:targetApi="33" -->
+        <activity
+            android:name=".JourneyApp.Settings.AboutJourneyApp"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".JourneyApp.Settings.Help"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".JourneyApp.Settings.UpdatePasswordAlert"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity> <!-- tools:targetApi="33" -->
         <activity
             android:name=".JourneyApp.Settings.Settings"
             android:exported="false">

@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
@@ -38,6 +39,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     GoogleSignInClient googleSignInClient;
     private BottomNavigationView tabBarNavigation;
     FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +53,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
 
         googleSignInClient = GoogleSignIn.getClient(JourneyMain.this, options);
         fragmentManager = getSupportFragmentManager();
+
         openDashboardFragment();
 
         tabBarNavigation = findViewById(R.id.tab_nav);
