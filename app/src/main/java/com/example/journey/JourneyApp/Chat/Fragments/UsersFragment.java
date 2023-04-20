@@ -75,13 +75,13 @@ public class UsersFragment extends Fragment {
                 mUsers.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    UserModel user = snapshot.getValue(UserModel.class);
+                    UserModel userModel = snapshot.getValue(UserModel.class);
 
-                    //assert userModel != null;
-                    if (user != null && user.getUserID() != null &&
-                            !user.getUserID().equals(currentUser.getUid())) {
+                   // assert userModel != null;
+                    if (userModel != null && userModel.getUserID() != null &&
+                            !userModel.getUserID().equals(currentUser.getUid())) {
                     //if (!userModel.getUserID().equals(firebaseUser.getUid())) {
-                        mUsers.add(user);
+                        mUsers.add(userModel);
                     }
                 }
 

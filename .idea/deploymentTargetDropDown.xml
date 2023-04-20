@@ -20,7 +20,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="$USER_HOME$/.android/avd/Pixel_3_API_33.avd" />
+            <value value="$USER_HOME$/.android/avd/Pixel_6_API_28.avd" />
           </Key>
         </deviceKey>
       </Target>
@@ -31,7 +31,7 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="$USER_HOME$/.android/avd/Pixel_6_API_27.avd" />
+            <value value="$USER_HOME$/.android/avd/Pixel_6_API_28.avd" />
           </Key>
         </deviceKey>
       </Target>
