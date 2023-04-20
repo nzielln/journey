@@ -5,12 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationChannelGroup;
-import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +48,7 @@ public class Settings extends AppCompatActivity {
 
   // Clickables
   ImageView backButton;
+  RelativeLayout passwordRelLay;
   RelativeLayout notificationRelLay;
   RelativeLayout helpRelLay;
   RelativeLayout aboutRelLay;
@@ -81,6 +78,14 @@ public class Settings extends AppCompatActivity {
       }
     });
 
+    // Change Password
+    passwordRelLay = (RelativeLayout) findViewById(R.id.changePasswordRL);
+    passwordRelLay.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        updatePasswordPrompt();
+      }
+    });
     // Notification
     notificationRelLay = (RelativeLayout) findViewById(R.id.notificationRL);
     notificationRelLay.setOnClickListener(new View.OnClickListener() {
@@ -133,96 +138,29 @@ public class Settings extends AppCompatActivity {
 
     googleSignInClient = GoogleSignIn.getClient(Settings.this, options);
 
-    // Alert Dialog - Confirmation Dialog for user
+    // Alert Dialog - Confirmation Dialog for user to delete account
     confirmMessage = new AlertDialog.Builder(this);
   }
 
+
   /**
-   * The updatePassword() method updates the
+   * The updatePasswordPrompt() method updates the
    * user's password.
    */
-  public void updatePassword() {
+  public void updatePasswordPrompt() {
     // Confirm that user wants to deactivate account
     confirmMessage.setTitle("Update Password")
             .setMessage("Are you sure you want to update your password?")
             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
               @Override
               public void onClick(DialogInterface dialog, int which) {
-                //fbUser = Database.FIREBASE_AUTH.getCurrentUser();
-                fbUser.updatePassword("").addOnSuccessListener(new OnSuccessListener<Void>() {
-                  @Override
-                  public void onSuccess(Void unused) {
-                    Toast.makeText(Settings.this, "Your password had been updated", Toast.LENGTH_LONG).show();
-                  }
-                });
+                startActivity(new Intent(Settings.this, UpdatePassword.class));
               }
             }).setNegativeButton("Cancel", null)
             .create()
             .show();
 
   }
-
-  /**
-   * The createJNotificationChannel() method
-   * creates a notification channel and must be called
-   * before the notification is send.
-   */
-  public void createJNotificationChannel() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      NotificationChannelGroup jNotificationChannelGroup =
-              new NotificationChannelGroup(NOTIFICATION_GROUP_ID, notificationGroupName);
-
-      // Pause all
-      CharSequence nameChannel1 = "Pause all";
-      String descriptionChannel1 = "Temporarily pause notifications";
-      int priorityChannel1 = NotificationManager.IMPORTANCE_DEFAULT; // priority level
-      // Pause all Notification Channel
-      NotificationChannel pauseNotificationChannel = new NotificationChannel(
-              PAUSE_ALL_CHANNEL_ID, nameChannel1, priorityChannel1);
-      pauseNotificationChannel.setDescription(descriptionChannel1);
-      pauseNotificationChannel.setGroup(NOTIFICATION_GROUP_ID);
-
-      // Post
-      CharSequence nameChannel2 = "Posts";
-      String descriptionChannel2 = "Temporarily pause post notifications";
-      int priorityChannel2 = NotificationManager.IMPORTANCE_DEFAULT; // priority level
-      // Post Notification Channel
-      NotificationChannel postNotificationChannel = new NotificationChannel(
-              POST_CHANNEL_ID, nameChannel2, priorityChannel2);
-      postNotificationChannel.setDescription(descriptionChannel2);
-      postNotificationChannel.setGroup(NOTIFICATION_GROUP_ID);
-
-      // Message
-      CharSequence nameChannel3 = "Messages";
-      String descriptionChannel3 = "Temporarily pause messages notifications";
-      int priorityChannel3 = NotificationManager.IMPORTANCE_DEFAULT; // priority level
-      // Message Notification Channel
-      NotificationChannel messageNotificationChannel = new NotificationChannel(
-              MESSAGE_CHANNEL_ID, nameChannel3, priorityChannel3);
-      messageNotificationChannel.setDescription(descriptionChannel3);
-      messageNotificationChannel.setGroup(NOTIFICATION_GROUP_ID);
-
-      //notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-      NotificationManager notificationManager = (NotificationManager) getSystemService(NotificationManager.class);
-      notificationManager.createNotificationChannelGroup(jNotificationChannelGroup);
-      notificationManager.createNotificationChannel(postNotificationChannel);
-      notificationManager.createNotificationChannel(postNotificationChannel);
-      notificationManager.createNotificationChannel(messageNotificationChannel);
-    }
-
-  }
-
-
-
-  /**
-   * The sendNotification() method sends a
-   * notification to the user.
-   */
-  public void sendNotification(View view) {
-    // Build notification
-    //Notification pause
-  }
-
 
   /**
    * The onOptionsItemSelected() method signs a user

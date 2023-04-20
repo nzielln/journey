@@ -50,7 +50,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".JourneyApp.Settings.UpdatePasswordAlert"
+            android:name=".JourneyApp.Settings.UpdatePassword"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

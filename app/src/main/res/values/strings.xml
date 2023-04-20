@@ -182,4 +182,8 @@
     <string name="pause_all_notifications">Pause All Notifications</string>
     <string name="message_notifications">Message Notifications</string>
     <string name="message_channel_id">Message_Channel_ID</string>
+    <string name="current_password_BeforeUpdate">Current Password</string>
+    <string name="update_password">Update Password</string>
+    <string name="new_password">New Password</string>
+    <string name="update">Update</string>
 </resources>

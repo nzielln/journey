@@ -47,8 +47,6 @@ public class Notifications extends AppCompatActivity {
   Button messageButton;
   Button postButton;
 
-
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
