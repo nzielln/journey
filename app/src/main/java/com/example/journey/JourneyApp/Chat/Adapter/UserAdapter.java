@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Chat.MessageActivity;
-import com.example.journey.JourneyApp.Chat.Model.Users;
+//import com.example.journey.JourneyApp.Chat.Model.Users;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 

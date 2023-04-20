@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.journey.JourneyApp.Chat.Adapter.UserAdapter;
-import com.example.journey.JourneyApp.Chat.Model.Users;
+//import com.example.journey.JourneyApp.Chat.Model.Users;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
@@ -75,12 +75,19 @@ public class UsersFragment extends Fragment {
                 mUsers.clear();
 
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    UserModel userModel = snapshot.getValue(UserModel.class);
+                    UserModel userModel = null;
+                    try {
+                        userModel = snapshot.getValue(UserModel.class);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println(snapshot);
+                        continue;
+                    }
 
-                   // assert userModel != null;
+// assert userModel != null;
                     if (userModel != null && userModel.getUserID() != null &&
                             !userModel.getUserID().equals(currentUser.getUid())) {
-                    //if (!userModel.getUserID().equals(firebaseUser.getUid())) {
+//if (!userModel.getUserID().equals(firebaseUser.getUid())) {
                         mUsers.add(userModel);
                     }
                 }
@@ -91,7 +98,7 @@ public class UsersFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){
-                //handle error
+//handle error
 
             }
         });

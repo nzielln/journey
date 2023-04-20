@@ -1,5 +1,5 @@
 package com.example.journey.JourneyApp.Chat.Model;
-
+/*
 public class Users {
     private String id;
     private String username;
@@ -51,4 +51,6 @@ public class Users {
         this.status = status;
     }
 }
+
+ */
 

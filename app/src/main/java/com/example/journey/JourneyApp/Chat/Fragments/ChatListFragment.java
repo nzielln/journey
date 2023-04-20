@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.journey.JourneyApp.Chat.Adapter.UserAdapter;
 import com.example.journey.JourneyApp.Chat.Model.ChatList;
-import com.example.journey.JourneyApp.Chat.Model.Users;
+//import com.example.journey.JourneyApp.Chat.Model.Users;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
@@ -38,7 +38,7 @@ public class ChatListFragment extends Fragment {
 
     private UserAdapter userAdapter;
     private List<UserModel> mUsers;
-    FirebaseUser fuser;
+    FirebaseUser currentUser;
 
     private List<ChatList> usersList;
     //private List<Users> mUsers = new ArrayList<>();
@@ -52,7 +52,7 @@ public class ChatListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fuser = Database.FIREBASE_AUTH.getCurrentUser();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ChatListFragment extends Fragment {
 
         usersList = new ArrayList<>();
 
-        Database.DB_REFERENCE.child(Database.CHAT_LIST).child(fuser.getUid()).addValueEventListener(new ValueEventListener() {
+        Database.DB_REFERENCE.child(Database.CHAT_LIST).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 

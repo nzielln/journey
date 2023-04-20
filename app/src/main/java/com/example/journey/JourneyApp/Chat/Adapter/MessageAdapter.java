@@ -25,7 +25,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private List<Chat> mChat;
     private String profileImage;
 
-    //Firebase
+//Firebase
 
 
     public static final int MSG_TYPE_LEFT = 0;
@@ -53,35 +53,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     @Override
-    //public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position){
+//public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position){
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
 
         Chat chat = mChat.get(position);
         holder.show_message.setText(chat.getMessage());
 
 
-        if (profileImage.equals("default")){
+        if (profileImage == null || profileImage.equals("default")){
             holder.profile_image.setImageResource(R.drawable.person_image);
         }
         else{
-            //Adding Glide Library
+//Adding Glide Library
             Glide.with(context)
                     .load(profileImage)
                     .into(holder.profile_image);
-            }
+        }
 
 /*
-        if (position == mChat.size() -1){
-            if(chat.isIsseen()){
-                holder.txt_seen.setText("Seen");
-            } else{
-                holder.txt_seen.setText("Delivered");
-            }
-        }
-        else {
-            holder.txt_seen.setVisibility(View.GONE);
-        }
-        */
+if (position == mChat.size() -1){
+if(chat.isIsseen()){
+holder.txt_seen.setText("Seen");
+} else{
+holder.txt_seen.setText("Delivered");
+}
+}
+else {
+holder.txt_seen.setVisibility(View.GONE);
+}
+*/
     }
 
     @Override
@@ -92,7 +92,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
         public ImageView profile_image;
-        //public TextView txt_seen;
+//public TextView txt_seen;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -100,7 +100,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
-            //txt_seen = itemView.findViewById(R.id.txt_seen_status);
+//txt_seen = itemView.findViewById(R.id.txt_seen_status);
         }
     }
 
@@ -118,4 +118,3 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
 }
-
