@@ -39,12 +39,10 @@ import java.util.Map;
 
 public class CardsFragment extends Fragment {
     private DatabaseReference dbReference;
-    private FirebaseAuth userAuth;
-
-    private FirebaseUser user;
     DashboardRvBinding binding;
     private DashboardAdapter adapter;
     RecyclerView recyclerView;
+    FirebaseUser currentUser;
     ArrayList<CardModel> items = new ArrayList<>();
 
 
@@ -56,6 +54,7 @@ public class CardsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
 
     }
@@ -113,7 +112,9 @@ public class CardsFragment extends Fragment {
                             userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
                         }
 
-                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
+                        Boolean isPostLikedByUser = post.liked.get(currentUser.getUid());
+
+                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser));
                     }
 
                     Collections.reverse(items);
@@ -124,6 +125,7 @@ public class CardsFragment extends Fragment {
                 }
             }
         });
+        //private void
     }
 
 }

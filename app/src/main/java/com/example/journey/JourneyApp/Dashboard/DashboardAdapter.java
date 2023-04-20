@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -39,8 +42,8 @@ import java.util.List;
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.ViewHolder> {
     ArrayList<CardModel> items;
 
-
     DatabaseReference dbReference;
+    FirebaseUser currentUser;
     FirebaseUser user;
     private FirebaseAuth userAuth;
     private CardClickListener listener;
@@ -60,7 +63,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         private TextView contentText;
         private ImageView userImage;
         Button share;
-        Button like;
+        MaterialButton heart_like;
         Button comment;
 
 
@@ -72,7 +75,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             contentText=(TextView)itemView.findViewById(R.id.info_infoText);
             userImage=(ImageView)itemView.findViewById(R.id.info_image);
             share =(Button)itemView.findViewById(R.id.share_Btn);
-            like =(Button) itemView.findViewById(R.id.heart_Btn);
+            heart_like =(MaterialButton) itemView.findViewById(R.id.heart_Btn);
             comment = (Button) itemView.findViewById(R.id.comment_Btn);
             //itemView.setOnClickListener(this);
 
@@ -94,11 +97,22 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull DashboardAdapter.ViewHolder holder, int position) {
+        dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
+
+
+
         CardModel card = items.get(position);
 
         holder.nameText.setText(card.getCardName());
         holder.dateText.setText(card.getCardDate());
         holder.contentText.setText(card.getCardSummary());
+
+        if (card.getLiked()) {
+            holder.heart_like.setChecked(true);
+        }
+
 
 
         if (card.getCardImage() == null) {
@@ -124,17 +138,18 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             }
         });
 
-        holder.like.setOnClickListener(new View.OnClickListener() {
+        holder.heart_like.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 Log.d("like button","heart button clicked");
 
+                DatabaseReference likedRef = dbReference.child("posts").child(card.getPostId()).child("liked");
+                //buttonRef.put(currentUser.getUid());
+                likedRef.child(currentUser.getUid()).setValue(holder.heart_like.isChecked());
+
             }
         });
-
-
-
 
     }
 
@@ -142,7 +157,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     @Override
     public int getItemCount(){return items.size();}
 
-
+//
+//    public void getLikes(@NonNull) Task<DataSnapshot> task) {
+//
+//
+//    }
 
 
 }
