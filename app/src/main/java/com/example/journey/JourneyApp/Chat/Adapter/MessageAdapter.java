@@ -26,7 +26,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private String profileImage;
 
     //Firebase
-    FirebaseUser fuser = Database.FIREBASE_AUTH.getCurrentUser();
+
 
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
@@ -59,6 +59,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Chat chat = mChat.get(position);
         holder.show_message.setText(chat.getMessage());
 
+
         if (profileImage.equals("default")){
             holder.profile_image.setImageResource(R.drawable.person_image);
         }
@@ -67,8 +68,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             Glide.with(context)
                     .load(profileImage)
                     .into(holder.profile_image);
-        }
+            }
 
+/*
         if (position == mChat.size() -1){
             if(chat.isIsseen()){
                 holder.txt_seen.setText("Seen");
@@ -79,6 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         else {
             holder.txt_seen.setVisibility(View.GONE);
         }
+        */
     }
 
     @Override
@@ -89,7 +92,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
         public ImageView profile_image;
-        public TextView txt_seen;
+        //public TextView txt_seen;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -97,13 +100,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
-            txt_seen = itemView.findViewById(R.id.txt_seen_status);
+            //txt_seen = itemView.findViewById(R.id.txt_seen_status);
         }
     }
 
 
     @Override
     public int getItemViewType(int position){
+        FirebaseUser fuser = Database.FIREBASE_AUTH.getCurrentUser();
         if (mChat.get(position).getSender().equals(fuser.getUid())){
             return MSG_TYPE_RIGHT;
         }
