@@ -41,9 +41,7 @@ public class CreateNewPost extends BottomSheetDialogFragment {
 
     FirebaseUser currentUser;
     DatabaseReference dbReference;
-    Helper helper;
 
-    FirebaseAuth mAuth;
     String currentUserId;
 
     public static String TAG = CreateNewPost.class.toGenericString();
@@ -52,9 +50,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup bucket, @NonNull Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.add_new_post, bucket,false);
-//
-//        mAuth = FirebaseAuth.getInstance();
-//        currentUser = mAuth.getCurrentUser();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
         if(currentUser!=null){
@@ -78,8 +73,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
 
                 transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
                 Toast.makeText(getActivity(), "Cancel",Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(NewPost, JourneyMain.class);
-                //startActivity(intent);
             }
         });
 
@@ -92,20 +85,13 @@ public class CreateNewPost extends BottomSheetDialogFragment {
 
                 String timePosted = getShortDate() + " " + getShortTime();
 
-
-                Log.d("title",postTitle.getText().toString());
-
                 //postContent.getText().toString();
                 if(postTitle.getText().toString().trim().equals("") || postContent.getText().toString().trim().equals("")) {
                    Toast.makeText(getActivity(),"Cannot Post Empty Content", Toast.LENGTH_SHORT).show();
 
                } else {
                    String postId= UUID.randomUUID().toString();
-                   Log.d("postID",postId);
                    String authorId = currentUser.getUid();
-                    Log.d("authorID",authorId);
-
-                    //String authorId = currentUser.;
 
                     HashMap<String, Boolean> liked = new HashMap<String, Boolean>();
                     liked.put("test1",false);
@@ -119,10 +105,9 @@ public class CreateNewPost extends BottomSheetDialogFragment {
                    Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
                    postTitle.setText(null);
                    postContent.setText(null);
-                   //transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
 
                }
-                //transaction.replace(R.id.journey_fragment_container, a).commit();
+
             }
         });
         return view;

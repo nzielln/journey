@@ -69,8 +69,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         MaterialButton heart_like;
         Button comment;
 
-
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameText = (TextView)itemView.findViewById(R.id.info_name);
@@ -80,8 +78,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             share = (Button)itemView.findViewById(R.id.share_Btn);
             heart_like =(MaterialButton) itemView.findViewById(R.id.heart_Btn);
             comment = (Button)itemView.findViewById(R.id.comment_Btn);
-            //itemView.setOnClickListener(this);
-
             userImage.setOnClickListener(this);
     }
 
@@ -90,15 +86,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             listener.onPositionCLicked(getAbsoluteAdapterPosition());
         }
     }
-    //private final OnClickListener mOnClickListener = new CardClickListener();
-    //@NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
 
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.fragment_dashboard_cards,parent, false);
-       // view.setOnClickListener(mOnClickListener);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
@@ -149,27 +142,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
             @Override
             public void onClick(View v) {
-                Log.d("like button","heart button clicked");
-
+                //Log.d("like button","heart button clicked");
                 DatabaseReference likedRef = dbReference.child("posts").child(card.getPostId()).child("liked");
-                //buttonRef.put(currentUser.getUid());
                 likedRef.child(currentUser.getUid()).setValue(holder.heart_like.isChecked());
 
             }
         });
-
-
     }
 
 
     @Override
     public int getItemCount(){return items.size();}
-
-//
-//    public void getLikes(@NonNull) Task<DataSnapshot> task) {
-//
-//
-//    }
-
 
 }

@@ -75,9 +75,6 @@ public class CardsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //searchInput = (SearchView)searchItem.getActionView();
-        //searchInput = (SearchView) searchInput.findViewById(R.id.search_view_dashboard);
-        // Log.d("searchInput",searchInput.toString());
 
         binding = DashboardRvBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -92,7 +89,7 @@ public class CardsFragment extends Fragment {
         Map<String, UserModel> allUsers = new HashMap<>();
         Map<String, UserModel> usersFollowing = new HashMap<>();
 
-        //ImageView image = getView().findViewById(R.id.dash_image);
+
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -119,7 +116,7 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
-                        Log.d("user Info", user.getUserID());
+                        //Log.d("user Info", user.getUserID());
                         StorageReference userPic;
                         if (user.getProfileImage() == null ){
                             userPic= null;

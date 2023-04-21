@@ -56,26 +56,19 @@ public class DashboardFragment extends Fragment {
     UserModel currentUserModel;
     ShapeableImageView image;
     DashboardAdapter adapter;
-    //DatabaseReference dbReference;
-    //DashboardAdapter adapter;
-    //ArrayList<CardModel> items;
     SearchView searchInput;
 
 
 
     public DashboardFragment() {
         super(R.layout.fragment_dashboard);
-        // Required empty public constructor
-
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
+
     public void displayFragment(Fragment fragment){
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboard_rv_container, fragment).commit();
@@ -86,8 +79,6 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         fragmentManager = getChildFragmentManager();
-
-        //View view = inflater.inflate(R.layout.fragment_dashboard,container, false);
         displayFragment(new CardsFragment());
         return binding.getRoot();
     }
@@ -99,6 +90,8 @@ public class DashboardFragment extends Fragment {
 
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
+        searchInput = (SearchView) findBy
 
         dbReference.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -131,25 +124,11 @@ public class DashboardFragment extends Fragment {
                         });
                     }
 
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    //Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
             }
         });
 
     }
-//    public boolean onSearchChange() {
-//        searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
-//        //SearchView searchView = (SearchView) searchInput.getActionView();
-//
-//       // searchInput.setOnQueryTextListener();
-//        return true;
-//    }
-//
-//    public boolean onQueryTextChange(String query){
-//        return false;
-//    }
-//    public boolean onQueryTextSubmit(String query){
-//        return false;
-//    }
 
 }
