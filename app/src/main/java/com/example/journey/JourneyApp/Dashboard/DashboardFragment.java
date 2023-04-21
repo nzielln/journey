@@ -43,7 +43,7 @@ import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DashboardFragment#newInstance} factory method to
+ * Use the {@link DashboardFragment newInstance} factory method to
  * create an instance of this fragment.
  */
 public class DashboardFragment extends Fragment {
@@ -111,16 +111,15 @@ public class DashboardFragment extends Fragment {
                     currentUserModel = results.getValue(UserModel.class);
                     ImageView image = getView().findViewById(R.id.dash_image);
                     TextView wName = getView().findViewById (R.id.welcomeTv);
-                    wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
+                    //wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
 
-                    if(currentUserModel.getProfileImage() == null) {
+                    /*if(currentUserModel.getProfileImage() == null) {
                         image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
                     }else{
                         StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
                         Glide.with(requireActivity()).load(profileURL).into(image);
                         image.setClickable(false);
                     }
-
 
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }

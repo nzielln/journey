@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/messageComposeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".JourneyApp.Chat.ChatFragment">
+
+    <TextView
+        android:id="@+id/composeMessageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chat - New"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/toInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/composeMessageTitle"
+        android:layout_marginTop="8dp"
+        android:hint="To: Type a name(s) or email "/>
+
+    <EditText
+        android:id="@+id/messageInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toInput"
+        android:layout_marginTop="8dp"
+        android:hint="Type your message here"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        android:minLines="1"
+        android:lines="10" />
+
+    <Button
+        android:id="@+id/sendButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/messageInput"
+        android:layout_marginTop="8dp"
+        android:text="Send"/>
+
+</RelativeLayout>
