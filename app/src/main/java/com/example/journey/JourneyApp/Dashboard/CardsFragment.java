@@ -48,7 +48,7 @@ public class CardsFragment extends Fragment{
     private DatabaseReference dbReference;
     private FirebaseAuth userAuth;
 
-    private FirebaseUser user;
+    private UserModel user;
     DashboardRvBinding binding;
     private DashboardAdapter adapter;
     RecyclerView recyclerView;
@@ -65,6 +65,7 @@ public class CardsFragment extends Fragment{
         super.onCreate(savedInstanceState);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
         profileViewModel.updateProfileState(ProfileState.PERSONAL, null);
+        user = profileViewModel.getCurrentUserModel().getValue();
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
 
     }
@@ -83,6 +84,7 @@ public class CardsFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         recyclerView = binding.dashboardRecyclerView;
+        user = profileViewModel.getCurrentUserModel().getValue();
 
         Map<String, UserModel> allUsers = new HashMap<>();
         //ImageView image = getView().findViewById(R.id.dash_image);
@@ -130,7 +132,10 @@ public class CardsFragment extends Fragment{
                         @Override
                         public void onPositionCLicked(int position) {
                             CardModel cardModel = items.get(position);
-                            profileViewModel.updateProfileState(ProfileState.PUBLIC, cardModel.getUserModel());
+
+                            if (!Objects.equals(cardModel.getUserModel().getUserID(), user.getUserID())) {
+                                profileViewModel.updateProfileState(ProfileState.PUBLIC, cardModel.getUserModel());
+                            }
 
                             FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                             FragmentTransaction transaction = fragmentManager.beginTransaction();

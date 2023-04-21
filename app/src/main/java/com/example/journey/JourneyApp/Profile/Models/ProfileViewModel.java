@@ -49,6 +49,7 @@ public class ProfileViewModel extends ViewModel {
     public FirebaseArray<TaskItemModel> completedTasks = new FirebaseArray<>(completedTasksRef, new ClassSnapshotParser<>(TaskItemModel.class));
     public FirebaseArray<TimelineItemObject> timeline;
     public FirebaseArray<ApplicationModel> applications = new FirebaseArray<>(applicationsRef, new ClassSnapshotParser<>(ApplicationModel.class));
+    public FirebaseArray<UserModel> following =new FirebaseArray<>(followingRef, new ClassSnapshotParser<>(UserModel.class));
 
     // Active user (user clicked on)
     public FirebaseArray<TimelineItemObject> activeUserTimeline;
@@ -60,6 +61,7 @@ public class ProfileViewModel extends ViewModel {
         tasks.addChangeEventListener(new ChangeListener());
         completedTasks.addChangeEventListener(new ChangeListener());
         applications.addChangeEventListener(new ChangeListener());
+        following.addChangeEventListener(new ChangeListener());
     }
 
     @Override
@@ -69,6 +71,8 @@ public class ProfileViewModel extends ViewModel {
         completedTasks.removeChangeEventListener(new ChangeListener());
         timeline.removeChangeEventListener(new ChangeListener());
         applications.removeChangeEventListener(new ChangeListener());
+        following.removeChangeEventListener(new ChangeListener());
+
     }
 
     public void updateCurrentUser(UserModel user) {
@@ -104,6 +108,10 @@ public class ProfileViewModel extends ViewModel {
             updateActiveUserBackground(userModel);
         }
     }
+    public void setPersonProfileState() {
+        currentProfileState.setValue(ProfileState.PERSONAL);
+
+    }
 
     public MutableLiveData<ProfileState> getCurrentProfileState() {
         return currentProfileState;
@@ -117,8 +125,8 @@ public class ProfileViewModel extends ViewModel {
         return activeUserApplication;
     }
 
-    public MutableLiveData<Boolean> getIsFollowing() {
-        return isFollowing;
+    public boolean getIsFollowing(UserModel userModel) {
+        return following.stream().anyMatch(um -> um.getUserID().equals(userModel.getUserID()));
     }
 
     public void updateUserBackground(UserModel user) {
@@ -154,19 +162,6 @@ public class ProfileViewModel extends ViewModel {
             }
         });
 
-        followingRef.equalTo(user.getUserID()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (task.isSuccessful()) {
-                    if (task.getResult().getValue() != null) {
-                        isFollowing.postValue(Boolean.TRUE);
-                    } else {
-                        isFollowing.postValue(Boolean.FALSE);
-                    }
-
-                }
-            }
-        });
     }
 
     public void updateCurrentApplication(ApplicationModel applicationModel) {

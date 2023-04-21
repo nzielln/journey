@@ -159,6 +159,15 @@
         <item name="buttonIconTint">@color/checkbox_icon</item>
     </style>
 
+    <style name="button_style" parent="Widget.MaterialComponents.Button">
+        <item name="materialThemeOverlay">@style/clear_button</item>
+    </style>
+
+
+    <style name="clear_button">
+        <item name="colorPrimary">@color/dark_blue</item>
+        <item name="colorOnSurface">@android:color/holo_red_dark</item>
+    </style>
 
 </resources>
 

@@ -197,6 +197,13 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             profilePicture.setClickable(false);
             ViewGroup group = (ViewGroup) addNewApplication.getParent();
             group.removeView(addNewApplication);
+
+            if (profileViewModel.getIsFollowing(profileUserModel)) {
+                followButton.setText(R.string.following);
+                followButton.setEnabled(false);
+                followButton.setTextColor(getResources().getColor(R.color.dark_blue, null));
+
+            }
         } else {
             ViewGroup group = (ViewGroup) followContent.getParent();
             group.removeView(followContent);
@@ -204,10 +211,6 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             group.removeView(chatButton);
         }
 
-        if (profileViewModel.getIsFollowing().getValue() == Boolean.TRUE) {
-            followButton.setText(R.string.following);
-            followButton.setBackgroundColor(getResources().getColor(R.color.clear, null));
-        }
 
         userEventListener = new ValueEventListener() {
             @Override
@@ -351,7 +354,9 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 } else {
                     followers.setText(String.valueOf(profileUserModel.getFollowers() + 1));
                     followButton.setText(R.string.following);
-                    followButton.setBackgroundColor(getResources().getColor(R.color.clear, null));
+
+                    followButton.setEnabled(false);
+                    followButton.setTextColor(getResources().getColor(R.color.dark_blue, null));
 
                 }
             }

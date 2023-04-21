@@ -88,7 +88,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openProfileFragment() {
-        profileViewModel.updateProfileState(ProfileState.PERSONAL, null);
+        profileViewModel.setPersonProfileState();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         ProfileFragment profileFragment = new ProfileFragment();
 
@@ -102,7 +102,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openDashboardFragment() {
-        profileViewModel.updateProfileState(ProfileState.PERSONAL, null);
+        profileViewModel.setPersonProfileState();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         DashboardFragment dashboardFragment = new DashboardFragment();
@@ -110,7 +110,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openChatFragment() {
-        profileViewModel.updateProfileState(ProfileState.PERSONAL, null);
+        profileViewModel.setPersonProfileState();
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         ChatFragment chatFragment = new ChatFragment();

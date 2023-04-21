@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentDashboardBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -113,12 +114,21 @@ public class DashboardFragment extends Fragment {
                     TextView wName = getView().findViewById (R.id.welcomeTv);
                     wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
 
-                    if(currentUserModel.getProfileImage() == null) {
+                    if (currentUserModel.getProfileImage() == null) {
                         image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
-                    }else{
+                    } else {
                         StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
                         Glide.with(requireActivity()).load(profileURL).into(image);
-                        image.setClickable(false);
+                        image.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                                ProfileFragment profileFragment = new ProfileFragment();
+                                transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
+                            }
+                        });
                     }
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
