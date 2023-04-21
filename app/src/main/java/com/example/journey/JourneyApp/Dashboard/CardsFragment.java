@@ -139,7 +139,7 @@ public class CardsFragment extends Fragment {
 
                     Collections.reverse(items);
 
-                    adapter = new DashboardAdapter(items, requireActivity());
+                    adapter = new DashboardAdapter(items, requireActivity(), getParentFragmentManager());
                     adapter.setListener(new CardClickListener() {
                         @Override
                         public void onPositionCLicked(int position) {
@@ -189,13 +189,7 @@ public class CardsFragment extends Fragment {
                 }
             }
         });
-    }
-    public void openCommentsModal(){
-        CommentsModal addComments = new CommentsModal();
-        //addComments.show(getChildFragment(), CommentsModal.class);
 
     }
-
-
 
 }

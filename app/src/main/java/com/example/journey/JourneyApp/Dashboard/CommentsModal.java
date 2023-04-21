@@ -18,9 +18,16 @@ public class CommentsModal extends BottomSheetDialogFragment {
     Button cancelComment;
     UserModel currentUser;
 
+    String postId;
+
+    public CommentsModal(String pId){
+        postId = pId;
+    }
+
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -31,5 +38,13 @@ public class CommentsModal extends BottomSheetDialogFragment {
         return view;
 
     }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        addComment = (Button)view.findViewById(R.id.add_comment_btn);
+        cancelComment = (Button)view.findViewById(R.id.cancel_comment_btn);
+    }
+
+
 
 }

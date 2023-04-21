@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -35,13 +36,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     FirebaseUser user;
     private FirebaseAuth userAuth;
     private CardClickListener listener;
-
-    CardsFragment cardsFragment;
     FragmentActivity ctx;
+    FragmentManager fm;
 
-    public DashboardAdapter(ArrayList<CardModel> items, FragmentActivity context) {
+    public DashboardAdapter(ArrayList<CardModel> items, FragmentActivity context, FragmentManager fm) {
         this.items = items;
         this.ctx = context;
+        this.fm = fm;
         //this.listener = listener;
     }
 
@@ -142,8 +143,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardsFragment.openCommentsModal();
-
+                CommentsModal addComments = new CommentsModal(card.getPostId());
+                addComments.show(fm, CommentsModal.class.toGenericString());
             }
         });
     }
