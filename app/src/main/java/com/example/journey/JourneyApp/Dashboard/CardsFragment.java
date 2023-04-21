@@ -82,9 +82,9 @@ public class CardsFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    /*
-                 //   for (final DataSnapshot inner : task.getResult().getChildren()) {
-                    //    UserModel user = inner.getValue(UserModel.class);
+
+                    for (final DataSnapshot inner : task.getResult().getChildren()) {
+                        UserModel user = inner.getValue(UserModel.class);
 
                         allUsers.put(user.getUserID(), user);
                     }
