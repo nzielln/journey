@@ -57,7 +57,7 @@ public class DashboardFragment extends Fragment {
     ShapeableImageView image;
     DashboardAdapter adapter;
     SearchView searchInput;
-    Button
+
 
 
 
