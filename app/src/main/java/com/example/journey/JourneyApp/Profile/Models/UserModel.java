@@ -11,15 +11,16 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.UUID;
 
-public class UserModel implements Parcelable {
+public class UserModel {
     String userID;
     String email;
-    String username;
     String firstName;
     String lastName;
     ArrayList<String> chatIDs = new ArrayList<>();
     Integer followers = 0;
     Integer following = 0;
+    ArrayList<UserModel> followersList = new ArrayList<>();
+    ArrayList<UserModel> followingList = new ArrayList<>();
     String profileImage;
 
     public UserModel() { }
@@ -32,7 +33,6 @@ public class UserModel implements Parcelable {
     public UserModel(
             String userID,
             String email,
-            String username,
             String firstName,
             String lastName,
             Integer followers,
@@ -41,22 +41,18 @@ public class UserModel implements Parcelable {
     ) {
         this.userID = userID;
         this.email = email;
-        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
-
     }
 
     public UserModel(
             String userID,
             String email,
-            String username,
             String firstName,
             String lastName,
-            ArrayList<String> applicationsIDs,
             ArrayList<String> chatIDs,
             Integer followers,
             Integer following,
@@ -64,7 +60,6 @@ public class UserModel implements Parcelable {
     ) {
         this.userID = userID;
         this.email = email;
-        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.chatIDs = chatIDs;
@@ -73,37 +68,70 @@ public class UserModel implements Parcelable {
         this.profileImage = profileImage;
     }
 
-    protected UserModel(Parcel in) {
-        userID = in.readString();
-        email = in.readString();
-        username = in.readString();
-        firstName = in.readString();
-        lastName = in.readString();
-        chatIDs = in.createStringArrayList();
-        if (in.readByte() == 0) {
-            followers = null;
-        } else {
-            followers = in.readInt();
-        }
-        if (in.readByte() == 0) {
-            following = null;
-        } else {
-            following = in.readInt();
-        }
-        profileImage = in.readString();
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            ArrayList<UserModel> followersList,
+            ArrayList<UserModel> followingList,
+            String profileImage) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.followersList = followersList;
+        this.followingList = followingList;
+        this.profileImage = profileImage;
     }
 
-    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
-        @Override
-        public UserModel createFromParcel(Parcel in) {
-            return new UserModel(in);
-        }
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            ArrayList<UserModel> followersList,
+            String profileImage) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.followersList = followersList;
+        this.profileImage = profileImage;
+    }
 
-        @Override
-        public UserModel[] newArray(int size) {
-            return new UserModel[size];
-        }
-    };
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            String profileImage,
+            ArrayList<UserModel> followingList) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.followingList = followingList;
+        this.profileImage = profileImage;
+    }
 
     public void addUserNameDetails(String firstName, String lastName) {
         this.firstName= firstName;
@@ -118,24 +146,24 @@ public class UserModel implements Parcelable {
         chatIDs.add(chatID );
     }
 
-    public void updateFollowers(boolean increment) {
+    public void updateFollowers(boolean increment, UserModel user) {
         if (increment) {
-            followers++;
+            followers += 1;
+        } else {
+            followers -= 1;
         }
 
-        followers--;
+        updateFollowersList(increment, user);
     }
 
-    public void updateFollowing(boolean increment) {
+    public void updateFollowing(boolean increment, UserModel user) {
         if (increment) {
-            following++;
+            following += 1;
+        } else {
+            following -= 1;
         }
 
-        following--;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        updateFollowingsList(increment, user);
     }
 
     public void setProfileImage(String profileImage) {
@@ -150,10 +178,6 @@ public class UserModel implements Parcelable {
         return email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -161,7 +185,6 @@ public class UserModel implements Parcelable {
     public String getLastName() {
         return lastName;
     }
-
 
     public ArrayList<String> getChatIDs() {
         return chatIDs;
@@ -175,6 +198,37 @@ public class UserModel implements Parcelable {
         return following;
     }
 
+    public void setFollowersList(ArrayList<UserModel> followersList) {
+        this.followersList = followersList;
+    }
+
+    public void setFollowingList(ArrayList<UserModel> followingList) {
+        this.followingList = followingList;
+    }
+
+    public ArrayList<UserModel> getFollowersList() {
+        return followersList;
+    }
+
+    public ArrayList<UserModel> getFollowingList() {
+        return followingList;
+    }
+
+    public void updateFollowersList(boolean update, UserModel userModel) {
+        if (update) {
+            followersList.add(userModel);
+        } else {
+            followersList.removeIf(user -> user.getUserID().equals(userModel.getUserID()));
+        }
+    }
+
+    public void updateFollowingsList(boolean update, UserModel userModel) {
+        if (update) {
+            followingList.add(userModel);
+        } else {
+            followingList.removeIf(user -> user.getUserID().equals(userModel.getUserID()));
+        }
+    }
 
     public String getProfileImage() {
         return profileImage;
@@ -182,34 +236,6 @@ public class UserModel implements Parcelable {
 
     public static UserModel getMockUser() {
 
-        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "jjones", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(userID);
-        dest.writeString(email);
-        dest.writeString(username);
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeStringList(chatIDs);
-        if (followers == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(followers);
-        }
-        if (following == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(following);
-        }
-        dest.writeString(profileImage);
+        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
     }
 }

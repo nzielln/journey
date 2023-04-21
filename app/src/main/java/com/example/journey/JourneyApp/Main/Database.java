@@ -42,6 +42,8 @@ public class Database {
     static public String INSIGHTS = "insights";
 
     static public String IMAGE_STORAGE = "images";
+    static public String FOLLOWING = "followingList";
+    static public String USER_ID = "userID";
     static public String DOCUMENTS = "documents";
 
     static public void getDatabase(Context context) {

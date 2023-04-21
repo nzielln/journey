@@ -53,8 +53,11 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         //this.listener = listener;
     }
 
+    public void setListener(CardClickListener listener) {
+        this.listener = listener;
+    }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView nameText;
         private TextView dateText;
         private TextView contentText;
@@ -64,21 +67,25 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         Button comment;
 
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            nameText =(TextView)itemView.findViewById(R.id.info_name);
-            dateText =(TextView)itemView.findViewById(R.id.info_date);
-            contentText=(TextView)itemView.findViewById(R.id.info_infoText);
-            userImage=(ImageView)itemView.findViewById(R.id.info_image);
-            share =(Button)itemView.findViewById(R.id.share_Btn);
-            like =(Button) itemView.findViewById(R.id.heart_Btn);
-            comment = (Button) itemView.findViewById(R.id.comment_Btn);
+            nameText = (TextView)itemView.findViewById(R.id.info_name);
+            dateText = (TextView)itemView.findViewById(R.id.info_date);
+            contentText = (TextView)itemView.findViewById(R.id.info_infoText);
+            userImage = (ImageView)itemView.findViewById(R.id.info_image);
+            share = (Button)itemView.findViewById(R.id.share_Btn);
+            like = (Button)itemView.findViewById(R.id.heart_Btn);
+            comment = (Button)itemView.findViewById(R.id.comment_Btn);
             //itemView.setOnClickListener(this);
 
+            userImage.setOnClickListener(this);
     }
 
-}
+        @Override
+        public void onClick(View v) {
+            listener.onPositionCLicked(getAbsoluteAdapterPosition());
+        }
+    }
     //private final OnClickListener mOnClickListener = new CardClickListener();
     //@NonNull
     @Override

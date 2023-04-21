@@ -130,6 +130,7 @@
     <string name="complete">Complete</string>
     <string name="incomplete">Incomplete</string>
     <string name="dismiss">Dismiss</string>
+    <string name="updates">Updates</string>
     <string name="title_activity_test_settings">TestSettingsActivity</string>
 
     <!-- Preference Titles -->
@@ -147,4 +148,5 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="current_password">Current Password</string>
+    <string name="follow">Follow</string>
 </resources>

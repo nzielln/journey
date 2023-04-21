@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".JourneyApp.Profile.ProfileFragment"
-    android:paddingHorizontal="16dp"
     android:scrollIndicators="none"
     android:orientation="vertical"
     android:layout_gravity="center"
@@ -42,8 +41,54 @@
             android:theme="@style/body_normal"
             android:textAllCaps="false"
             android:letterSpacing="0"
+            android:layout_marginHorizontal="8dp"
 
             />
+
+        <LinearLayout
+            android:id="@+id/follow_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginHorizontal="16dp"
+            >
+            <Button
+                android:id="@+id/follow_button"
+                style="@style/ShapeAppearanceOverlay.Material3.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:text="@string/follow"
+                android:layout_marginVertical="16dp"
+                android:layout_gravity="center"
+                android:theme="@style/body_normal"
+                android:textAllCaps="false"
+                android:letterSpacing="0"
+                android:layout_marginEnd="8dp"
+                android:backgroundTint="@color/cream"
+                android:background="@drawable/rounded_15_white"
+
+                />
+
+            <ImageButton
+                android:id="@+id/chat_button"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="4dp"
+                android:layout_marginVertical="16dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@drawable/rounded_15_white"
+                android:src="@drawable/filled_chat"
+
+                />
+
+
+
+        </LinearLayout>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/profile_tab"
@@ -61,8 +106,10 @@
             android:layout_marginBottom="16dp"
             app:tabRippleColor="@null"
             android:background="@android:color/transparent"
+            android:layout_marginHorizontal="16dp"
             >
             <com.google.android.material.tabs.TabItem
+
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:text="@string/to_do"

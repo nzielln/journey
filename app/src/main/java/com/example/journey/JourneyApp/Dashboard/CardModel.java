@@ -9,14 +9,15 @@ public class CardModel {
     private String cardName;
     private String cardDate;
     private String cardPostContentSummary;
-
     private StorageReference cardImage;
+    UserModel userModel;
 
-    public CardModel(UserModel cardUser, String cardDate, String cardSummary, StorageReference userPic) {
+    public CardModel(UserModel cardUser, String cardDate, String cardSummary, StorageReference userPic, UserModel userModel) {
         this.cardName = cardUser.getFirstName() + " " + cardUser.getLastName();
         this.cardDate = cardDate;
         this.cardPostContentSummary = cardSummary;
         this.cardImage = userPic;
+        this.userModel = userModel;
     }
 
     public String getCardName() {
@@ -33,6 +34,10 @@ public class CardModel {
 
     public StorageReference getCardImage() {
         return cardImage;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
     }
 }
 

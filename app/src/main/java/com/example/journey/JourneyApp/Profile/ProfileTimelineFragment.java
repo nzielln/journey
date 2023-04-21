@@ -18,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
@@ -28,23 +27,18 @@ import com.example.journey.JourneyApp.Profile.Adapters.DropdownArrayAdapter;
 import com.example.journey.JourneyApp.Profile.Adapters.ProfileTimelineRecyclerViewAdapter;
 import com.example.journey.JourneyApp.Profile.Listeners.TimelineDelegate;
 import com.example.journey.JourneyApp.Profile.Listeners.TimelineOnClickListener;
-import com.example.journey.JourneyApp.Profile.Modals.AddTaskModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.ApplicationModel;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
-import com.example.journey.JourneyApp.Profile.Models.TaskItemModel;
 import com.example.journey.JourneyApp.Profile.Models.TimelineItemObject;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentTimelineBinding;
-import com.firebase.ui.database.FirebaseListOptions;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -54,13 +48,13 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
     AutoCompleteTextView applicationsOptions;
     ProfileViewModel profileViewModel;
     FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
-    UserModel currentUserModel;
+    UserModel profileUserModel;
     RecyclerView recyclerView;
     Button updateApplication;
     ProfileTimelineRecyclerViewAdapter adapter;
     ApplicationModel currentApplication;
     String TAG = ProfileTimelineFragment.class.toGenericString();
-
+    ProfileState profileState;
 
     TimelineOnClickListener onClickListener;
 
@@ -70,7 +64,7 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
 
     protected ProfileTimelineFragment(Parcel in) {
         currentUser = in.readParcelable(FirebaseUser.class.getClassLoader());
-        currentUserModel = in.readParcelable(UserModel.class.getClassLoader());
+        profileUserModel = in.readParcelable(UserModel.class.getClassLoader());
     }
 
     public static final Creator<ProfileTimelineFragment> CREATOR = new Creator<ProfileTimelineFragment>() {
@@ -89,8 +83,15 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
-        currentUserModel = profileViewModel.getCurrentUserModel().getValue();
-        currentApplication = profileViewModel.getCurrentApplication().getValue();
+        profileState = profileViewModel.getCurrentProfileState().getValue();
+
+        if (profileState == ProfileState.PERSONAL) {
+            profileUserModel = profileViewModel.getCurrentUserModel().getValue();
+            currentApplication = profileViewModel.getCurrentApplication().getValue();
+        } else {
+            profileUserModel = profileViewModel.getActiveUserModel().getValue();
+            currentApplication = profileViewModel.getActiveUserApplication().getValue();
+        }
 
         Bundle bundle = new Bundle();
     }
@@ -110,6 +111,11 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
         recyclerView = binding.timelineRecyclerView;
         updateApplication = binding.updateApplicationButton;
 
+        if (profileState == ProfileState.PUBLIC) {
+            updateApplication.setVisibility(View.INVISIBLE);
+            updateApplication.setClickable(false);
+        }
+
         createRecyclerView();
 
         DropdownArrayAdapter dropdownInputAdapter = new DropdownArrayAdapter(getContext(), R.layout.application_name_item, profileViewModel.applications);
@@ -118,13 +124,17 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
         applicationsOptions.setText(currentApplication.getApplicationName(), false);
 
         FirebaseRecyclerOptions<TimelineItemObject> timelineOptions = new FirebaseRecyclerOptions.Builder<TimelineItemObject>()
-                .setSnapshotArray(profileViewModel.timeline)
+                .setSnapshotArray(profileState == ProfileState.PERSONAL ? profileViewModel.timeline : profileViewModel.activeUserTimeline)
                 .setLifecycleOwner(this)
                 .build();
 
         onClickListener = new TimelineOnClickListener() {
             @Override
             public void itemTapped(int position) {
+                if (profileState == ProfileState.PUBLIC) {
+                    return;
+                }
+
                 TimelineItemObject timelineItemObject = adapter.getItem(position);
 
                 AlertDialog builder = new MaterialAlertDialogBuilder(getContext())
@@ -136,7 +146,7 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
                                 timelineItemObject.setCompleted(true);
                                 Database.DB_REFERENCE
                                         .child(Database.APPLICATIONS)
-                                        .child(currentUserModel.getUserID())
+                                        .child(profileUserModel.getUserID())
                                         .child(currentApplication.getPushKey())
                                         .child(Database.TIMELINE)
                                         .child(timelineItemObject.getPushKey()).setValue(timelineItemObject).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -160,7 +170,7 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
                                 timelineItemObject.setCompleted(false);
                                 Database.DB_REFERENCE
                                         .child(Database.APPLICATIONS)
-                                        .child(currentUserModel.getUserID())
+                                        .child(profileUserModel.getUserID())
                                         .child(currentApplication.getPushKey())
                                         .child(Database.TIMELINE)
                                         .child(timelineItemObject.getPushKey()).setValue(timelineItemObject).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -209,6 +219,10 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
     }
 
     public void openUpdateApplicationModal() {
+        if (profileState == ProfileState.PUBLIC) {
+            return;
+        }
+
         UpdateApplicationModal updateApplicationModal = new UpdateApplicationModal();
         Bundle bundle = new Bundle();
         bundle.putParcelable(Helper.TIMELINE_DELEGATE, this);
@@ -219,7 +233,6 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
     public void createRecyclerView() {
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
-
     }
 
     @Override
@@ -229,8 +242,6 @@ public class ProfileTimelineFragment extends Fragment implements Parcelable, Tim
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeParcelable(currentUser, flags);
-        dest.writeParcelable(currentUserModel, flags);
     }
 
     @Override
