@@ -34,7 +34,6 @@ public class CommentsModal extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.add_comment_modal,container,false);
-
         return view;
 
     }
