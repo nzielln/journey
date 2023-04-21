@@ -57,6 +57,7 @@ public class DashboardFragment extends Fragment {
     ShapeableImageView image;
     DashboardAdapter adapter;
     SearchView searchInput;
+    Button
 
 
 
@@ -91,7 +92,26 @@ public class DashboardFragment extends Fragment {
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
-        searchInput = (SearchView) findBy
+        SearchView searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
+
+        searchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("QueryTextSubmit",query);
+                adapter.getFilter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("queryTextChange",newText);
+                return false;
+            }
+        });
+
+
+
+
 
         dbReference.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
