@@ -1,90 +1,104 @@
-package com.example.journey.JourneyApp.Chat;
+/*package com.example.journey.JourneyApp.Fragments.Chat;
 
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ListView;
-import android.widget.SearchView;
-import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import com.example.journey.R;
+import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link ChatFragment newInstance} factory method to
+ * create an instance of this fragment.
+ */
+/*
 public class ChatFragment extends Fragment {
-    private ListView chatFriendsList;
-    private Button createNewChatButton;
-    private EditText searchChat;
-    private FrameLayout chatWindowContainer;
-    private FrameLayout chatWindow;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
     public ChatFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChatFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChatFragment newInstance(String param1, String param2) {
-        ChatFragment fragment = new ChatFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        super(R.layout.fragment_chat);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize TabLayout and ViewPager
+        tabLayout = view.findViewById(R.id.tabLayout);
+        viewPager = view.findViewById(R.id.view_pager);
+
+        // Set up ViewPager with appropriate adapter
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
+        viewPagerAdapter.addFragment(new ChatListFragment(), "Chat");
+        viewPagerAdapter.addFragment(new UsersFragment(), "Friends");
+
+        // Set the adapter to the ViewPager
+        viewPager.setAdapter(viewPagerAdapter);
+
+        // Connect the TabLayout with the ViewPager
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate both layouts separately
-        View mainView = inflater.inflate(R.layout.fragment_chat, container, false);
-        View senderView = inflater.inflate(R.layout.fragment_chat_sender, container, false);
-        View receiverView = inflater.inflate(R.layout.fragment_chat_receiver, container, false);
-        View userView = inflater.inflate(R.layout.fragment_user_row, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_chat, container, false);
+    }
 
+    class ViewPagerAdapter extends FragmentPagerAdapter{
+        private ArrayList<Fragment> fragments;
+        private ArrayList<String> titles;
 
-        // Find views from the main layout
-        chatFriendsList = mainView.findViewById(R.id.chat_friends_list);
-        createNewChatButton = mainView.findViewById(R.id.create_new_chat_button);
-        searchChat = mainView.findViewById(R.id.search_chat);
-        chatWindowContainer = mainView.findViewById(R.id.chat_window_container);
-        chatWindow = mainView.findViewById(R.id.chat_window);
+        ViewPagerAdapter(FragmentManager fm){
+            super(fm);
+            this.fragments = new ArrayList<>();
+            this.titles = new ArrayList<>();
+        }
 
-        // Add the views from the users to the main layout
-        ViewGroup userContainer = mainView.findViewById(R.id.user_container);
-        userContainer.addView(userView);
+        @NonNull
+        @Override
+        public Fragment getItem(int position){
+            return fragments.get(position);
+        }
 
-        // Set up the other views here
+        @Override
+        public int getCount(){
+            return fragments.size();
+        }
 
-        return mainView;
+        public void addFragment(Fragment fragment, String title){
+            fragments.add(fragment);
+            titles.add(title);
+
+        }
+
+        @Override
+        @Nullable
+        public CharSequence getPageTitle(int position){
+            return titles.get(position);
+        }
+
     }
 }
+
+
+
+
+
+ */

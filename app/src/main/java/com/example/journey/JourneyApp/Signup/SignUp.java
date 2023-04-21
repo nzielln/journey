@@ -131,15 +131,15 @@ public class SignUp extends AppCompatActivity {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
                         if (task.isSuccessful()) {
-                              try {
-                                  GoogleSignInAccount account = task.getResult(ApiException.class);
-                                  completeGoogleSignUp(account);
-                              } catch (ApiException error) {
-                                  error.printStackTrace();
-                                  Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - APIEXCEPTION");
+                            try {
+                                GoogleSignInAccount account = task.getResult(ApiException.class);
+                                completeGoogleSignUp(account);
+                            } catch (ApiException error) {
+                                error.printStackTrace();
+                                Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - APIEXCEPTION");
 
-                                  Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nERROR MESSAGE: " +  error.getMessage());
-                              }
+                                Helper.showToast(SignUp.this, Constants.ERROR_CREATING_ACCOUNT_MESSAGE + " \nERROR MESSAGE: " +  error.getMessage());
+                            }
 
                         } else {
                             Log.e(TAG, "FAILED TO AUTHENTICATE USING GOOGLE - GOOGLE ACCOUNT TTASK FAILED");

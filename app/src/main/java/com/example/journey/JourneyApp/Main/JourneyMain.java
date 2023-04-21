@@ -10,7 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.journey.JourneyApp.Chat.ChatFragment;
+//import com.example.journey.JourneyApp.Chat.ChatFragment;
+import com.example.journey.JourneyApp.Chat.Fragments.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
 import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
@@ -38,11 +40,10 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     GoogleSignInClient googleSignInClient;
     private BottomNavigationView tabBarNavigation;
     FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_journey_main);
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
@@ -51,6 +52,7 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
 
         googleSignInClient = GoogleSignIn.getClient(JourneyMain.this, options);
         fragmentManager = getSupportFragmentManager();
+
         openDashboardFragment();
 
         tabBarNavigation = findViewById(R.id.tab_nav);
@@ -114,20 +116,20 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openInsightsFragment() {
-//        FragmentTransaction transaction = fragmentManager.beginTransaction();
-//        InsightsFragment insightsFragment = new InsightsFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        InsightsFragment insightsFragment = new InsightsFragment();
+
+        transaction.replace(R.id.journey_fragment_container, insightsFragment).commit();
+
+//        Database.FIREBASE_AUTH.signOut();
+//        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+//            @Override
+//            public void onComplete(@NonNull Task<Void> task) {
+//                Log.i(TAG, "SIGNED OUT GOOGLE");
+//            }
+//        });
 //
-//        transaction.replace(R.id.journey_fragment_container, insightsFragment).commit();
-
-        Database.FIREBASE_AUTH.signOut();
-        googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Log.i(TAG, "SIGNED OUT GOOGLE");
-            }
-        });
-
-        finish();
+//        finish();
     }
 
     @Override
