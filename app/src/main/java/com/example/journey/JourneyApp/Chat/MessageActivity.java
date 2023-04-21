@@ -120,11 +120,12 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
-/*
+
 private void SeenMessage(String userid){
 
-reference = FirebaseDatabase.getInstance().getReference("Chats");
-seenListener = reference.addValueEventListener(new ValueEventListener() {
+//reference = FirebaseDatabase.getInstance().getReference("Chats");
+    ;
+seenListener = Database.DB_REFERENCE.child(Database.CHATS).addValueEventListener(new ValueEventListener() {
 @Override
 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -148,7 +149,7 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
 
 }
 
-*/
+
 
     private void sendMessage(String sender, String receiver, String message){
 //DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -157,7 +158,7 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
-//hashMap.put("isseen", false);
+        hashMap.put("isseen", false);
 
         Database.DB_REFERENCE.child(Database.CHATS).push().setValue(hashMap);
 //reference.child("Chats").push().setValue(hashMap);
@@ -230,7 +231,7 @@ reference.updateChildren(hashMap);
     @Override
     protected void onResume(){
         super.onResume();
-//CheckStatus("online");
+    //CheckStatus("online");
 
     }
     @Override
@@ -239,7 +240,7 @@ reference.updateChildren(hashMap);
         if (reference != null) {
             reference.removeEventListener(seenListener);
         }
-//CheckStatus("Offline");
+    //CheckStatus("Offline");
     }
 
 }

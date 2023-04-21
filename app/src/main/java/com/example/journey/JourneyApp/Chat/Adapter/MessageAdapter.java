@@ -70,18 +70,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     .into(holder.profile_image);
         }
 
-/*
-if (position == mChat.size() -1){
-if(chat.isIsseen()){
-holder.txt_seen.setText("Seen");
-} else{
-holder.txt_seen.setText("Delivered");
-}
-}
-else {
-holder.txt_seen.setVisibility(View.GONE);
-}
-*/
+        if (position == mChat.size() -1){
+            if(chat.isIsseen()){
+                holder.txt_seen.setText("Seen");
+            } else{
+                holder.txt_seen.setText("Delivered");
+            }
+        }
+        else {
+            holder.txt_seen.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -92,7 +91,7 @@ holder.txt_seen.setVisibility(View.GONE);
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
         public ImageView profile_image;
-//public TextView txt_seen;
+        public TextView txt_seen;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -100,7 +99,7 @@ holder.txt_seen.setVisibility(View.GONE);
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
-//txt_seen = itemView.findViewById(R.id.txt_seen_status);
+            txt_seen = itemView.findViewById(R.id.txt_seen_status);
         }
     }
 

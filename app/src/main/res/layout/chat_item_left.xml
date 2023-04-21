@@ -5,8 +5,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="300dp"
-    android:padding="8dp"
+    android:layout_width="350dp"
+    android:padding="16dp"
     android:layout_height="wrap_content"
     android:id="@+id/relativeLayout3">
 
@@ -14,14 +14,14 @@
         android:id="@+id/profile_image"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/person_image"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="8dp"
         android:padding="8dp"
         android:text="hello"
         android:id="@+id/show_message"

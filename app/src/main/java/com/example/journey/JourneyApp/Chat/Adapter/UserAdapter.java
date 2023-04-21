@@ -17,7 +17,10 @@ import com.example.journey.JourneyApp.Chat.MessageActivity;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
@@ -46,22 +49,36 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position){
 
         UserModel userModel = mUsers.get(position);
-        //holder.username.setText(userModel.getUsername());
-        holder.username.setText(userModel.getFirstName());
+        String fullName = userModel.getFirstName() + " " + userModel.getLastName();
+        //holder.username.setText(userModel.getFirstName());
+        holder.username.setText(fullName);
 
-        //if (user.getProfileImage().equals("default")){
-        if (userModel.getProfileImage() == null){
-            holder.imageView.setImageResource(R.drawable.person_image);
-            /*Glide.with(context)
-                    .load(defaultImage)
-                    .into(holder.imageView);*/
+        if (userModel.getProfileImage() != null){
+        //if (userModel.getProfileImage() == null){ //add this line back if profile image doesnt work
+            //holder.imageView.setImageResource(R.drawable.person_image); // same as above. replace if not working
+            Glide.with(context)
+                    .load(userModel.getProfileImage())
+                    .placeholder(R.drawable.person_image) // added new line. Remove if not needed
+                    .into(holder.imageView);
 
 
         }else{
+
+            holder.imageView.setImageResource(R.drawable.person_image);
             //Adding Glide Library
-            Glide.with(context)
+            /*Glide.with(context)
                     .load(userModel.getProfileImage())
                     .into(holder.imageView);
+
+             */
+        }
+
+        String lastMessage = userModel.getLastMessage();
+        Long lastMessageTimeStamp = userModel.getLastMessageTimeStamp();
+        if (lastMessage != null) {
+            holder.lastMessage.setText(lastMessage);
+        } else {
+            holder.lastMessage.setText("");
         }
 
 
@@ -96,6 +113,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     }
 
+    private String getFormattedTime(long lastMessageTimeStamp) {
+        Date date = new Date(lastMessageTimeStamp);
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
+        return sdf.format(date);
+    }
+
     @Override
     public int getItemCount(){
         return mUsers.size();
@@ -104,6 +127,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
         public ImageView imageView;
+        public TextView lastMessage;
+        public TextView lastMessageTimeStamp;
+
        // public ImageView imageViewON;
         //public ImageView imageViewOFF;
 
@@ -112,6 +138,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
             username = itemView.findViewById(R.id.userName);
             imageView = itemView.findViewById(R.id.imageView);
+            lastMessage = itemView.findViewById(R.id.lastMessage);
+            lastMessageTimeStamp = itemView.findViewById(R.id.lastMessageTimestamp);
             //imageViewON = itemView.findViewById(R.id.statusimageON);
             //imageViewOFF = itemView.findViewById(R.id.statusimageOFF);
 
