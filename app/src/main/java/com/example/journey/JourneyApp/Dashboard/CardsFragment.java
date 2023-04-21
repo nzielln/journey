@@ -82,8 +82,9 @@ public class CardsFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (final DataSnapshot inner : task.getResult().getChildren()) {
-                        UserModel user = inner.getValue(UserModel.class);
+                    /*
+                 //   for (final DataSnapshot inner : task.getResult().getChildren()) {
+                    //    UserModel user = inner.getValue(UserModel.class);
 
                         allUsers.put(user.getUserID(), user);
                     }
@@ -104,6 +105,11 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
+
+                        //StorageReference userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
+
+                       // items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
+
                         Log.d("user Info", user.getUserID());
                         StorageReference userPic;
                         if (user.getProfileImage() == null ){
@@ -119,6 +125,7 @@ public class CardsFragment extends Fragment {
                         }
 
                        items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser));
+
                     }
 
                     Collections.reverse(items);
@@ -127,9 +134,15 @@ public class CardsFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
+
             }
+
+
         });
+
         //private void
     }
+
+
 
 }

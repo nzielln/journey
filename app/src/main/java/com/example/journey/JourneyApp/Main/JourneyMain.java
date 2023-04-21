@@ -10,7 +10,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.example.journey.JourneyApp.Chat.ChatFragment;
+//import com.example.journey.JourneyApp.Chat.ChatFragment;
+import com.example.journey.JourneyApp.Chat.Fragments.ChatFragment;
 import com.example.journey.JourneyApp.Dashboard.DashboardFragment;
 import com.example.journey.JourneyApp.Dashboard.CreateNewPost;
 import com.example.journey.JourneyApp.Insights.InsightsFragment;
@@ -43,8 +44,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_journey_main);
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
