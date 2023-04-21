@@ -8,11 +8,16 @@ public class Chat {
 
     private boolean isseen;
 
-    public Chat(String sender, String receiver, String message, Boolean isseen) {
+    long timestamp;
+    String currenttime;
+
+    public Chat(String sender, String receiver, String message, Boolean isseen, long timestamp, String currenttime) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.isseen = isseen;
+        this.timestamp = timestamp;
+        this.currenttime = currenttime;
     }
 
     public Chat(){
@@ -49,5 +54,21 @@ public class Chat {
 
     public void setIsseen(boolean isseen) {
         this.isseen = isseen;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getCurrenttime() {
+        return currenttime;
+    }
+
+    public void setCurrenttime(String currenttime) {
+        this.currenttime = currenttime;
     }
 }

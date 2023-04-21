@@ -17,7 +17,10 @@ import com.example.journey.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
 
@@ -58,6 +61,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat = mChat.get(position);
         holder.show_message.setText(chat.getMessage());
+        holder.timeofmessage.setText(chat.getCurrenttime());
 
 
         if (profileImage == null || profileImage.equals("default")){
@@ -70,18 +74,17 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     .into(holder.profile_image);
         }
 
-/*
-if (position == mChat.size() -1){
-if(chat.isIsseen()){
-holder.txt_seen.setText("Seen");
-} else{
-holder.txt_seen.setText("Delivered");
-}
-}
-else {
-holder.txt_seen.setVisibility(View.GONE);
-}
-*/
+        if (position == mChat.size() -1){
+            if(chat.isIsseen()){
+                holder.txt_seen.setText("Seen");
+            } else{
+                holder.txt_seen.setText("Delivered");
+            }
+        }
+        else {
+            holder.txt_seen.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -92,7 +95,8 @@ holder.txt_seen.setVisibility(View.GONE);
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView show_message;
         public ImageView profile_image;
-//public TextView txt_seen;
+        public TextView txt_seen;
+        public TextView timeofmessage;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -100,7 +104,8 @@ holder.txt_seen.setVisibility(View.GONE);
 
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
-//txt_seen = itemView.findViewById(R.id.txt_seen_status);
+            txt_seen = itemView.findViewById(R.id.txt_seen_status);
+            timeofmessage = itemView.findViewById(R.id.timeofmessage);
         }
     }
 
