@@ -61,13 +61,13 @@ public class MessageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_message);
 
 
-//Widgets
+        //Widgets
         imageView = findViewById(R.id.imageview_profile);
         username = findViewById(R.id.user_name);
         sendBtn = findViewById(R.id.btn_send);
         msg_editText = findViewById(R.id.text_send);
 
-//Recycler View
+        //Recycler View
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
@@ -79,15 +79,17 @@ public class MessageActivity extends AppCompatActivity {
         intent = getIntent();
         userid = intent.getStringExtra("userid");
 
-//fuser = FirebaseAuth.getInstance().getCurrentUser();
-//reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
+        //fuser = FirebaseAuth.getInstance().getCurrentUser();
+        //reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
-        Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+        // Retrieve user data from Firebase and set the username and profile image
+        Database.DB_REFERENCE.child(Database.USERS).child(userid).addValueEventListener(new ValueEventListener() {
+            //Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                username.setText(userModel.getFirstName());
+                username.setText(userModel.getFirstName()+ " " + userModel.getLastName());
 
                 if (userModel.getProfileImage() == null){
                     imageView.setImageResource(R.drawable.person_image);
@@ -120,11 +122,12 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
-/*
+
 private void SeenMessage(String userid){
 
-reference = FirebaseDatabase.getInstance().getReference("Chats");
-seenListener = reference.addValueEventListener(new ValueEventListener() {
+//reference = FirebaseDatabase.getInstance().getReference("Chats");
+    ;
+seenListener = Database.DB_REFERENCE.child(Database.CHATS).addValueEventListener(new ValueEventListener() {
 @Override
 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -148,7 +151,7 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
 
 }
 
-*/
+
 
     private void sendMessage(String sender, String receiver, String message){
 //DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -157,7 +160,7 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
         hashMap.put("sender", sender);
         hashMap.put("receiver", receiver);
         hashMap.put("message", message);
-//hashMap.put("isseen", false);
+        hashMap.put("isseen", false);
 
         Database.DB_REFERENCE.child(Database.CHATS).push().setValue(hashMap);
 //reference.child("Chats").push().setValue(hashMap);
@@ -214,23 +217,24 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
 
     }
 
-/*private void CheckStatus(String status){
-reference = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
+private void CheckStatus(String status){
+    //reference = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
+    DatabaseReference reference = Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid());
 
-HashMap<String, Object> hashMap = new HashMap<>();
-hashMap.put("status", status);
+    HashMap<String, Object> hashMap = new HashMap<>();
+    hashMap.put("status", status);
 
-reference.updateChildren(hashMap);
+    reference.updateChildren(hashMap);
 
 
 }
 
-*/
+
 
     @Override
     protected void onResume(){
         super.onResume();
-//CheckStatus("online");
+        CheckStatus("online");
 
     }
     @Override
@@ -239,7 +243,7 @@ reference.updateChildren(hashMap);
         if (reference != null) {
             reference.removeEventListener(seenListener);
         }
-//CheckStatus("Offline");
+        CheckStatus("Offline");
     }
 
 }
