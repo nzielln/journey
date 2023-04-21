@@ -113,7 +113,7 @@ public class DashboardFragment extends Fragment {
                     TextView wName = getView().findViewById (R.id.welcomeTv);
                     //wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
 
-                    /*if(currentUserModel.getProfileImage() == null) {
+                    if(currentUserModel.getProfileImage() == null) {
                         image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
                     }else{
                         StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
