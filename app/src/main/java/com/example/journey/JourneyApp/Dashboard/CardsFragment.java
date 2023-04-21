@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,18 +33,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CardsFragment extends Fragment {
     private DatabaseReference dbReference;
-    private FirebaseAuth userAuth;
-
-    private FirebaseUser user;
     DashboardRvBinding binding;
     private DashboardAdapter adapter;
     RecyclerView recyclerView;
+    FirebaseUser currentUser;
     ArrayList<CardModel> items = new ArrayList<>();
+
 
     public CardsFragment() {
         super(R.layout.dashboard_rv);
@@ -53,10 +54,16 @@ public class CardsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        //searchInput = (SearchView)searchItem.getActionView();
+        //searchInput = (SearchView) searchInput.findViewById(R.id.search_view_dashboard);
+        // Log.d("searchInput",searchInput.toString());
 
         binding = DashboardRvBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -68,7 +75,9 @@ public class CardsFragment extends Fragment {
         recyclerView = binding.dashboardRecyclerView;
 
         Map<String, UserModel> allUsers = new HashMap<>();
-        ImageView image = getView().findViewById(R.id.dash_image);
+        Map<String, UserModel> usersFollowing = new HashMap<>();
+
+        //ImageView image = getView().findViewById(R.id.dash_image);
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -77,40 +86,49 @@ public class CardsFragment extends Fragment {
                  //   for (final DataSnapshot inner : task.getResult().getChildren()) {
                     //    UserModel user = inner.getValue(UserModel.class);
 
-                     //   allUsers.put(user.getUserID(), user);
-//                        Log.d("allusers", user.getProfileImage());
-//                        if(user.getProfileImage() == null) {
-//                            image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
-//                        }else {
-//                            Glide.with(requireActivity()).load(user.getProfileImage()).into(image);
-//                            allUsers.put(user.getProfileImage(), user);
-//                        }
+                        allUsers.put(user.getUserID(), user);
                     }
-                */
-
-                    retrievePost(allUsers);
+                    retrieveNewPost(allUsers);
                 }
             }
         });
     }
 
-    private void retrievePost(Map<String, UserModel> users)
-    {
+    private void retrieveNewPost(Map<String, UserModel> users) {
         dbReference.child("posts").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             //public void onSuccess(@NonNull Task<DataSnapshot> task) {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (!task.isSuccessful()) {
                     Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
+                } else {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
+
                         //StorageReference userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
 
                        // items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
+
+                        Log.d("user Info", user.getUserID());
+                        StorageReference userPic;
+                        if (user.getProfileImage() == null ){
+                            userPic= null;
+                        } else {
+                            userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
+                        }
+
+                        Boolean isPostLikedByUser = false;
+
+                        if (post.liked.containsKey(currentUser.getUid()) && post.liked.get(currentUser.getUid()) == true) {
+                            isPostLikedByUser = true;
+                        }
+
+                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser));
+
                     }
+
+                    Collections.reverse(items);
 
                     adapter = new DashboardAdapter(items, requireActivity());
                     recyclerView.setAdapter(adapter);
@@ -122,7 +140,7 @@ public class CardsFragment extends Fragment {
 
         });
 
-
+        //private void
     }
 
 

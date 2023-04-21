@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="32dp"
+    android:gravity="center_horizontal"
+    tools:context=".JourneyApp.Login.LoginPage">
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/backToSettings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/back"
+        android:padding="10dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="-13dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"/>
+
+    <TextView
+        android:id="@+id/welcomeBack"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:lines="2"
+        android:text="@string/contact_support"
+        android:textColor="@color/dark_blue"
+        android:theme="@style/heading" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="16dp"
+        >
+        <!--Email-->
+        <LinearLayout
+            android:id="@+id/emailLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bottom_border">
+
+            <TextView
+                android:id="@+id/toSupport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/toRecipient"
+                android:textColor="@color/light_blue"
+                android:textSize="17sp"
+                tools:ignore="TextContrastCheck"/>
+
+            <EditText
+                android:id="@+id/emailITSupport"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/light_blue"
+                android:hint="@string/email_recipient"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingBottom="10dp"
+                android:textColor="@color/light_blue"
+                android:textColorHint="@color/light_blue"
+                android:textSize="17sp"
+                android:theme="@style/body_normal"
+                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck,TextContrastCheck" />
+
+        </LinearLayout>
+
+        <!--Subject-->
+        <LinearLayout
+            android:id="@+id/subjectLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bottom_border">
+
+            <TextView
+                android:id="@+id/subjectSupport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subject"
+                android:textColor="@color/light_blue"
+                android:textSize="17sp"
+                tools:ignore="TextContrastCheck" />
+
+            <EditText
+                android:id="@+id/subject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/light_blue"
+                android:hint="@string/concern"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/light_blue"
+                android:textColorHint="@color/light_blue"
+                android:textSize="17sp"
+                android:theme="@style/body_normal"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,TextContrastCheck" />
+
+
+        </LinearLayout>
+
+        <!--Message Header-->
+            <TextView
+                android:id="@+id/messageSupport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/noteToUser"
+                android:textStyle="bold"
+                android:textColor="@color/light_blue"
+                android:textSize="17sp"
+                tools:ignore="TextContrastCheck" />
+        <!--Message-->
+        <LinearLayout
+            android:id="@+id/messageSupportLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/bottom_border">
+
+            <EditText
+                android:id="@+id/messageHere"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawablePadding="10dp"
+                android:drawableTint="@color/light_blue"
+                android:hint="@string/type_concern_here"
+                android:lines="1"
+                android:maxLines="1"
+                android:paddingBottom="120dp"
+                android:textColor="@color/light_blue"
+                android:textColorHint="@color/light_blue"
+                android:textSize="15sp"
+                android:theme="@style/body_normal"
+                tools:ignore="TextContrastCheck" />
+
+
+        </LinearLayout>
+
+        <!-- Send Button-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sendEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:theme="@style/body_semi"
+            android:text="@string/open_email"
+            app:cornerRadius="10dp"
+            android:textStyle="bold"/>
+
+
+    </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
