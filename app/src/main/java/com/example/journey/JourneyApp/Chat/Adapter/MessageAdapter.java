@@ -17,7 +17,10 @@ import com.example.journey.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder>{
 
@@ -58,6 +61,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         Chat chat = mChat.get(position);
         holder.show_message.setText(chat.getMessage());
+        holder.timeofmessage.setText(chat.getCurrenttime());
 
 
         if (profileImage == null || profileImage.equals("default")){
@@ -92,6 +96,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public TextView show_message;
         public ImageView profile_image;
         public TextView txt_seen;
+        public TextView timeofmessage;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -100,6 +105,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             show_message = itemView.findViewById(R.id.show_message);
             profile_image = itemView.findViewById(R.id.profile_image);
             txt_seen = itemView.findViewById(R.id.txt_seen_status);
+            timeofmessage = itemView.findViewById(R.id.timeofmessage);
         }
     }
 

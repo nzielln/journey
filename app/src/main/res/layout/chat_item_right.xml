@@ -37,6 +37,19 @@
             android:layout_marginRight="48dp"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timeofmessage"
+            android:background="@drawable/background_right"
+            android:textSize="10sp"
+            android:layout_toRightOf="@id/show_message"
+            android:layout_marginLeft="-40dp"
+            android:layout_alignBottom="@id/show_message"
+            android:text="20:09"
+            android:padding="6dp"
+            android:textColor="#434343" />
+
     </RelativeLayout>
 
     <TextView
@@ -44,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/relative"
+        android:background="@drawable/background_right"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="0dp"
         android:layout_marginEnd="8dp"

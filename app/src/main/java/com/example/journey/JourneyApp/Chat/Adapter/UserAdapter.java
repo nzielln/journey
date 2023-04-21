@@ -26,7 +26,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private Context context;
     private List<UserModel> mUsers;
-    //private boolean isChat;
+    private boolean isChat;
 
     //String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_2YunYJpvCPd0qv9CB5oIrqvT5h92_cc68d573-29e2-497d-9995-4d4c74ffe4bf?alt=media&token=f9447699-5e6f-40d6-82c9-fcf4f6011aac";
     //String defaultImage = "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/profile_q3XSGj0VfqO9iseYRQ2cL9jN2K33_d1357f54-84b5-4a44-a6fe-6da239b6c448?alt=media&token=6702bac9-9131-4e2c-8911-2ee45e5b1cf4";
@@ -35,7 +35,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public UserAdapter(Context context, List<UserModel> mUsers, boolean isChat){
         this.context = context;
         this.mUsers = mUsers;
-        //this.isChat = isChat;
+        this.isChat = isChat;
     }
 
     @NonNull
@@ -72,21 +72,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
              */
         }
-
+/*
         String lastMessage = userModel.getLastMessage();
         Long lastMessageTimeStamp = userModel.getLastMessageTimeStamp();
         if (lastMessage != null) {
             holder.lastMessage.setText(lastMessage);
+            //holder.lastMessageTimeStamp.setText(getFormattedTime(lastMessageTimeStamp));
         } else {
             holder.lastMessage.setText("");
+            //holder.lastMessageTimeStamp.setText("");
         }
 
+         */
 
-        /*
 
+
+/*
         //Status Check
         if (isChat) {
-            if (user.getStatus().equals("online")) {
+            if (userModel.getStatus().equals("online")) {
                 holder.imageViewON.setVisibility(View.VISIBLE);
                 holder.imageViewOFF.setVisibility(View.GONE);
             } else {
@@ -100,7 +104,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             holder.imageViewOFF.setVisibility(View.GONE);
         }
 
-         */
+ */
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -112,12 +118,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         });
 
     }
-
+/*
     private String getFormattedTime(long lastMessageTimeStamp) {
         Date date = new Date(lastMessageTimeStamp);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault());
         return sdf.format(date);
     }
+
+ */
 
     @Override
     public int getItemCount(){
@@ -130,8 +138,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         public TextView lastMessage;
         public TextView lastMessageTimeStamp;
 
-       // public ImageView imageViewON;
-        //public ImageView imageViewOFF;
+        public ImageView imageViewON;
+        public ImageView imageViewOFF;
 
         public ViewHolder(@NonNull View itemView){
             super(itemView);
@@ -140,8 +148,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             imageView = itemView.findViewById(R.id.imageView);
             lastMessage = itemView.findViewById(R.id.lastMessage);
             lastMessageTimeStamp = itemView.findViewById(R.id.lastMessageTimestamp);
-            //imageViewON = itemView.findViewById(R.id.statusimageON);
-            //imageViewOFF = itemView.findViewById(R.id.statusimageOFF);
+            imageViewON = itemView.findViewById(R.id.statusimageON);
+            imageViewOFF = itemView.findViewById(R.id.statusimageOFF);
 
         }
 
