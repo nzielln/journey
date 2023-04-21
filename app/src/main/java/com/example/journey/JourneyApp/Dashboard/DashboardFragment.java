@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Profile.ProfileFragment;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentDashboardBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,26 +56,20 @@ public class DashboardFragment extends Fragment {
     UserModel currentUserModel;
     ShapeableImageView image;
     DashboardAdapter adapter;
-    //DatabaseReference dbReference;
-    //DashboardAdapter adapter;
-    //ArrayList<CardModel> items;
     SearchView searchInput;
+    Button
 
 
 
     public DashboardFragment() {
         super(R.layout.fragment_dashboard);
-        // Required empty public constructor
-
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
+
     public void displayFragment(Fragment fragment){
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboard_rv_container, fragment).commit();
@@ -85,8 +80,6 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         fragmentManager = getChildFragmentManager();
-
-        //View view = inflater.inflate(R.layout.fragment_dashboard,container, false);
         displayFragment(new CardsFragment());
         return binding.getRoot();
     }
@@ -98,6 +91,27 @@ public class DashboardFragment extends Fragment {
 
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
+        SearchView searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
+
+        searchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("QueryTextSubmit",query);
+                adapter.getFilter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("queryTextChange",newText);
+                return false;
+            }
+        });
+
+
+
+
 
         dbReference.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -111,35 +125,30 @@ public class DashboardFragment extends Fragment {
                     currentUserModel = results.getValue(UserModel.class);
                     ImageView image = getView().findViewById(R.id.dash_image);
                     TextView wName = getView().findViewById (R.id.welcomeTv);
-                    //wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
+                    wName.setText("Hi, " + currentUserModel.getFirstName() + "!");
 
-                    if(currentUserModel.getProfileImage() == null) {
+                    if (currentUserModel.getProfileImage() == null) {
                         image.setImageDrawable(ContextCompat.getDrawable(requireActivity(),R.drawable.pick_photo));
-                    }else{
+                    } else {
                         StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
                         Glide.with(requireActivity()).load(profileURL).into(image);
-                        image.setClickable(false);
+                        image.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                                ProfileFragment profileFragment = new ProfileFragment();
+                                transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
+                            }
+                        });
                     }
 
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    //Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
             }
         });
 
     }
-//    public boolean onSearchChange() {
-//        searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
-//        //SearchView searchView = (SearchView) searchInput.getActionView();
-//
-//       // searchInput.setOnQueryTextListener();
-//        return true;
-//    }
-//
-//    public boolean onQueryTextChange(String query){
-//        return false;
-//    }
-//    public boolean onQueryTextSubmit(String query){
-//        return false;
-//    }
 
 }

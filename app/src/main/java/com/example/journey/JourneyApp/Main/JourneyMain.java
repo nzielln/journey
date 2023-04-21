@@ -19,6 +19,7 @@ import com.example.journey.JourneyApp.Login.LoginPage;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.JourneyApp.Profile.ProfileFragment;
+import com.example.journey.JourneyApp.Profile.ProfileState;
 import com.example.journey.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -45,6 +46,8 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journey_main);
+        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(Database.CLIENT_ID)
                 .requestEmail()
@@ -57,8 +60,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
 
         tabBarNavigation = findViewById(R.id.tab_nav);
         tabBarNavigation.setOnItemSelectedListener(this);
-
-        profileViewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
 
         if (profileViewModel.getCurrentUserModel().getValue() == null) {
             Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -89,29 +90,32 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
     }
 
     public void openProfileFragment() {
+        profileViewModel.setPersonProfileState();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         ProfileFragment profileFragment = new ProfileFragment();
 
         transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
     }
     public void openNewPostFragment(){
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         CreateNewPost newPost = new CreateNewPost();
-
         transaction.replace(R.id.journey_fragment_container,newPost).commit();
     }
 
     public void openDashboardFragment() {
+        profileViewModel.setPersonProfileState();
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         DashboardFragment dashboardFragment = new DashboardFragment();
-
         transaction.replace(R.id.journey_fragment_container, dashboardFragment).commit();
     }
 
     public void openChatFragment() {
+        profileViewModel.setPersonProfileState();
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         ChatFragment chatFragment = new ChatFragment();
-
         transaction.replace(R.id.journey_fragment_container, chatFragment).commit();
     }
 

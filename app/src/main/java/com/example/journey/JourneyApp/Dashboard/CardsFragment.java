@@ -14,12 +14,18 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Profile.ProfileFragment;
+import com.example.journey.JourneyApp.Profile.ProfileState;
 import com.example.journey.R;
 import com.example.journey.databinding.DashboardRvBinding;
 import com.example.journey.databinding.FragmentDashboardBinding;
@@ -36,14 +42,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class CardsFragment extends Fragment {
     private DatabaseReference dbReference;
+    private FirebaseAuth userAuth;
+
+    private UserModel user;
     DashboardRvBinding binding;
     private DashboardAdapter adapter;
     RecyclerView recyclerView;
     FirebaseUser currentUser;
     ArrayList<CardModel> items = new ArrayList<>();
+    ProfileViewModel profileViewModel;
 
 
     public CardsFragment() {
@@ -53,6 +64,9 @@ public class CardsFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        profileViewModel.updateProfileState(ProfileState.PERSONAL, null);
+        user = profileViewModel.getCurrentUserModel().getValue();
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
@@ -61,9 +75,6 @@ public class CardsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //searchInput = (SearchView)searchItem.getActionView();
-        //searchInput = (SearchView) searchInput.findViewById(R.id.search_view_dashboard);
-        // Log.d("searchInput",searchInput.toString());
 
         binding = DashboardRvBinding.inflate(inflater, container, false);
         return binding.getRoot();
@@ -73,16 +84,16 @@ public class CardsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         recyclerView = binding.dashboardRecyclerView;
+        user = profileViewModel.getCurrentUserModel().getValue();
 
         Map<String, UserModel> allUsers = new HashMap<>();
         Map<String, UserModel> usersFollowing = new HashMap<>();
 
-        //ImageView image = getView().findViewById(R.id.dash_image);
+
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if (task.isSuccessful()) {
-
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         UserModel user = inner.getValue(UserModel.class);
 
@@ -105,12 +116,7 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
-
-                        //StorageReference userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
-
-                       // items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic));
-
-                        Log.d("user Info", user.getUserID());
+                        //Log.d("user Info", user.getUserID());
                         StorageReference userPic;
                         if (user.getProfileImage() == null ){
                             userPic= null;
@@ -124,25 +130,39 @@ public class CardsFragment extends Fragment {
                             isPostLikedByUser = true;
                         }
 
-                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser));
+                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser, user));
 
                     }
 
                     Collections.reverse(items);
 
                     adapter = new DashboardAdapter(items, requireActivity());
+                    adapter.setListener(new CardClickListener() {
+                        @Override
+                        public void onPositionCLicked(int position) {
+                            CardModel cardModel = items.get(position);
+
+                            if (!Objects.equals(cardModel.getUserModel().getUserID(), user.getUserID())) {
+                                profileViewModel.updateProfileState(ProfileState.PUBLIC, cardModel.getUserModel());
+                            }
+
+                            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+                            ProfileFragment profileFragment = new ProfileFragment();
+                            transaction.replace(R.id.journey_fragment_container, profileFragment).commit();
+                        }
+
+                        @Override
+                        public void onLongClicked(int position) {
+
+                        }
+                    });
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
-
             }
-
-
         });
-
-        //private void
     }
-
-
 
 }

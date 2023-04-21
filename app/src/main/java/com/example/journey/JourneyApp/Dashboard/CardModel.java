@@ -11,17 +11,16 @@ public class CardModel {
     private String cardName;
     private String cardDate;
     private String cardPostContentSummary;
-
-    private StorageReference cardImage;
-
     private Boolean isLiked;
+    private StorageReference cardImage;
+    UserModel userModel;
 
-
-    public CardModel(UserModel cardUser, String cardDate, String cardSummary, StorageReference userPic,String postId, Boolean isLiked) {
+    public CardModel(UserModel cardUser, String cardDate, String cardSummary, StorageReference userPic,String postId, Boolean isLiked, UserModel userModel) {
         this.cardName = cardUser.getFirstName() + " " + cardUser.getLastName();
         this.cardDate = cardDate;
         this.cardPostContentSummary = cardSummary;
         this.cardImage = userPic;
+        this.userModel = userModel;
         this.postId = postId;
         this.isLiked = isLiked;
     }
@@ -40,6 +39,10 @@ public class CardModel {
 
     public StorageReference getCardImage() {
         return cardImage;
+    }
+
+    public UserModel getUserModel() {
+        return userModel;
     }
 
     public String getPostId() {

@@ -218,9 +218,6 @@ public class ProfileToDoFragment extends Fragment {
 
     public void openAddTaskModal() {
         AddTaskModal addTaskModal = new AddTaskModal();
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Helper.USER_MODEL, currentUserModel);
-        addTaskModal.setArguments(bundle);
         addTaskModal.show(getChildFragmentManager(), AddTaskModal.TAG);
     }
 

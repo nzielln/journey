@@ -24,35 +24,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.journey.JourneyApp.Dashboard.CardsFragment;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.Modals.AddApplicationModal;
 import com.example.journey.JourneyApp.Profile.Modals.UpdateApplicationModal;
 import com.example.journey.JourneyApp.Profile.Models.ProfileViewModel;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
-import com.example.journey.JourneyApp.Signup.SignUp;
 //import com.example.journey.JourneyApp.Settings.SettingsFragment;
-import com.example.journey.Sticker.Constants;
 import com.example.journey.JourneyApp.Settings.Settings;
 import com.example.journey.R;
 import com.example.journey.databinding.FragmentProfileBinding;
 import com.example.journey.databinding.ProfileDetailsBinding;
 import com.example.journey.databinding.ProfileTopMenuLayoutBinding;
-import com.firebase.ui.database.FirebaseListOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.imageview.ShapeableImageView;
+import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
@@ -61,6 +60,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -73,12 +73,16 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     Button settingsTab;
     FragmentManager fragmentManager;
     TabLayout tabLayout;
+    LinearLayout followContent;
+    Button followButton;
+    ImageButton chatButton;
     Button addNewApplication;
     FragmentProfileBinding binding;
 
     View layoutInflater;
     Activity activity;
     FirebaseUser currentUser;
+    UserModel profileUserModel;
     UserModel currentUserModel;
     ActivityResultLauncher<Intent> pickerLauncher;
     ActivityResultLauncher<Intent> captureLauncher;
@@ -88,6 +92,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     TextView followers;
     TextView following;
     TextView userProfileName;
+    ProfileState profileState;
 
     // Listeners
     ValueEventListener userEventListener;
@@ -106,7 +111,11 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
+        profileState = profileViewModel.getCurrentProfileState().getValue();
+
         currentUserModel = profileViewModel.getCurrentUserModel().getValue();
+        profileUserModel = profileState == ProfileState.PERSONAL ? currentUserModel : profileViewModel.getActiveUserModel().getValue();
+
         activity = getActivity();
         pickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -144,6 +153,8 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                 }
         );
 
+        // FOLLOWER FOLLOWING CLICK
+
     }
 
     @Override
@@ -151,7 +162,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                              Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         fragmentManager = getChildFragmentManager();
-        showFragment(new ProfileToDoFragment());
+        showInitialFragment();
         return binding.getRoot();
     }
 
@@ -161,6 +172,14 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
 
         tabLayout = binding.profileTab;
         addNewApplication = binding.addNewApplicationButton;
+
+        if (profileState == ProfileState.PERSONAL) {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setText(R.string.to_do);
+            currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+        } else {
+            Objects.requireNonNull(tabLayout.getTabAt(0)).setText(R.string.updates);
+        }
+
         tabLayout.addOnTabSelectedListener(this);
 
         ProfileTopMenuLayoutBinding topMenu = binding.includeProfileMenu;
@@ -170,13 +189,33 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         followers = profileDetailsBinding.followersCount;
         following = profileDetailsBinding.followingCount;
         userProfileName = profileDetailsBinding.userProfileName;
+        followContent = binding.followContent;
+        followButton = binding.followButton;
+        chatButton = binding.chatButton;
 
-        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+        if (profileState == ProfileState.PUBLIC) {
+            profilePicture.setClickable(false);
+            ViewGroup group = (ViewGroup) addNewApplication.getParent();
+            group.removeView(addNewApplication);
+
+            if (profileViewModel.getIsFollowing(profileUserModel)) {
+                followButton.setText(R.string.following);
+                followButton.setEnabled(false);
+                followButton.setTextColor(getResources().getColor(R.color.dark_blue, null));
+
+            }
+        } else {
+            ViewGroup group = (ViewGroup) followContent.getParent();
+            group.removeView(followContent);
+            group.removeView(followButton);
+            group.removeView(chatButton);
+        }
+
 
         userEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                currentUserModel = snapshot.getValue(UserModel.class);
+                profileUserModel = snapshot.getValue(UserModel.class);
                 updateProfileView();
             }
 
@@ -220,6 +259,106 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             @Override
             public void onClick(View v) {
                 pickProfilePictureTapped();
+            }
+        });
+
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementFollow();
+            }
+        });
+
+        followButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementFollow();
+            }
+        });
+
+        chatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigateToChat();
+            }
+        });
+    }
+
+    private void navigateToChat() {
+    }
+
+    private void incrementFollow() {
+        DatabaseReference ref = Database.DB_REFERENCE.child(Database.USERS).child(currentUserModel.getUserID());
+        ref.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                long value = 0;
+
+                if (currentData.getValue() != null) {
+                    UserModel userModel = currentData.getValue(UserModel.class);
+                   if (userModel != null) {
+                       userModel.updateFollowing(true, profileUserModel);
+                       profileViewModel.updateUserBackground(profileUserModel);
+                       currentData.setValue(userModel);
+                       return Transaction.success(currentData);
+                   }
+                }
+
+                value++;
+                String incHex = Long.toHexString(value);
+                currentData.setValue(incHex);
+
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                if (error != null) {
+                    Log.e(TAG, "FAILED TO UPDATE FOLLOWINGS");
+                    error.toException().printStackTrace();
+                }
+            }
+        });
+
+        DatabaseReference refB = Database.DB_REFERENCE.child(Database.USERS).child(profileUserModel.getUserID());
+        refB.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                long value = 0;
+
+                if (currentData.getValue() != null) {
+                    UserModel userModel = currentData.getValue(UserModel.class);
+                    if (userModel != null) {
+                        userModel.updateFollowers(true, currentUserModel);
+                        profileViewModel.updateActiveUserBackground(userModel);
+                        currentData.setValue(userModel);
+                        return Transaction.success(currentData);
+                    }
+                }
+
+                value++;
+                String incHex = Long.toHexString(value);
+                currentData.setValue(incHex);
+
+                return Transaction.success(currentData);
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+
+                if (error != null) {
+                    Log.e(TAG, "FAILED TO UPDATE FOLLOWERS");
+                    error.toException().printStackTrace();
+                } else {
+                    followers.setText(String.valueOf(profileUserModel.getFollowers() + 1));
+                    followButton.setText(R.string.following);
+
+                    followButton.setEnabled(false);
+                    followButton.setTextColor(getResources().getColor(R.color.dark_blue, null));
+
+                }
             }
         });
     }
@@ -266,15 +405,15 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     // Updating Profile View
     public void updateProfileView() {
 
-        String fullName = currentUserModel.getFirstName() + " " + currentUserModel.getLastName();
+        String fullName = profileUserModel.getFirstName() + " " + profileUserModel.getLastName();
         userProfileName.setText(getString(R.string.user_name_format, fullName));
-        following.setText(String.valueOf(currentUserModel.getFollowing()));
-        followers.setText(String.valueOf(currentUserModel.getFollowers()));
+        following.setText(String.valueOf(profileUserModel.getFollowing()));
+        followers.setText(String.valueOf(profileUserModel.getFollowers()));
 
-        if (currentUserModel.getProfileImage() == null) {
+        if (profileUserModel.getProfileImage() == null) {
             profilePicture.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.pick_photo));
         } else {
-            StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(currentUserModel.getProfileImage());
+            StorageReference profileURL = Database.DB_STORAGE_REFERENCE.child(profileUserModel.getProfileImage());
             Glide.with(requireActivity()).load(profileURL).into(profilePicture);
             profilePicture.setClickable(false);
         }
@@ -283,6 +422,9 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
 
     // Updating Profile Picture
     public void pickProfilePictureTapped() {
+        if (profileState == ProfileState.PUBLIC) {
+            return;
+        }
         AlertDialog builder = new MaterialAlertDialogBuilder(getContext())
                 .setTitle("Add profile picture")
                 .setMessage("Select the method you would prefer to add a picture to your profile.")
@@ -316,6 +458,10 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     }
 
     private void uploadImageToStorage(Uri filepath) {
+        if (profileState == ProfileState.PUBLIC) {
+            return;
+        }
+
         String filename = createFileName();
         StorageReference storageReference = Database.DB_STORAGE_REFERENCE.child(filename);
 
@@ -341,6 +487,10 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     }
 
     private void uploadImageToStorage(Bitmap bitmap) {
+        if (profileState == ProfileState.PUBLIC) {
+            return;
+        }
+
         String filename = createFileName();
         StorageReference storageReference = Database.DB_STORAGE_REFERENCE.child(filename);
 
@@ -369,6 +519,10 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     }
 
     private void saveUserProfilePicture(String filename) {
+        if (profileState == ProfileState.PUBLIC) {
+            return;
+        }
+
         Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
@@ -395,7 +549,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
     public void onTabSelected(TabLayout.Tab tab) {
         switch (tab.getPosition()) {
             case 0:
-                showFragment(new ProfileToDoFragment());
+                showInitialFragment();
                 break;
             case 1:
                 showFragment(new ProfileTimelineFragment());
@@ -403,6 +557,10 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         }
     }
 
+    private void showInitialFragment() {
+        Fragment fragment = profileState == ProfileState.PERSONAL ? new ProfileToDoFragment() : new CardsFragment();
+        showFragment(fragment);
+    }
 
     @Override
     public void onTabUnselected(TabLayout.Tab tab) {
