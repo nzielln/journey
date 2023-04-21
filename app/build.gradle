@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.journey"
-        minSdk 31 //change back to 27 maybe?
+        minSdk 27 //change back to 27 maybe?
         targetSdk 33
         versionCode 1
         versionName "1.0"
