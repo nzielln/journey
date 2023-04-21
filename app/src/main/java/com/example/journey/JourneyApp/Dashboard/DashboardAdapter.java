@@ -36,6 +36,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private FirebaseAuth userAuth;
     private CardClickListener listener;
 
+    CardsFragment cardsFragment;
     FragmentActivity ctx;
 
     public DashboardAdapter(ArrayList<CardModel> items, FragmentActivity context) {
@@ -141,8 +142,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommentsModal addComments = new CommentsModal();
-                addComments.show(addComments.getChildFragmentManager(), String.valueOf(CommentsModal.class));
+                cardsFragment.openCommentsModal();
+
             }
         });
     }

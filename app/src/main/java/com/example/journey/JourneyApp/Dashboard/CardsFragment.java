@@ -190,5 +190,12 @@ public class CardsFragment extends Fragment {
             }
         });
     }
+    public void openCommentsModal(){
+        CommentsModal addComments = new CommentsModal();
+        //addComments.show(getChildFragment(), CommentsModal.class);
+
+    }
+
+
 
 }
