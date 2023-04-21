@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -57,7 +58,8 @@ public class DashboardFragment extends Fragment {
     ShapeableImageView image;
     DashboardAdapter adapter;
     SearchView searchInput;
-    Button
+    SearchViewModel searchModel;
+
 
 
 
@@ -68,6 +70,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        searchModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
     }
 
     public void displayFragment(Fragment fragment){
@@ -97,14 +100,16 @@ public class DashboardFragment extends Fragment {
         searchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d("QueryTextSubmit",query);
-                adapter.getFilter(query);
-                return false;
+                searchModel.setSearch(query);
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.d("queryTextChange",newText);
+                if (newText.isEmpty()) {
+                    searchModel.setSearch("");
+                    return true;
+                }
                 return false;
             }
         });
