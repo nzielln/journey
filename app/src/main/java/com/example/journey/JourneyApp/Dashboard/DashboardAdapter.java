@@ -37,12 +37,12 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
     private FirebaseAuth userAuth;
     private CardClickListener listener;
     FragmentActivity ctx;
-    FragmentManager fm;
+    FragmentManager fragmentM;
 
-    public DashboardAdapter(ArrayList<CardModel> items, FragmentActivity context, FragmentManager fm) {
+    public DashboardAdapter(ArrayList<CardModel> items, FragmentActivity context, FragmentManager fragmentM) {
         this.items = items;
         this.ctx = context;
-        this.fm = fm;
+        this.fragmentM = fragmentM;
         //this.listener = listener;
     }
 
@@ -144,7 +144,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
             @Override
             public void onClick(View v) {
                 CommentsModal addComments = new CommentsModal(card.getPostId());
-                addComments.show(fm, CommentsModal.class.toGenericString());
+                addComments.show(fragmentM, CommentsModal.class.toGenericString());
             }
         });
     }
