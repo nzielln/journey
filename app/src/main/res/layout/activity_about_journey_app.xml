@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="32dp"
+    android:gravity="center_horizontal"
+    tools:context=".JourneyApp.Login.LoginPage">
+
+    <!-- Back Button -->
+    <ImageView
+        android:id="@+id/backToSettings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:contentDescription="@string/back"
+        android:padding="10dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="-13dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"/>
+
+    <!--About Journey Header-->
+    <TextView
+        android:id="@+id/aboutJourneyHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-50dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:lines="2"
+        android:text="About Journey"
+        android:textColor="@color/dark_blue"
+        android:theme="@style/heading"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="16dp"
+            >
+
+            <!--Services LinearLayout-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--Services Header-->
+                <TextView
+                    android:id="@+id/servicesHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:gravity="left"
+                    android:lines="2"
+                    android:text="@string/services_journey"
+                    android:textColor="@color/dark_blue"
+                    android:theme="@style/heading"/>
+
+                <!-- Services Description-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/services"
+                    android:layout_marginTop="-35sp"/>
+                </LinearLayout>
+
+        <!--Disclaimer LinearLayout-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="25dp">
+
+                <!--Disclaimer Header-->
+                <TextView
+                    android:id="@+id/disclaimerHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:gravity="left"
+                    android:lines="2"
+                    android:text="@string/disclaimer_header"
+                    android:textColor="@color/dark_blue"
+                    android:theme="@style/heading"/>
+
+                <!-- Disclaimer Description-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/services"
+                    android:layout_marginTop="-35sp"/>
+        </LinearLayout>
+
+            <!--More information Linear Layout-->
+            <LinearLayout
+                android:id="@+id/moreInfoLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                >
+
+                <TextView
+                    android:id="@+id/moreInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/for_more_information"
+                    android:gravity="center"
+                    android:theme="@style/tab_normal"
+                    />
+
+                <View
+                    android:id="@+id/space_around"
+                    android:layout_width="2dp"
+                    android:layout_height="2dp"
+                    />
+
+                <TextView
+                    android:id="@+id/clickHere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/tab_bold_small"
+                    android:text="@string/click_here"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

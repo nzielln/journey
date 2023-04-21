@@ -53,8 +53,8 @@ public class InsightsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        firebaseAuth.signOut();
-        getActivity().onBackPressed();
+//        firebaseAuth.signOut();
+//        getActivity().onBackPressed();
     }
 
     public void setUpDatabase() {
