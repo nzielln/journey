@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class CardsFragment extends Fragment {
     FirebaseUser currentUser;
     ArrayList<CardModel> items = new ArrayList<>();
     ProfileViewModel profileViewModel;
+    SearchViewModel searchModel;
 
 
     public CardsFragment() {
@@ -70,12 +72,13 @@ public class CardsFragment extends Fragment {
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
+        searchModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
+
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         binding = DashboardRvBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -160,6 +163,29 @@ public class CardsFragment extends Fragment {
                     });
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    Observer<String> searchObserver = new Observer<String>() {
+                        @Override
+                        public void onChanged(String s) {
+                            if (s.isEmpty()) {
+                                adapter.setItems(items);
+                                adapter.notifyDataSetChanged();
+                            } else {
+
+                                ArrayList<CardModel> filteredList = new ArrayList<>();
+                                for (CardModel item : items) {
+                                    if (item.getCardSummary().toLowerCase().contains(s.toLowerCase())) {
+                                        filteredList.add(item);
+                                    }
+                                }
+
+                                adapter.setItems(filteredList);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    };
+
+                    searchModel.getSearch().observe(requireActivity(), searchObserver);
                 }
             }
         });

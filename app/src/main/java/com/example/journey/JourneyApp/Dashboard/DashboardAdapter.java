@@ -44,6 +44,10 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
         //this.listener = listener;
     }
 
+    public void setItems(ArrayList<CardModel> itemList){
+        items = itemList;
+    }
+
     public void setListener(CardClickListener listener) {
         this.listener = listener;
     }
@@ -133,25 +137,17 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
             }
         });
+
+        holder.comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommentsModal addComments = new CommentsModal();
+                addComments.show(addComments.getChildFragmentManager(), String.valueOf(CommentsModal.class));
+            }
+        });
     }
 
 
     @Override
     public int getItemCount(){return items.size();}
-
-    public void getFilter(String query){
-        ArrayList<CardModel> filteredList = new ArrayList<>();
-        for(CardModel item: items){
-            if (item.getCardSummary().toLowerCase().contains(query.toLowerCase())){
-                filteredList.add(item);
-            }
-        }
-//        if(filteredList.isEmpty()){
-//            Toast.makeText("","No data",Toast.LENGTH_SHORT).show();
-//        } else{
-//            adapter.filterList(filteredList);
-//        }
-
-    }
-
 }
