@@ -417,6 +417,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
             Glide.with(requireActivity()).load(profileURL).into(profilePicture);
             profilePicture.setClickable(false);
         }
+
     }
 
     // Updating Profile Picture

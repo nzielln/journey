@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.journey"
-        minSdk 27
+        minSdk 27 //change back to 27 maybe?
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -46,9 +46,13 @@ dependencies {
     // Adding support for RetroFit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+
     // JSON Deserialization (we could also handle this ourselves)
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.8.7'
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
@@ -64,7 +68,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //Support notifications
-    //implementation("androidx.core:core-ktx:$core_version")
+    //implementation "androidx.core:core-ktx:1.10.0"
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'

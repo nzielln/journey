@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -106,12 +107,15 @@ public class CreateNewPost extends BottomSheetDialogFragment {
 
                     //String authorId = currentUser.;
 
+                    HashMap<String, Boolean> liked = new HashMap<String, Boolean>();
+                    liked.put("test1",false);
+
                    NewPost newPost = new NewPost(postId,postTitle.getText().toString(),
-                           authorId,timePosted,postContent.getText().toString());
+                           authorId,timePosted,postContent.getText().toString(), liked);
 
 
                    DatabaseReference postRef = dbReference.child("posts");
-                   postRef.push().setValue(newPost);
+                   postRef.child(postId).setValue(newPost);
                    Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
                    postTitle.setText(null);
                    postContent.setText(null);

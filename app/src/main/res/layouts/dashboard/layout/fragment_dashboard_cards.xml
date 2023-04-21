@@ -45,23 +45,35 @@
             android:theme="@style/all_caps"
             android:text="Day/Time goes here"/>
 
+
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content" >-->
+
         <TextView
             android:id="@+id/info_infoText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:maxLines="4"
             android:layout_marginTop="70dp"
             android:layout_marginStart="20dp"
             android:paddingRight="20dp"
+            android:layout_marginBottom="10dp"
             android:text="Content goes here"/>
+<!--        </RelativeLayout>-->
+
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="15dp"
-            android:layout_marginTop="130dp">
+            android:layout_marginTop="130dp"
+            >
 
-            <com.google.android.material.button.MaterialButton
+
+        <com.google.android.material.button.MaterialButton
                 android:id="@+id/comment_Btn"
                 style="?attr/materialIconButtonStyle"
                 android:layout_width="wrap_content"
@@ -73,10 +85,14 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/heart_Btn"
                 style="?attr/materialIconButtonStyle"
+                app:icon="@drawable/liked_hearted_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:icon="@drawable/heart"
+                android:backgroundTint="@color/pure_white"
+
+                android:checkable="true"
                 app:iconSize="14dp" />
+            <!--                -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/share_Btn"
                 style="?attr/materialIconButtonStyle"

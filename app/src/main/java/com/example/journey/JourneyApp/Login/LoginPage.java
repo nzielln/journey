@@ -89,13 +89,13 @@ public class LoginPage extends AppCompatActivity {
     showHidePassword.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-       if (password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
-         showHidePassword.setIcon(ContextCompat.getDrawable(LoginPage.this, R.drawable.small_eye));
-         password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-       } else {
-         showHidePassword.setIcon(ContextCompat.getDrawable(LoginPage.this, R.drawable.small_eye_closed));
-         password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-       }
+        if (password.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+          showHidePassword.setIcon(ContextCompat.getDrawable(LoginPage.this, R.drawable.small_eye));
+          password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+          showHidePassword.setIcon(ContextCompat.getDrawable(LoginPage.this, R.drawable.small_eye_closed));
+          password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
       }
     });
   }

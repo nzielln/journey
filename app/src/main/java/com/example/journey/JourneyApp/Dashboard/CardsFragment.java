@@ -44,7 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class CardsFragment extends Fragment{
+public class CardsFragment extends Fragment {
     private DatabaseReference dbReference;
     private FirebaseAuth userAuth;
 
@@ -52,6 +52,7 @@ public class CardsFragment extends Fragment{
     DashboardRvBinding binding;
     private DashboardAdapter adapter;
     RecyclerView recyclerView;
+    FirebaseUser currentUser;
     ArrayList<CardModel> items = new ArrayList<>();
     ProfileViewModel profileViewModel;
 
@@ -67,6 +68,8 @@ public class CardsFragment extends Fragment{
         profileViewModel.updateProfileState(ProfileState.PERSONAL, null);
         user = profileViewModel.getCurrentUserModel().getValue();
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
 
     }
 
@@ -87,6 +90,8 @@ public class CardsFragment extends Fragment{
         user = profileViewModel.getCurrentUserModel().getValue();
 
         Map<String, UserModel> allUsers = new HashMap<>();
+        Map<String, UserModel> usersFollowing = new HashMap<>();
+
         //ImageView image = getView().findViewById(R.id.dash_image);
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -97,13 +102,13 @@ public class CardsFragment extends Fragment{
 
                         allUsers.put(user.getUserID(), user);
                     }
-                    retrievePost(allUsers);
+                    retrieveNewPost(allUsers);
                 }
             }
         });
     }
 
-    private void retrievePost(Map<String, UserModel> users) {
+    private void retrieveNewPost(Map<String, UserModel> users) {
         dbReference.child("posts").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             //public void onSuccess(@NonNull Task<DataSnapshot> task) {
@@ -122,7 +127,14 @@ public class CardsFragment extends Fragment{
                             userPic = Database.DB_STORAGE_REFERENCE.child(user.getProfileImage());
                         }
 
-                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic, user));
+                        Boolean isPostLikedByUser = false;
+
+                        if (post.liked.containsKey(currentUser.getUid()) && post.liked.get(currentUser.getUid()) == true) {
+                            isPostLikedByUser = true;
+                        }
+
+                       items.add(new CardModel(user, post.getTimePosted(), post.getPostContent(), userPic,post.getPostID(),isPostLikedByUser, user));
+
                     }
 
                     Collections.reverse(items);

@@ -1,34 +1,42 @@
 {
   "project_info": {
-    "project_number": "489446488189",
-    "firebase_url": "https://a8-stickittoem-default-rtdb.firebaseio.com",
-    "project_id": "a8-stickittoem",
-    "storage_bucket": "a8-stickittoem.appspot.com"
+    "project_number": "397694645555",
+    "firebase_url": "https://journey-c6761-default-rtdb.firebaseio.com",
+    "project_id": "journey-c6761",
+    "storage_bucket": "journey-c6761.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:489446488189:android:a3baa55294587d37945914",
+        "mobilesdk_app_id": "1:397694645555:android:106c920c0949f8c144ba46",
         "android_client_info": {
           "package_name": "com.example.journey"
         }
       },
       "oauth_client": [
         {
-          "client_id": "489446488189-pu1uo4vjcha160tjvp8ne57voe6uo6i9.apps.googleusercontent.com",
+          "client_id": "397694645555-2grumshs22dghfbto8simschuk79krqd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.journey",
+            "certificate_hash": "62e1de33e78bc5af9f965f39b5164f9b2fd6b095"
+          }
+        },
+        {
+          "client_id": "397694645555-ebkn9gi0shdit2ap783fn4pa81fcju79.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyD8EJiB1YfVrRHipnhTltfyBnxlVTSFsh8"
+          "current_key": "AIzaSyB57v_FlAEhlZruT-E5Icwi8Kx_7DRUa7w"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "489446488189-pu1uo4vjcha160tjvp8ne57voe6uo6i9.apps.googleusercontent.com",
+              "client_id": "397694645555-8tv0qqrf99npj92srj451sk4jktijiu3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

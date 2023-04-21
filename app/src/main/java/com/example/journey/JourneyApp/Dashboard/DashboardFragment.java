@@ -44,7 +44,7 @@ import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DashboardFragment#newInstance} factory method to
+ * Use the {@link DashboardFragment newInstance} factory method to
  * create an instance of this fragment.
  */
 public class DashboardFragment extends Fragment {
@@ -130,6 +130,7 @@ public class DashboardFragment extends Fragment {
                             }
                         });
                     }
+
                     Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
             }

@@ -22,6 +22,7 @@ public class UserModel {
     ArrayList<UserModel> followersList = new ArrayList<>();
     ArrayList<UserModel> followingList = new ArrayList<>();
     String profileImage;
+    String status;
 
     public UserModel() { }
 
@@ -30,6 +31,26 @@ public class UserModel {
         this.email = email;
     }
 
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            Integer followers,
+            Integer following,
+            String profileImage,
+            String status
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.followers = followers;
+        this.following = following;
+        this.profileImage = profileImage;
+        this.status = status;
+
+    }
     public UserModel(
             String userID,
             String email,
@@ -46,6 +67,30 @@ public class UserModel {
         this.followers = followers;
         this.following = following;
         this.profileImage = profileImage;
+
+    }
+
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            String profileImage,
+            String status
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.profileImage = profileImage;
+        this.status = status;
+
     }
 
     public UserModel(
@@ -68,6 +113,81 @@ public class UserModel {
         this.profileImage = profileImage;
     }
 
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            ArrayList<UserModel> followersList,
+            ArrayList<UserModel> followingList,
+            String profileImage,
+            String status
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.followersList = followersList;
+        this.followingList = followingList;
+        this.profileImage = profileImage;
+        this.status = status;
+
+    }
+
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            ArrayList<UserModel> followersList,
+            String profileImage,
+            String status
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.followersList = followersList;
+        this.profileImage = profileImage;
+        this.status = status;
+
+    }
+
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            ArrayList<String> chatIDs,
+            Integer followers,
+            Integer following,
+            String profileImage,
+            ArrayList<UserModel> followingList,
+            String status
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.chatIDs = chatIDs;
+        this.followers = followers;
+        this.following = following;
+        this.followingList = followingList;
+        this.profileImage = profileImage;
+        this.status = status;
+    }
     public UserModel(
             String userID,
             String email,
@@ -234,8 +354,12 @@ public class UserModel {
         return profileImage;
     }
 
-    public static UserModel getMockUser() {
-
-        return new UserModel(Helper.MOCK_USER_ID, "mock@email.com", "Jessica", "Jones", 121, 221, "https://firebasestorage.googleapis.com/v0/b/journey-c6761.appspot.com/o/sample.jpeg?alt=media&token=85c5d95e-1c4f-428a-a417-8d119c438ac3");
+    public String getStatus() {
+        return status;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
 }

@@ -214,7 +214,8 @@ public class StickerMessagingService extends Service {
                 .setLargeIcon(bitmap)
                 .setStyle(new NotificationCompat.BigPictureStyle()
                         .bigPicture(bitmap)
-                        .bigLargeIcon(null))
+                        //.bigLargeIcon(null)
+                        )
                 .setAutoCancel(true)
                 .build();
         notificationManager.notify(0, stickerNotification);

@@ -40,6 +40,8 @@ public class Database {
     static public String USER_ID_TO_DOCUMENT = "userIDToDocuments";
     static public String USER_ID_TO_SETTINGS = "userIDToSettings";
     static public String INSIGHTS = "insights";
+    static public String CHATS = "Chats";
+    static public String CHAT_LIST = "ChatList";
 
     static public String IMAGE_STORAGE = "images";
     static public String FOLLOWING = "followingList";
