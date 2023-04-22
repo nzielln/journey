@@ -2,6 +2,7 @@ package com.example.journey.JourneyApp.Dashboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -9,6 +10,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
@@ -21,6 +24,8 @@ public class CommentsModal extends BottomSheetDialogFragment {
     Button cancelCommentBtn;
     UserModel currentUser;
     TextInputLayout commentContentInput;
+
+    RecyclerView recyclerView;
 
     String postId;
 
@@ -42,12 +47,26 @@ public class CommentsModal extends BottomSheetDialogFragment {
         commentContentInput = view.findViewById(R.id.comment_input);
         cancelCommentBtn = view.findViewById(R.id.cancel_comment_btn);
         addCommentBtn = view.findViewById(R.id.add_comment_btn);
+//        recyclerView = view.findViewById(R.id.comments_recycler_view);
+//
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
+//        recyclerView.setOnTouchListener(new View.OnTouchListener(){
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                v.getParent().requestDisallowInterceptTouchEvent(true);
+//                v.onTouchEvent(event);
+//                return true;
+//            }
+//        });
 
 
         cancelCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Comment Cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Cancelled", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
@@ -56,7 +75,7 @@ public class CommentsModal extends BottomSheetDialogFragment {
         addCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Comment Cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Added", Toast.LENGTH_SHORT).show();
                 String comment_text = String.valueOf(commentContentInput.getEditText().getText());
                 addComment();
                 dismiss();
@@ -76,6 +95,9 @@ public class CommentsModal extends BottomSheetDialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.comments_recycler_view);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
 

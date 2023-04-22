@@ -9,7 +9,7 @@ public class CommentsModel {
     private String commentDate;
 
 
-    public CommentsModel(UserModel userName, String commentId,String commentDate,
+    public CommentsModel(String commentId,String commentDate,
                           String commenterName,String commentContent) {
         this.commentId = commentId;
         this.commentDate = commentDate;

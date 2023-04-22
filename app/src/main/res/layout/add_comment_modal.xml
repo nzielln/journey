@@ -70,7 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:theme="@style/body_medium"
-                android:text="Cancel"
+                android:text="Comment"
                 android:paddingHorizontal="16dp"
                 app:cornerRadius="10dp"
                 app:strokeWidth="1dp"/>
@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:theme="@style/body_medium"
-                android:text="Comment"
+                android:text="Cancel"
                 android:layout_marginStart="10dp"
                 app:cornerRadius="10dp"
                 android:paddingHorizontal="16dp"
