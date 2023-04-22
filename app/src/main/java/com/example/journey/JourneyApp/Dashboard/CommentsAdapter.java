@@ -18,11 +18,11 @@ import java.util.ArrayList;
 
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
-    ArrayList<CommentsModel> commentItems;
+    ArrayList<NewComment> commentItems;
     DatabaseReference dbReference;
     FirebaseUser currentUser;
 
-    public CommentsAdapter(ArrayList<CommentsModel> commentItems){
+    public CommentsAdapter(ArrayList<NewComment> commentItems){
         this.commentItems = commentItems;
     }
 
@@ -60,7 +60,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
-        CommentsModel comment = commentItems.get(position);
+        NewComment comment = commentItems.get(position);
         holder.commenterUserName.setText(comment.getCommenterName());
         holder.commentContext.setText(comment.getCommentContent());
         holder.commentDate.setText(comment.getCommentDate());

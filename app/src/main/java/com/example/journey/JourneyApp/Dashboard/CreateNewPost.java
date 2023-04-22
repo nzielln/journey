@@ -62,7 +62,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
         postContent = view.findViewById(R.id.post_edit_text);
         postTitle = view.findViewById(R.id.title_edit_text);
 
-
         postCancelButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -74,7 +73,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
                 Toast.makeText(getActivity(), "Cancel",Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
@@ -104,7 +102,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
                    Toast.makeText(getActivity(),"Post Added", Toast.LENGTH_SHORT).show();
                    postTitle.setText(null);
                    postContent.setText(null);
-
                }
 
             }

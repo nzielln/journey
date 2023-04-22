@@ -6,16 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.R;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
@@ -36,7 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.UUID;
 
 public class CommentsModal extends BottomSheetDialogFragment {
     Button addCommentBtn;
@@ -49,6 +43,7 @@ public class CommentsModal extends BottomSheetDialogFragment {
 
     FirebaseUser currentUser;
     DatabaseReference dbReference;
+    UserModel user;
 
     public CommentsModal(String pId){
         postId = pId;
@@ -63,6 +58,7 @@ public class CommentsModal extends BottomSheetDialogFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.add_comment_modal,container,false);
+        currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
 
         commentContentInput = view.findViewById(R.id.comment_input);
@@ -96,11 +92,25 @@ public class CommentsModal extends BottomSheetDialogFragment {
         addCommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Added", Toast.LENGTH_SHORT).show();
-                String date_posted = getShortDate();
-                commentContentInput.getEditText();
 
-                Log.d("edittext testing",commentContentInput.getEditText().getText().toString());
+
+                String date_posted = getShortDate();
+                String comment_text = commentContentInput.getEditText().getText().toString();
+                if(comment_text.equals("")){
+                    Toast.makeText(getActivity(), "Post cannot be empty", Toast.LENGTH_SHORT).show();
+                }else {
+                    String commentId = UUID.randomUUID().toString();
+                    String userId = currentUser.getUid();
+                    NewComment newComment = new NewComment(commentId,userId,date_posted,comment_text);
+                    DatabaseReference commentRef = dbReference.child("comments");
+                    commentRef.child(commentId).setValue(newComment);
+
+                    Toast.makeText(getActivity(), "Added", Toast.LENGTH_SHORT).show();
+
+                }
+
+
+                //Log.d("edittext testing",commentContentInput.getEditText().getText().toString());
                 //addComment();
                 dismiss();
             }
@@ -134,16 +144,16 @@ public class CommentsModal extends BottomSheetDialogFragment {
 
 
 
-        ArrayList<CommentsModel> commentItems = new ArrayList<>();
-        CommentsModel model1 = new CommentsModel("Id1","4/21/2023","Molly","hello I like your post. This is really nice and cool and great and nice.");
-        CommentsModel model2 = new CommentsModel("Id2","4/22/2023","Polly","hello I like your post too. Wow super duper cool. I love what you said");
-        CommentsModel model3 = new CommentsModel("Id3","4/25/2023","Rolly","hello I like your post too. It is awesome and nice and cool and nice and great.");
-        CommentsModel model4 = new CommentsModel("Id4","4/28/2023","Solly","hiiii I your post isnt good. I dont like it why would you say something like that");
-        CommentsModel model5 = new CommentsModel("Id5","4/29/2023","Wolly","It is really cool to be this cool and do cool things I like your post too");
-        CommentsModel model6 = new CommentsModel("Id6","4/21/2023","Molly","hello I like your post. This is really nice and cool and great and nice.");
-        CommentsModel model7 = new CommentsModel("Id7","4/22/2023","Polly","hello I like your post too. Wow super duper cool. I love what you said");
-        CommentsModel model8 = new CommentsModel("Id8","4/25/2023","Rolly","hello I like your post too. It is awesome and nice and cool and nice and great.");
-        CommentsModel model9 = new CommentsModel("Id9","4/28/2023","Solly","hiiii I your post isnt good. I dont like it why would you say something like that");
+        ArrayList<NewComment> commentItems = new ArrayList<>();
+        NewComment model1 = new NewComment("Id1","22","4/21/2023","Molly","hello I like your post. This is really nice and cool and great and nice.");
+        NewComment model2 = new NewComment("Id2","23","4/22/2023","Polly","hello I like your post too. Wow super duper cool. I love what you said");
+        NewComment model3 = new NewComment("Id3","23","4/25/2023","Rolly","hello I like your post too. It is awesome and nice and cool and nice and great.");
+        NewComment model4 = new NewComment("Id4","23","4/28/2023","Solly","hiiii I your post isnt good. I dont like it why would you say something like that");
+        NewComment model5 = new NewComment("Id5","23","4/29/2023","Wolly","It is really cool to be this cool and do cool things I like your post too");
+        NewComment model6 = new NewComment("Id6","23","4/21/2023","Molly","hello I like your post. This is really nice and cool and great and nice.");
+        NewComment model7 = new NewComment("Id7","23","4/22/2023","Polly","hello I like your post too. Wow super duper cool. I love what you said");
+        NewComment model8 = new NewComment("Id8","23","4/25/2023","Rolly","hello I like your post too. It is awesome and nice and cool and nice and great.");
+        NewComment model9 = new NewComment("Id9","23","4/28/2023","Solly","hiiii your post isnt good. I dont like it why would you say something like that");
         commentItems.add(model1);
         commentItems.add(model2);
         commentItems.add(model3);
