@@ -59,13 +59,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         holder.commenterUserName.setText(comment.getCommenterName());
         holder.commentContext.setText(comment.getCommentContent());
         holder.commentDate.setText(comment.getCommentDate());
-
-
-        CommentsModel model1 = new CommentsModel("Molly","5678","4/21/2023","hello I like your post");
-        CommentsModel model2 = new CommentsModel("Polly","5679","4/21/2023","hello I like your post too");
-        commentItems.add(model1);
-        commentItems.add(model2);
-
     }
 
     @Override

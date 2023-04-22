@@ -19,6 +19,8 @@ import com.example.journey.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.ArrayList;
+
 public class CommentsModal extends BottomSheetDialogFragment {
     Button addCommentBtn;
     Button cancelCommentBtn;
@@ -97,6 +99,13 @@ public class CommentsModal extends BottomSheetDialogFragment {
         super.onViewCreated(view, savedInstanceState);
         recyclerView = view.findViewById(R.id.comments_recycler_view);
 
+        ArrayList<CommentsModel> commentItems = new ArrayList<>();
+        CommentsModel model1 = new CommentsModel("Molly","5678","4/21/2023","hello I like your post");
+        CommentsModel model2 = new CommentsModel("Polly","5679","4/21/2023","hello I like your post too");
+        commentItems.add(model1);
+        commentItems.add(model2);
+
+        recyclerView.setAdapter(new CommentsAdapter(commentItems));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
     }
