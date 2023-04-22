@@ -20,6 +20,8 @@ public class Chat {
         this.currenttime = currenttime;
     }
 
+
+
     public Chat(){
         //Empty Constructor
     }
