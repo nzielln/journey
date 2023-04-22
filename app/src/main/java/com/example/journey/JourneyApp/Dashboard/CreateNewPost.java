@@ -57,7 +57,6 @@ public class CreateNewPost extends BottomSheetDialogFragment {
             Log.d("current Id",currentUserId);
         }
 
-
         postCancelButton = view.findViewById(R.id.post_cancel_button);
         postAddPostButton = view.findViewById(R.id.post_add_button);
         postContent = view.findViewById(R.id.post_edit_text);

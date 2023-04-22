@@ -50,6 +50,7 @@
           app:boxCornerRadiusTopEnd="10dp"
           app:boxCornerRadiusTopStart="10dp"
           android:theme="@style/tab_normal"
+          android:layout_marginTop="10dp"
           >
 
           <com.google.android.material.textfield.TextInputEditText
