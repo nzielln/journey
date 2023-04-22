@@ -10,34 +10,6 @@
 
 
     <ImageView
-        android:id="@+id/finalLogo"
-        android:layout_width="674dp"
-        android:layout_height="979dp"
-        android:layout_marginBottom="24dp"
-
-        android:src="@drawable/logo_login_page"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ImageView
-        android:id="@+id/compass"
-        android:layout_width="376dp"
-        android:layout_height="564dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="5dp"
-
-        android:src="@drawable/compass_only"
-        app:layout_constraintBottom_toTopOf="@+id/journeyTypeface"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="ImageContrastCheck" />
-
-    <ImageView
         android:id="@+id/journeyTypeface"
         android:layout_width="396dp"
         android:layout_height="178dp"
@@ -51,6 +23,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
          />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/compass_only"
+        tools:layout_editor_absoluteY="-79dp" />
 
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

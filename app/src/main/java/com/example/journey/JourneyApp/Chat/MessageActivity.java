@@ -5,10 +5,20 @@ import static com.example.journey.JourneyApp.Dashboard.CreateNewPost.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,10 +30,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.journey.JourneyApp.Chat.Adapter.MessageAdapter;
+import com.example.journey.JourneyApp.Chat.Fragments.ChatFragment;
+import com.example.journey.JourneyApp.Chat.Fragments.ChatListFragment;
 import com.example.journey.JourneyApp.Chat.Model.Chat;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Settings.Notifications;
 import com.example.journey.R;
+import com.example.journey.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -38,6 +52,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
+
+    // Constants
+    // Message Notification Channel
+    private static final String MESSAGE_CHANNEL_ID = "MessageChannelID";
+    private static final String MESSAGE_CHANNEL_NAME = "MessageChannelName";
+    private static final String MESSAGE_CHANNEL_DESCRIPTION = "MessageChannelDescription";
+    private static final String KEY_TEXT_REPLY = "key_text_reply";
+    private static final int messageNotificationID = 101;
 
     TextView username;
     ImageView imageView;
@@ -59,6 +81,10 @@ public class MessageActivity extends AppCompatActivity {
     String myid;
 
     ValueEventListener seenListener;
+
+    Notifications messageNotification;
+    private NotificationManager notificationManager;
+    private ActivityMainBinding binding;
 
 
     @Override
@@ -123,9 +149,113 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-//SeenMessage(userid);
+SeenMessage(userid);
+
+// Notification Manager
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Create Message notification channel
+        createMessageNChannel(MESSAGE_CHANNEL_ID, MESSAGE_CHANNEL_NAME, MESSAGE_CHANNEL_DESCRIPTION);
+        // Handle the user text input
+        handleMessageInput();
     }
 
+    // ************ Handle Message notifications Here ************ //
+
+    /**
+     * The createMessageNChannel() method creates a notification
+     * channel for message notifications and must be called before the notification is sent.
+     * Referenced the class videos/Android Studio Dolphin Essentials book
+     * to help write this code.
+     */
+    public void createMessageNChannel(String id, String name, String description) {
+
+        int mPriority = NotificationManager.IMPORTANCE_DEFAULT; // importance level
+        // Message Notification Channel
+        NotificationChannel messageNC = new NotificationChannel(id, name, mPriority);
+        messageNC.setDescription(description);
+        messageNC.enableLights(true);
+        messageNC.setLightColor(Color.BLUE);
+        messageNC.enableVibration(true);
+        messageNC.setVibrationPattern(new long[] {100, 200, 300, 400, 500, 400, 300, 200, 400});
+
+        notificationManager.createNotificationChannel(messageNC);
+
+    }
+
+    /**
+     * The handleMessageInput() method handles the
+     * user's written input message in the notification section.
+     * Referenced the "Android Studio Dolphin Essentials" book and the following website:
+     * https://developer.android.com/develop/ui/views/notifications/build-notification#java
+     */
+
+    private void handleMessageInput() {
+        Intent mInputIntent = this.getIntent();
+        Bundle remoteInput = RemoteInput.getResultsFromIntent(mInputIntent);
+
+        // if the remote user input exist
+        if (remoteInput != null) {
+            String userInputString = remoteInput.getCharSequence(KEY_TEXT_REPLY).toString();
+            // ********************** NEED TO CHANGE (textView5) ********************** //
+            binding.textView5.setText(userInputString);
+
+            // Notify user that the reply has been received
+            Notification replyReceivedNotification = new Notification.Builder(this,MESSAGE_CHANNEL_ID)
+                    .setSmallIcon(android.R.drawable.btn_star_big_off)
+                    .setContentText("Reply received")
+                    .build();
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+            notificationManagerCompat.notify(messageNotificationID, replyReceivedNotification);
+        }
+    }
+
+    /**
+     * The sendMessageNotification() method handles sending the
+     * message notification.
+     * Referenced the class videos/Android Studio Dolphin Essentials book
+     * to help write this code.
+     */
+
+    public void sendMessageNotification(Chat chat) {
+
+        String replyHeader = "Enter your reply here:";
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyHeader)
+                .build();
+
+        Intent messageIntent = new Intent(MessageActivity.this, ChatListFragment.class);
+        messageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, messageIntent,
+                PendingIntent.FLAG_MUTABLE);
+
+        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder
+                (android.R.drawable.ic_dialog_email, "Reply", pIntent)
+                .addRemoteInput(remoteInput)
+                .build();
+
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, MESSAGE_CHANNEL_ID);
+            Notification messageNotification = notificationBuilder
+                    .setContentTitle("New Message")
+                    .setContentText("You received a new message!")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setSmallIcon(android.R.drawable.ic_dialog_email)
+                    .setColor(ContextCompat.getColor(this, R.color.burnt_orange))
+                    .setContentIntent(pIntent)
+                    .addAction(replyAction)
+                    //.addAction(R.drawable.email_outline_icon, "Open Chat", chatIntent)
+                    .setChannelId(MESSAGE_CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .build();
+            notificationManager.notify(messageNotificationID, messageNotification);
+        }
+    }
+
+// ************ Handle Message notifications Here ************ //
 
 
     private void SeenMessage(String userid){
@@ -139,11 +269,16 @@ public class MessageActivity extends AppCompatActivity {
                 for (DataSnapshot snapshot: dataSnapshot.getChildren()){
                     Chat chat = snapshot.getValue(Chat.class);
 
-                    if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)){
+                    if (chat!=null && chat.getReceiver()!=null &&
+                            chat.getReceiver().equals(currentUser.getUid()) &&
+                    chat.getSender()!=null && chat.getSender().equals(userid)){
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         snapshot.getRef().updateChildren(hashMap);
+                        Log.d("noti", "nonksm");
+
                     }
+
                 }
             }
 
@@ -222,18 +357,22 @@ public class MessageActivity extends AppCompatActivity {
 
 
                     //assert chat != null;
-                    if (chat!=null && chat.getReceiver()!=null && chat.getReceiver().equals(myid) &&
-                            chat.getSender()!=null && chat.getSender().equals(userid) ||
-                            chat!=null && chat.getReceiver()!=null && chat.getReceiver().equals(userid) &&
+                    if (chat!=null && chat.getReceiver()!=null
+                            && chat.getReceiver().equals(myid) &&
+                            chat.getSender()!=null && chat.getSender().equals(userid)
+                            || chat!=null && chat.getReceiver()!=null
+                            && chat.getReceiver().equals(userid) &&
                                     chat.getSender()!=null && chat.getSender().equals(myid)){
                         mChat.add(chat);
+
                         //messageAdapter.notifyDataSetChanged();
                     }
-
+                    //messageNotification.sendMessageNotification(chat);
                     messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
                     recyclerView.setAdapter(messageAdapter);
-
+                    sendMessageNotification(chat);
                 }
+
             }
 
 

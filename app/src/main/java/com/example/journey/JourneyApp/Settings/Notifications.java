@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.journey.JourneyApp.Chat.Model.Chat;
 import com.example.journey.R;
 import com.example.journey.databinding.ActivityMainBinding;
 
@@ -78,7 +79,7 @@ public class Notifications extends AppCompatActivity {
       @Override
       public void onClick(View v) {
         //if (areNotificationsEnabled()) {
-          sendMessageNotification(v);
+          //sendMessageNotification(v);
         //}
       }
     });
@@ -149,7 +150,7 @@ public class Notifications extends AppCompatActivity {
    * to help write this code.
    */
 
-  public void sendMessageNotification(View view) {
+  public void sendMessageNotification(Chat chat) {
 
     String replyHeader = "Enter your reply here:";
     RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
