@@ -11,6 +11,15 @@ public class Chat {
     long timestamp;
     String currenttime;
 
+    public Chat(String sender, String receiver, String message) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        //this.isseen = isseen;
+        //this.timestamp = timestamp;
+        //this.currenttime = currenttime;
+    }
+
     public Chat(String sender, String receiver, String message, Boolean isseen, long timestamp, String currenttime) {
         this.sender = sender;
         this.receiver = receiver;
@@ -19,6 +28,15 @@ public class Chat {
         this.timestamp = timestamp;
         this.currenttime = currenttime;
     }
+    public Chat(String sender, String receiver, String message, Boolean isseen) {
+        this.sender = sender;
+        this.receiver = receiver;
+        this.message = message;
+        this.isseen = isseen;
+        //this.timestamp = timestamp;
+        //this.currenttime = currenttime;
+    }
+
 
 
 
