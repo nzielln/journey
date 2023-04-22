@@ -151,10 +151,17 @@ public class CommentsModal extends BottomSheetDialogFragment {
 
 
         ArrayList<CommentsModel> commentItems = new ArrayList<>();
-        CommentsModel model1 = new CommentsModel("Molly","5678","4/21/2023","hello I like your post");
-        CommentsModel model2 = new CommentsModel("Polly","5679","4/21/2023","hello I like your post too");
+        CommentsModel model1 = new CommentsModel("Id1","4/21/2023","Molly","hello I like your post");
+        CommentsModel model2 = new CommentsModel("Id2","4/22/2023","Polly","hello I like your post too");
+        CommentsModel model3 = new CommentsModel("Id3","4/25/2023","Rolly","hello I like your post too");
+        CommentsModel model4 = new CommentsModel("Id4","4/28/2023","Solly","hiiii I like your post too");
+        CommentsModel model5 = new CommentsModel("Id5","4/29/2023","Wolly","It is really cool to be this cool and do cool things I like your post too");
         commentItems.add(model1);
         commentItems.add(model2);
+        commentItems.add(model3);
+        commentItems.add(model4);
+        commentItems.add(model5);
+
 
 
 
