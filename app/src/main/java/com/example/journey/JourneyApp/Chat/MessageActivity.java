@@ -54,6 +54,8 @@ public class MessageActivity extends AppCompatActivity {
 
     ValueEventListener seenListener;
 
+    boolean notify = false; //Added just now. Remove if not working
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,14 +80,10 @@ public class MessageActivity extends AppCompatActivity {
 
         intent = getIntent();
         userid = intent.getStringExtra("userid");
-
-        //fuser = FirebaseAuth.getInstance().getCurrentUser();
-        //reference = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
         // Retrieve user data from Firebase and set the username and profile image
         Database.DB_REFERENCE.child(Database.USERS).child(userid).addValueEventListener(new ValueEventListener() {
-            //Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
@@ -108,6 +106,7 @@ public class MessageActivity extends AppCompatActivity {
         sendBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                notify = true; //Added just now. Remove if not working
                 String msg = msg_editText.getText().toString();
                 if (!msg.equals("")){
                     sendMessage(currentUser.getUid(), userid, msg);
@@ -118,43 +117,42 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-//SeenMessage(userid);
+        SeenMessage(userid); //just unlocked. Comment out if not working
     }
 
 
 
-private void SeenMessage(String userid){
+    private void SeenMessage(String userid){
 
-//reference = FirebaseDatabase.getInstance().getReference("Chats");
-    ;
-seenListener = Database.DB_REFERENCE.child(Database.CHATS).addValueEventListener(new ValueEventListener() {
-@Override
-public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        reference = Database.DB_REFERENCE.child(Database.CHATS);
+            ;
+        seenListener = reference.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-Chat chat = snapshot.getValue(Chat.class);
+            for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                Chat chat = snapshot.getValue(Chat.class);
 
-if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)){
-HashMap<String, Object> hashMap = new HashMap<>();
-hashMap.put("isseen", true);
-snapshot.getRef().updateChildren(hashMap);
-}
-}
-}
+                if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)){
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("isseen", true);
+                    snapshot.getRef().updateChildren(hashMap);
+                }
+            }
+        }
 
-@Override
-public void onCancelled(@NonNull DatabaseError databaseError) {
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-}
-});
+        }
+    });
 
-
-}
+    }
 
 
 
     private void sendMessage(String sender, String receiver, String message){
-//DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference reference = Database.DB_REFERENCE.child(Database.CHATS).push();
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
@@ -162,12 +160,11 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
         hashMap.put("message", message);
         hashMap.put("isseen", false);
 
-        Database.DB_REFERENCE.child(Database.CHATS).push().setValue(hashMap);
-//reference.child("Chats").push().setValue(hashMap);
+        reference.setValue(hashMap);
 
-//Adding user to chat fragment: latest chat with contacts
+        //Adding user to chat fragment: latest chat with contacts
         final DatabaseReference chatRef = Database.DB_REFERENCE.child(Database.CHAT_LIST)
-//final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference(Database.CHAT_LIST)
+        //final DatabaseReference chatRef = FirebaseDatabase.getInstance().getReference(Database.CHAT_LIST)
                 .child(currentUser.getUid())
                 .child(userid);
 
@@ -190,8 +187,8 @@ public void onCancelled(@NonNull DatabaseError databaseError) {
     private void readMessages(String myid, String userid, String profileImage){
 
         mChat = new ArrayList<>();
-//reference = FirebaseDatabase.getInstance().getReference(Database.CHATS);
-        Database.DB_REFERENCE.child(Database.CHATS).addValueEventListener(new ValueEventListener() {
+        reference = Database.DB_REFERENCE.child(Database.CHATS);
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mChat.clear();
