@@ -103,11 +103,13 @@ public class ChatListFragment extends Fragment {
                         assert user != null;
                         if (user.getUserID().equals(chatlist.getId())){
                             mUsers.add(user);
+
                         }
                     }
                 }
                 userAdapter = new UserAdapter(getContext(), mUsers, true);
                 recyclerView.setAdapter(userAdapter);
+                userAdapter.notifyDataSetChanged();
             }
 
             @Override
