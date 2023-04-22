@@ -57,10 +57,7 @@ public class DashboardFragment extends Fragment {
     UserModel currentUserModel;
     ShapeableImageView image;
     DashboardAdapter adapter;
-    SearchView searchInput;
     SearchViewModel searchModel;
-
-
 
 
     public DashboardFragment() {
@@ -113,9 +110,6 @@ public class DashboardFragment extends Fragment {
                 return false;
             }
         });
-
-
-
 
 
         dbReference.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
