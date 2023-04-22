@@ -37,6 +37,11 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             commenterUserName = (TextView)itemView.findViewById(R.id.name_comment_Tv);
             commentDate = (TextView)itemView.findViewById(R.id.date_comment_Tv);
             commentContext = (TextView)itemView.findViewById(R.id.content_comment_Tv);
+//
+//            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+//                    layoutManager.getOrientation());
+//            recyclerView.addItemDecoration(dividerItemDecoration);
+
 
         }
     }
@@ -59,6 +64,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         holder.commenterUserName.setText(comment.getCommenterName());
         holder.commentContext.setText(comment.getCommentContent());
         holder.commentDate.setText(comment.getCommentDate());
+
     }
 
     @Override
