@@ -61,8 +61,6 @@ public class DashboardFragment extends Fragment {
     SearchViewModel searchModel;
 
 
-
-
     public DashboardFragment() {
         super(R.layout.fragment_dashboard);
     }
