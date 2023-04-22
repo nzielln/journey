@@ -54,7 +54,7 @@
             android:background="@drawable/setting_background_color">
 
             <!-- Change Password -->
-            <RelativeLayout
+            <!-- <RelativeLayout
                 android:id="@+id/changePasswordRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -86,10 +86,10 @@
                     android:contentDescription="@string/arrowForwardPassword"
                     android:src="@drawable/small_arrow_forward_ios_24"
                     tools:ignore="ImageContrastCheck" />
-            </RelativeLayout>
+            </RelativeLayout>-->
 
             <!-- Notification -->
-            <RelativeLayout
+            <!-- <RelativeLayout
                 android:id="@+id/notificationRL"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -121,7 +121,7 @@
                     android:contentDescription="@string/arrowForwardNotification"
                     android:src="@drawable/small_arrow_forward_ios_24"
                     tools:ignore="ImageContrastCheck" />
-            </RelativeLayout>
+            </RelativeLayout>-->
 
             <!-- Help -->
             <RelativeLayout
