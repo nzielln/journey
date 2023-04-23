@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class ChatListFragment extends Fragment {
     private UserAdapter userAdapter;
     private List<UserModel> mUsers;
     FirebaseUser currentUser;
+    private ValueEventListener chatListListener; //new line added
 
     private List<ChatList> usersList;
     //private List<Users> mUsers = new ArrayList<>();
@@ -66,7 +68,33 @@ public class ChatListFragment extends Fragment {
 
         usersList = new ArrayList<>();
 
-        Database.DB_REFERENCE.child(Database.CHAT_LIST).child(currentUser.getUid()).addValueEventListener(new ValueEventListener() {
+        // Add a listener to the chat list data
+        chatListListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersList.clear();
+
+                //Loop for all users
+                for (DataSnapshot snapshot: dataSnapshot.getChildren() ){
+                    ChatList chatlist = snapshot.getValue(ChatList.class);
+                    usersList.add(chatlist);
+                }
+
+                // Call the chatList() method to update the recent chat list
+                chatList();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("ChatListFragment", "Database error: " + databaseError.getMessage());
+
+            }
+        };
+
+        Database.DB_REFERENCE.child(Database.CHAT_LIST).child(currentUser.getUid()).
+                addValueEventListener(chatListListener);//added chatListListener
+                //(new ValueEventListener(){
+            /*
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -85,6 +113,8 @@ public class ChatListFragment extends Fragment {
 
             }
         });
+
+             */
         return view;
     }
 
@@ -114,8 +144,18 @@ public class ChatListFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("ChatListFragment", "Database error: " + databaseError.getMessage());
+
 
             }
         });
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Remove the chatListListener when the fragment is destroyed
+        DatabaseReference chatListRef = FirebaseDatabase.getInstance().getReference(Database.CHAT_LIST)
+                .child(currentUser.getUid());
+        chatListRef.removeEventListener(chatListListener);
     }
 }
