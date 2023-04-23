@@ -79,7 +79,7 @@ public class Settings extends AppCompatActivity {
     });
 
     // Change Password
-    passwordRelLay = (RelativeLayout) findViewById(R.id.changePasswordRL);
+    //passwordRelLay = (RelativeLayout) findViewById(R.id.changePasswordRL);
     passwordRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -87,7 +87,7 @@ public class Settings extends AppCompatActivity {
       }
     });
     // Notification
-    notificationRelLay = (RelativeLayout) findViewById(R.id.notificationRL);
+    //notificationRelLay = (RelativeLayout) findViewById(R.id.notificationRL);
     notificationRelLay.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
