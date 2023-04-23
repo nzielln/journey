@@ -70,7 +70,6 @@ public class CardsFragment extends Fragment {
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
-
     }
 
     @Override
@@ -145,7 +144,7 @@ public class CardsFragment extends Fragment {
                         public void onPositionCLicked(int position) {
                             CardModel cardModel = items.get(position);
 
-                            if (!Objects.equals(cardModel.getUserModel().getUserID(), user.getUserID())) {
+                            if (!Objects.equals(cardModel.getUserModel().getUserID(), currentUser.getUid())) {
                                 profileViewModel.updateProfileState(ProfileState.PUBLIC, cardModel.getUserModel());
                             }
 

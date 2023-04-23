@@ -176,6 +176,8 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         if (profileState == ProfileState.PERSONAL) {
             Objects.requireNonNull(tabLayout.getTabAt(0)).setText(R.string.to_do);
             currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+            profileUserModel = profileState == ProfileState.PERSONAL ? currentUserModel : profileViewModel.getActiveUserModel().getValue();
+
         } else {
             Objects.requireNonNull(tabLayout.getTabAt(0)).setText(R.string.updates);
         }
@@ -244,7 +246,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
         settingsTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSettingsFragment();
+                startActivity(new Intent(activity, Settings.class));
             }
         });
 
@@ -299,7 +301,7 @@ public class ProfileFragment extends Fragment implements TabLayout.OnTabSelected
                     UserModel userModel = currentData.getValue(UserModel.class);
                    if (userModel != null) {
                        userModel.updateFollowing(true, profileUserModel);
-                       profileViewModel.updateUserBackground(profileUserModel);
+                       profileViewModel.updateUserBackground(userModel);
                        currentData.setValue(userModel);
                        return Transaction.success(currentData);
                    }

@@ -24,7 +24,8 @@ public class UserModel {
     String profileImage;
     String status;
 
-    public UserModel() { }
+    public UserModel() {
+    }
 
     public UserModel(String userID, String email) {
         this.userID = userID;
@@ -51,6 +52,7 @@ public class UserModel {
         this.status = status;
 
     }
+
     public UserModel(
             String userID,
             String email,
@@ -188,6 +190,7 @@ public class UserModel {
         this.profileImage = profileImage;
         this.status = status;
     }
+
     public UserModel(
             String userID,
             String email,
@@ -254,7 +257,7 @@ public class UserModel {
     }
 
     public void addUserNameDetails(String firstName, String lastName) {
-        this.firstName= firstName;
+        this.firstName = firstName;
         this.lastName = lastName;
     }
 
@@ -263,7 +266,7 @@ public class UserModel {
     }
 
     public void chatID(String chatID) {
-        chatIDs.add(chatID );
+        chatIDs.add(chatID);
     }
 
     public void updateFollowers(boolean increment, UserModel user) {

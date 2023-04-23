@@ -85,8 +85,6 @@ public class JourneyMain extends AppCompatActivity implements NavigationBarView.
                 }
             });
         }
-
-
     }
 
     public void openProfileFragment() {
