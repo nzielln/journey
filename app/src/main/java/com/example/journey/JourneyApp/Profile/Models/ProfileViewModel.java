@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.journey.JourneyApp.Dashboard.CardModel;
 import com.example.journey.JourneyApp.Main.Database;
+import com.example.journey.JourneyApp.Main.Helper;
 import com.example.journey.JourneyApp.Profile.ProfileState;
 import com.firebase.ui.common.ChangeEventType;
 import com.firebase.ui.database.ChangeEventListener;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class ProfileViewModel extends ViewModel {
     FirebaseUser currentUser = Database.FIREBASE_AUTH.getCurrentUser();
@@ -67,11 +69,21 @@ public class ProfileViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        tasks.removeChangeEventListener(new ChangeListener());
-        completedTasks.removeChangeEventListener(new ChangeListener());
-        timeline.removeChangeEventListener(new ChangeListener());
-        applications.removeChangeEventListener(new ChangeListener());
-        following.removeChangeEventListener(new ChangeListener());
+        if (tasks != null) {
+            tasks.removeChangeEventListener(new ChangeListener());
+        }
+        if (completedTasks != null) {
+            completedTasks.removeChangeEventListener(new ChangeListener());
+        }
+        if (timeline != null) {
+            timeline.removeChangeEventListener(new ChangeListener());
+        }
+        if (applications != null) {
+            applications.removeChangeEventListener(new ChangeListener());
+        }
+        if (following != null) {
+            following.removeChangeEventListener(new ChangeListener());
+        }
 
     }
 
@@ -85,21 +97,61 @@ public class ProfileViewModel extends ViewModel {
                     GenericTypeIndicator<HashMap<String, ApplicationModel>> type = new GenericTypeIndicator<HashMap<String, ApplicationModel>>() {};
 
                     Map<String, ApplicationModel> applications = (HashMap<String, ApplicationModel>) results.getValue(type);
-                    assert applications != null;
-                    ArrayList<ApplicationModel> applicationModels = new ArrayList<ApplicationModel>(applications.values());
-                    currentApplication.setValue(applicationModels.get(0));
+                    if (applications == null) {
+                        addNewApplication(user);
+                    } else {
+                        ArrayList<ApplicationModel> applicationModels = new ArrayList<ApplicationModel>(applications.values());
+                        currentApplication.setValue(applicationModels.get(0));
 
-                    timelineRef = Database.DB_REFERENCE
-                            .child(Database.APPLICATIONS)
-                            .child(currentUser.getUid())
-                            .child(currentApplication.getValue().getPushKey())
-                            .child(Database.TIMELINE);
+                        timelineRef = Database.DB_REFERENCE
+                                .child(Database.APPLICATIONS)
+                                .child(currentUser.getUid())
+                                .child(currentApplication.getValue().getPushKey())
+                                .child(Database.TIMELINE);
 
-                    timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
-                    timeline.addChangeEventListener(new ChangeListener());
+                        timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
+                        timeline.addChangeEventListener(new ChangeListener());
+                    }
                 }
             }
         });
+    }
+
+    private void addNewApplication(UserModel userModel) {
+        DatabaseReference ref = Database.DB_REFERENCE.child(Database.APPLICATIONS).child(userModel.getUserID());
+        String key = ref.push().getKey();
+        ApplicationModel applicationModel = new ApplicationModel(UUID.randomUUID().toString(), "Default Application", Helper.getLongDateTime());
+        applicationModel.setPushKey(key);
+        Database.DB_REFERENCE.child(Database.APPLICATIONS).child(userModel.getUserID()).child(applicationModel.getPushKey()).setValue(applicationModel).continueWithTask(new Continuation<Void, Task<DataSnapshot>>() {
+            @Override
+            public Task<DataSnapshot> then(@NonNull Task<Void> task) throws Exception {
+                if (!task.isSuccessful()) {
+                    task.getException().printStackTrace();
+                }
+
+                return Database.DB_REFERENCE.child(Database.APPLICATIONS).child(currentUser.getUid()).get();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                DataSnapshot results = task.getResult();
+                GenericTypeIndicator<HashMap<String, ApplicationModel>> type = new GenericTypeIndicator<HashMap<String, ApplicationModel>>() {};
+
+                Map<String, ApplicationModel> applications = (HashMap<String, ApplicationModel>) results.getValue(type);
+                ArrayList<ApplicationModel> applicationModels = new ArrayList<ApplicationModel>(applications.values());
+                currentApplication.setValue(applicationModels.get(0));
+
+                timelineRef = Database.DB_REFERENCE
+                        .child(Database.APPLICATIONS)
+                        .child(currentUser.getUid())
+                        .child(currentApplication.getValue().getPushKey())
+                        .child(Database.TIMELINE);
+
+                timeline = new FirebaseArray<>(timelineRef, new ClassSnapshotParser<>(TimelineItemObject.class));
+                timeline.addChangeEventListener(new ChangeListener());
+            }
+        });
+
     }
 
     public void updateProfileState(ProfileState state, @Nullable UserModel userModel) {
