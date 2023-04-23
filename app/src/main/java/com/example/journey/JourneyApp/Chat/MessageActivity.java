@@ -398,10 +398,8 @@ public class MessageActivity extends AppCompatActivity {
 
     public void sendMessageNotification(Chat chat) {
 
-        String replyHeader = "Enter your reply here:";
-        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
-                .setLabel(replyHeader)
-                .build();
+        //String replyHeader = "Enter your reply here:";
+        //RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY).setLabel(replyHeader).build();
 
         Intent messageIntent = new Intent(MessageActivity.this, ChatListFragment.class);
         messageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -409,10 +407,10 @@ public class MessageActivity extends AppCompatActivity {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, messageIntent,
                 PendingIntent.FLAG_MUTABLE);
 
-        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder
-                (android.R.drawable.ic_dialog_email, "Reply", pIntent)
-                .addRemoteInput(remoteInput)
-                .build();
+        //NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder
+                //(android.R.drawable.ic_dialog_email, "Reply", pIntent)
+                //.addRemoteInput(remoteInput)
+                //.build();
 
         // Create a unique channel ID for the receiver
         //String channelId = "channel_" + currentUser.getUid();
@@ -425,13 +423,13 @@ public class MessageActivity extends AppCompatActivity {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, MESSAGE_CHANNEL_ID);
             Notification messageNotification = notificationBuilder
-                    .setContentTitle("New Message")
-                    .setContentText("You received a new message!")
+                    .setContentTitle("Message Sent!")
+                    //.setContentText("You received a new message!")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setSmallIcon(android.R.drawable.ic_dialog_email)
                     .setColor(ContextCompat.getColor(this, R.color.burnt_orange))
                     .setContentIntent(pIntent)
-                    .addAction(replyAction)
+                    //.addAction(replyAction)
                     //.addAction(R.drawable.email_outline_icon, "Open Chat", chatIntent)
                     .setChannelId(MESSAGE_CHANNEL_ID)
                     .setAutoCancel(true)
