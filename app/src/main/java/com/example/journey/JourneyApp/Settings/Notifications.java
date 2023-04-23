@@ -1,27 +1,41 @@
 package com.example.journey.JourneyApp.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import static com.example.journey.JourneyApp.Dashboard.CreateNewPost.TAG;
+
 import androidx.core.app.RemoteInput;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.journey.JourneyApp.Chat.MessageActivity;
+import com.example.journey.JourneyApp.Chat.Model.Chat;
 import com.example.journey.R;
 import com.example.journey.databinding.ActivityMainBinding;
 
 public class Notifications extends AppCompatActivity {
+
+  private ImageView backButton;
+  private Button messageButton;
+  private Button postButton;
+  private Context context;
 
   private ActivityMainBinding binding;
   private NotificationManager notificationManager;
@@ -42,22 +56,19 @@ public class Notifications extends AppCompatActivity {
   private static final String POST_CHANNEL_DESCRIPTION = "PostChannelDescription";
   private static final int postNotificationID = 101;
 
-  // Buttons
-  ImageView backButton;
-  Button messageButton;
-  Button postButton;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_notifications);
 
     // Back to Settings Activity
-    backButton = (ImageView) findViewById(R.id.backToSettings);
+    backButton = findViewById(R.id.backToSettings);
     backButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        navigateUpTo(new Intent(Notifications.this, Settings.class));
+        //navigateUpTo(new Intent(Notifications.this, Settings.class));
+        Intent intent = new Intent(Notifications.this, Settings.class);
+        startActivity(intent);
       }
     });
 
@@ -73,17 +84,16 @@ public class Notifications extends AppCompatActivity {
     createPostNChannel(POST_CHANNEL_ID, POST_CHANNEL_NAME, POST_CHANNEL_DESCRIPTION);
 
 
-    messageButton = (Button) findViewById(R.id.messages);
+    messageButton = findViewById(R.id.messages);
     messageButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        //if (areNotificationsEnabled()) {
-          sendMessageNotification(v);
-        //}
+        sendMessageNotification(new Chat());//v replaced by chat
+
       }
     });
 
-    postButton = (Button) findViewById(R.id.posts);
+    postButton = findViewById(R.id.posts);
     postButton.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -94,6 +104,7 @@ public class Notifications extends AppCompatActivity {
   }
 
   // ************ Handle Message notifications Here ************ //
+
   /**
    * The createMessageNChannel() method creates a notification
    * channel for message notifications and must be called before the notification is sent.
@@ -109,7 +120,7 @@ public class Notifications extends AppCompatActivity {
     messageNC.enableLights(true);
     messageNC.setLightColor(Color.BLUE);
     messageNC.enableVibration(true);
-    messageNC.setVibrationPattern(new long[] {100, 200, 300, 400, 500, 400, 300, 200, 400});
+    messageNC.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 
     notificationManager.createNotificationChannel(messageNC);
 
@@ -133,11 +144,21 @@ public class Notifications extends AppCompatActivity {
       binding.textView5.setText(userInputString);
 
       // Notify user that the reply has been received
-      Notification replyReceivedNotification = new Notification.Builder(this,MESSAGE_CHANNEL_ID)
+      Notification replyReceivedNotification = new Notification.Builder(this, MESSAGE_CHANNEL_ID)
               .setSmallIcon(android.R.drawable.btn_star_big_off)
               .setContentText("Reply received")
               .build();
       NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+      if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+        // TODO: Consider calling
+        //    ActivityCompat#requestPermissions
+        // here to request the missing permissions, and then overriding
+        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        //                                          int[] grantResults)
+        // to handle the case where the user grants the permission. See the documentation
+        // for ActivityCompat#requestPermissions for more details.
+        return;
+      }
       notificationManagerCompat.notify(messageNotificationID, replyReceivedNotification);
     }
   }
@@ -149,7 +170,7 @@ public class Notifications extends AppCompatActivity {
    * to help write this code.
    */
 
-  public void sendMessageNotification(View view) {
+  public void sendMessageNotification(Chat chat) {
 
     String replyHeader = "Enter your reply here:";
     RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
@@ -157,6 +178,7 @@ public class Notifications extends AppCompatActivity {
             .build();
 
     Intent messageIntent = new Intent(this, Notifications.class);
+    //Intent messageIntent = new Intent(this, MessageActivity.class);
     messageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
     PendingIntent pIntent = PendingIntent.getActivity(this, 0, messageIntent,
@@ -168,7 +190,7 @@ public class Notifications extends AppCompatActivity {
             .build();
 
     //PendingIntent chatIntent = PendingIntent.getActivity
-            //(this, (int)System.currentTimeMillis(), new Intent(this, ChatFragment.class), 0);
+    //(this, (int)System.currentTimeMillis(), new Intent(this, ChatFragment.class), 0);
 
     //String messageChannelID = MESSAGE_CHANNEL_ID;
 
@@ -189,7 +211,6 @@ public class Notifications extends AppCompatActivity {
       notificationManager.notify(messageNotificationID, messageNotification);
     }
   }
-
   // ************ Handle Post notifications Here ************ //
 
   /**
@@ -247,5 +268,7 @@ public class Notifications extends AppCompatActivity {
       notificationManager.notify(postNotificationID, postNotification);
     }
   }
+
+
 
 }

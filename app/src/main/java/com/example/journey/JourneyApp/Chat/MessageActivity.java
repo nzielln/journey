@@ -5,11 +5,25 @@ import static com.example.journey.JourneyApp.Dashboard.CreateNewPost.TAG;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.RemoteInput;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,7 +37,9 @@ import com.example.journey.JourneyApp.Chat.Adapter.MessageAdapter;
 import com.example.journey.JourneyApp.Chat.Model.Chat;
 import com.example.journey.JourneyApp.Main.Database;
 import com.example.journey.JourneyApp.Profile.Models.UserModel;
+import com.example.journey.JourneyApp.Settings.Notifications;
 import com.example.journey.R;
+import com.example.journey.databinding.ActivityMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -32,12 +48,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
+
+    // Constants
+    // Message Notification Channel
+    private static final String MESSAGE_CHANNEL_ID = "MessageChannelID";
+    private static final String MESSAGE_CHANNEL_NAME = "MessageChannelName";
+    private static final String MESSAGE_CHANNEL_DESCRIPTION = "MessageChannelDescription";
+    private static final String KEY_TEXT_REPLY = "key_text_reply";
+    private static final int messageNotificationID = 101;
 
     TextView username;
     ImageView imageView;
@@ -60,6 +85,9 @@ public class MessageActivity extends AppCompatActivity {
 
     ValueEventListener seenListener;
 
+    private NotificationManager notificationManager; //For Notification from Tinashe
+    private ActivityMainBinding binding; //For Notification from Tinashe
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +109,12 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        //To make Notification work
+        // Notification Manager
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+
+        //Intent
         intent = getIntent();
         userid = intent.getStringExtra("userid");
 
@@ -94,11 +127,11 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                username.setText(userModel.getFirstName()+ " " + userModel.getLastName());
+                username.setText(userModel.getFirstName() + " " + userModel.getLastName());
 
-                if (userModel.getProfileImage() == null){
+                if (userModel.getProfileImage() == null) {
                     imageView.setImageResource(R.drawable.person_image);
-                } else{
+                } else {
                     Glide.with(MessageActivity.this).load(userModel.getProfileImage()).into(imageView);
                 }
                 readMessages(currentUser.getUid(), userid, userModel.getProfileImage());
@@ -110,13 +143,13 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        sendBtn.setOnClickListener(new View.OnClickListener(){
+        sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 String msg = msg_editText.getText().toString();
-                if (!msg.equals("")){
+                if (!msg.equals("")) {
                     sendMessage(currentUser.getUid(), userid, msg);
-                } else{
+                } else {
                     Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
                 }
                 msg_editText.setText("");
@@ -127,19 +160,20 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
+    private void SeenMessage(String userid) {
 
-    private void SeenMessage(String userid){
-
-    reference = Database.DB_REFERENCE.child(Database.CHATS);
+        reference = Database.DB_REFERENCE.child(Database.CHATS);
         ;
         seenListener = reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
-
-                    if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)){
+                    if (chat != null && chat.getReceiver() != null &&
+                            chat.getReceiver().equals(currentUser.getUid()) &&
+                            chat.getSender() != null && chat.getSender().equals(userid)) {
+                        //if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)) {
                         HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("isseen", true);
                         snapshot.getRef().updateChildren(hashMap);
@@ -157,11 +191,8 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
-
-
-
-    private void sendMessage(String sender, String receiver, String message){
-    DatabaseReference reference = Database.DB_REFERENCE.child(Database.CHATS);
+    private void sendMessage(String sender, String receiver, String message) {
+        DatabaseReference reference = Database.DB_REFERENCE.child(Database.CHATS);
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", sender);
@@ -179,7 +210,7 @@ public class MessageActivity extends AppCompatActivity {
         chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
+                if (!dataSnapshot.exists()) {
                     chatRef.child("id").setValue(userid);
 
                 }
@@ -192,49 +223,57 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-    private void readMessages(String myid, String userid, String profileImage){
-        Log.d("Read Message", "Error");
-
+    private void readMessages(String myid, String userid, String profileImage) {
         mChat = new ArrayList<>();
         reference = Database.DB_REFERENCE.child(Database.CHATS);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Read Message1", "Error1");
                 mChat.clear();
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Chat chat = snapshot.getValue(Chat.class);
-                    /*if(chat!=null) {
-                        Log.d("Read Message2", "Chat is not null");
-                    } else{
-                        Log.d("Read Message2","chat is null");
-                    }
-                    if(myid!=null){Log.d("Read Message2", "myid is not null");
-                    } else{
-                        Log.d("Read Message2","myid is null");
-                    }
-                    if(userid!=null){Log.d("Read Message2", "userid is not null");
-                    } else{
-                        Log.d("Read Message2","userid is null");
-                    }
 
-                     */
-
-
-                    //assert chat != null;
-                    if (chat!=null && chat.getReceiver()!=null && chat.getReceiver().equals(myid) &&
-                            chat.getSender()!=null && chat.getSender().equals(userid) ||
-                            chat!=null && chat.getReceiver()!=null && chat.getReceiver().equals(userid) &&
-                                    chat.getSender()!=null && chat.getSender().equals(myid)){
+                    if (chat != null && chat.getReceiver() != null && chat.getReceiver().equals(myid) &&
+                            chat.getSender() != null && chat.getSender().equals(userid) ||
+                            chat != null && chat.getReceiver() != null && chat.getReceiver().equals(userid) &&
+                                    chat.getSender() != null && chat.getSender().equals(myid)) {
                         mChat.add(chat);
-                        //messageAdapter.notifyDataSetChanged();
                     }
+                }
+                //messageAdapter.notifyDataSetChanged();
+                messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
+                recyclerView.setAdapter(messageAdapter);
+                if (mChat.size() > 0) {
+                    Chat chat = mChat.get(mChat.size() - 1);
+                    if (chat.getReceiver().equals(currentUser.getUid())) {
+                        // Get sender name from database ( sender's ID is stored in `chat.getSender()`)
+                        DatabaseReference senderRef = Database.DB_REFERENCE.child(Database.USERS).
+                                child(chat.getSender()).child("firstName");
+                        senderRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
-                    recyclerView.setAdapter(messageAdapter);
+                                // Call sendMessageNotification method on the instance
+                                sendMessageNotification(chat);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("readMessages", "Failed to read sender name from database", error.toException());
+                            }
+                        });
+                    }
 
                 }
             }
+            //Moved these lines inside for loop
+
+            //messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
+            //recyclerView.setAdapter(messageAdapter);
+            //if (chat.getReceiver().equals(currentUser.getUid())) {
+            //    sendMessageNotification(chat);//For Notification from Tinashe
+            //}
 
 
             @Override
@@ -257,15 +296,15 @@ public class MessageActivity extends AppCompatActivity {
      */
 
 
-
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         //CheckStatus("online");
 
     }
+
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
       /*  if (reference != null) {
             reference.removeEventListener(seenListener);
@@ -274,6 +313,61 @@ public class MessageActivity extends AppCompatActivity {
 
        */
     }
+
+
+
+
+
+
+    /**
+     * The sendMessageNotification() method handles sending the
+     * message notification.
+     * Referenced the class videos/Android Studio Dolphin Essentials book
+     * to help write this code.
+     */
+
+    public void sendMessageNotification(Chat chat) {
+
+        String replyHeader = "Enter your reply here:";
+        RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY)
+                .setLabel(replyHeader)
+                .build();
+
+        Intent messageIntent = new Intent(this, Notifications.class);
+        messageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, messageIntent,
+                PendingIntent.FLAG_MUTABLE);
+
+        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder
+                (android.R.drawable.ic_dialog_email, "Reply", pIntent)
+                .addRemoteInput(remoteInput)
+                .build();
+
+//PendingIntent chatIntent = PendingIntent.getActivity
+//(this, (int)System.currentTimeMillis(), new Intent(this, ChatFragment.class), 0);
+
+//String messageChannelID = MESSAGE_CHANNEL_ID;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, MESSAGE_CHANNEL_ID);
+            Notification messageNotification = notificationBuilder
+                    .setContentTitle("New Message")
+                    .setContentText("You received a new message from " + "PLACEHOLDER@email()" + "!")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setSmallIcon(android.R.drawable.ic_dialog_email)
+                    .setColor(ContextCompat.getColor(this, R.color.burnt_orange))
+                    .setContentIntent(pIntent)
+                    .addAction(replyAction)
+//.addAction(R.drawable.email_outline_icon, "Open Chat", chatIntent)
+                    .setChannelId(MESSAGE_CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .build();
+            notificationManager.notify(messageNotificationID, messageNotification);
+        }
+    }
+
+// ************ Handle Message notifications Here ************ //
 
 }
     /*
