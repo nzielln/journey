@@ -36,7 +36,6 @@ public class UpdatePassword extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_update_password);
 
-    //fbAuth = FirebaseAuth.getInstance();
     fbUser = Database.FIREBASE_AUTH.getCurrentUser();
 
     // Back to Settings Activity
@@ -54,6 +53,7 @@ public class UpdatePassword extends AppCompatActivity {
     currPasswordEdit = (EditText) findViewById(R.id.currentPassword);
     newPasswordEdit = (EditText) findViewById(R.id.newPassword);
     updatePassword = (Button) findViewById(R.id.updatePasswordButton);
+
     updatePassword.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -80,7 +80,7 @@ public class UpdatePassword extends AppCompatActivity {
       @Override
       public void onSuccess(Void unused) { //On Suc
         // On success, update user password
-        fbUser.updatePassword(newPassword);
+        fbUser.updatePassword(currentPassword);
         Toast.makeText(UpdatePassword.this,
                 "Password updated successfully!", Toast.LENGTH_LONG).show();
       }
