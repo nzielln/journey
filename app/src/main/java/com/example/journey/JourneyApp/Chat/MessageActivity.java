@@ -9,17 +9,21 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.RemoteInput;
 import androidx.core.content.ContextCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -38,7 +42,6 @@ import com.example.journey.JourneyApp.Profile.Models.UserModel;
 import com.example.journey.JourneyApp.Settings.Notifications;
 import com.example.journey.R;
 import com.example.journey.databinding.ActivityMainBinding;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -46,6 +49,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,7 +90,6 @@ public class MessageActivity extends AppCompatActivity {
     private NotificationManager notificationManager;
     private ActivityMainBinding binding;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +110,12 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        //To make Notification work
+        // Notification Manager
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+
+        //Intent
         intent = getIntent();
         userid = intent.getStringExtra("userid");
 
@@ -120,11 +128,11 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserModel userModel = dataSnapshot.getValue(UserModel.class);
-                username.setText(userModel.getFirstName()+ " " + userModel.getLastName());
+                username.setText(userModel.getFirstName() + " " + userModel.getLastName());
 
-                if (userModel.getProfileImage() == null){
+                if (userModel.getProfileImage() == null) {
                     imageView.setImageResource(R.drawable.person_image);
-                } else{
+                } else {
                     Glide.with(MessageActivity.this).load(userModel.getProfileImage()).into(imageView);
                 }
                 readMessages(currentUser.getUid(), userid, userModel.getProfileImage());
@@ -136,28 +144,195 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
 
-        sendBtn.setOnClickListener(new View.OnClickListener(){
+        sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 String msg = msg_editText.getText().toString();
-                if (!msg.equals("")){
+                if (!msg.equals("")) {
                     sendMessage(currentUser.getUid(), userid, msg);
-                } else{
+                } else {
                     Toast.makeText(MessageActivity.this, "Please send a non empty message", Toast.LENGTH_SHORT).show();
                 }
                 msg_editText.setText("");
             }
         });
 
-SeenMessage(userid);
+        SeenMessage(userid);
 
-// Notification Manager
+        // Notification Manager
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // Create Message notification channel
         createMessageNChannel(MESSAGE_CHANNEL_ID, MESSAGE_CHANNEL_NAME, MESSAGE_CHANNEL_DESCRIPTION);
         // Handle the user text input
         handleMessageInput();
+    }
+
+    private void SeenMessage(String userid) {
+
+        reference = Database.DB_REFERENCE.child(Database.CHATS);
+        ;
+        seenListener = reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    // if (chat != null && chat.getReceiver() != null &&
+                    //        chat.getReceiver().equals(currentUser.getUid()) &&
+                    //        chat.getSender() != null && chat.getSender().equals(userid)) {
+                    //if (chat.getReceiver().equals(currentUser.getUid()) && chat.getSender().equals(userid)) {
+
+                    if (chat != null && chat.getReceiver() != null &&
+                            chat.getReceiver().equals(currentUser.getUid()) &&
+                            chat.getSender() != null && chat.getSender().equals(userid)) {
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("isseen", true);
+                        snapshot.getRef().updateChildren(hashMap);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
+
+
+    private void sendMessage(String sender, String receiver, String message) {
+        DatabaseReference reference = Database.DB_REFERENCE.child(Database.CHATS);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("sender", sender);
+        hashMap.put("receiver", receiver);
+        hashMap.put("message", message);
+        hashMap.put("isseen", false);
+
+        reference.push().setValue(hashMap);
+
+        //Adding user to chat fragment: latest chat with contacts
+        final DatabaseReference chatRef = Database.DB_REFERENCE.child(Database.CHAT_LIST)
+                .child(currentUser.getUid())
+                .child(userid);
+
+        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    chatRef.child("id").setValue(userid);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        // Send notification to receiver
+        final Chat chat = new Chat(sender, receiver, message, false);
+        sendMessageNotification(chat);
+    }
+
+    private void readMessages(String myid, String userid, String profileImage) {
+        mChat = new ArrayList<>();
+        reference = Database.DB_REFERENCE.child(Database.CHATS);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mChat.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Chat chat = snapshot.getValue(Chat.class);
+
+                    //assert chat != null;
+                    if (chat != null && chat.getReceiver() != null
+                            && chat.getReceiver().equals(myid) &&
+                            chat.getSender() != null && chat.getSender().equals(userid)
+                            || chat != null && chat.getReceiver() != null
+                            && chat.getReceiver().equals(userid) &&
+                            chat.getSender() != null && chat.getSender().equals(myid)) {
+                            mChat.add(chat);
+                    }
+                    //messageAdapter.notifyDataSetChanged();
+                    messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
+                    recyclerView.setAdapter(messageAdapter);
+                    //messageNotification.sendMessageNotification(chat);
+
+
+
+              /*  if (mChat.size() > 0) {
+                    Chat chat = mChat.get(mChat.size() - 1);
+                    if (chat.getReceiver().equals(currentUser.getUid())) {
+                        // Get sender name from database ( sender's ID is stored in `chat.getSender()`)
+                        DatabaseReference senderRef = Database.DB_REFERENCE.child(Database.USERS).
+                                child(chat.getSender()).child("firstName");
+                        senderRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                // Call sendMessageNotification method on the instance
+                                sendMessageNotification(chat);
+
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                Log.e("readMessages", "Failed to read sender name from database", error.toException());
+                            }
+                        });
+                    }
+               */
+                    //sendMessageNotification(chat);
+                }
+                // Send notification to receiver if there are new messages
+                //if (!mChat.isEmpty()) {
+                //    Chat chat = mChat.get(mChat.size() - 1);
+                //    sendMessageNotification(chat, currentUser.getUid());
+                //}
+            }
+            //Moved these lines inside for loop
+            //messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
+            //recyclerView.setAdapter(messageAdapter);
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    /*private void CheckStatus(String status){
+        DatabaseReference reference = Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid());
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("status", status);
+
+        reference.updateChildren(hashMap);
+    }
+     */
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //CheckStatus("online");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+      /*  if (reference != null) {
+            reference.removeEventListener(seenListener);
+        }
+        CheckStatus("Offline");
+
+       */
     }
 
     // ************ Handle Message notifications Here ************ //
@@ -177,7 +352,7 @@ SeenMessage(userid);
         messageNC.enableLights(true);
         messageNC.setLightColor(Color.BLUE);
         messageNC.enableVibration(true);
-        messageNC.setVibrationPattern(new long[] {100, 200, 300, 400, 500, 400, 300, 200, 400});
+        messageNC.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
 
         notificationManager.createNotificationChannel(messageNC);
 
@@ -201,12 +376,12 @@ SeenMessage(userid);
             binding.textView5.setText(userInputString);
 
             // Notify user that the reply has been received
-            Notification replyReceivedNotification = new Notification.Builder(this,MESSAGE_CHANNEL_ID)
+            Notification replyReceivedNotification = new Notification.Builder(this, MESSAGE_CHANNEL_ID)
                     .setSmallIcon(android.R.drawable.btn_star_big_off)
                     .setContentText("Reply received")
                     .build();
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-            notificationManagerCompat.notify(messageNotificationID, replyReceivedNotification);
+            //notificationManagerCompat.notify(messageNotificationID, replyReceivedNotification);
         }
     }
 
@@ -235,8 +410,14 @@ SeenMessage(userid);
                 .addRemoteInput(remoteInput)
                 .build();
 
+        // Create a unique channel ID for the receiver
+        //String channelId = "channel_" + currentUser.getUid();
 
+        // Create a channel for the receiver
+        //NotificationChannel channel = new NotificationChannel(channelId, "Messages", NotificationManager.IMPORTANCE_HIGH);
+        //notificationManager.createNotificationChannel(channel);
 
+        // Build the notification for the receiver's channel
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, MESSAGE_CHANNEL_ID);
             Notification messageNotification = notificationBuilder
@@ -255,166 +436,11 @@ SeenMessage(userid);
         }
     }
 
-// ************ Handle Message notifications Here ************ //
 
-
-    private void SeenMessage(String userid){
-
-    reference = Database.DB_REFERENCE.child(Database.CHATS);
-        ;
-        seenListener = reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-
-                    if (chat!=null && chat.getReceiver()!=null &&
-                            chat.getReceiver().equals(currentUser.getUid()) &&
-                    chat.getSender()!=null && chat.getSender().equals(userid)){
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("isseen", true);
-                        snapshot.getRef().updateChildren(hashMap);
-                        Log.d("noti", "nonksm");
-
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-    }
-
-
-
-
-
-    private void sendMessage(String sender, String receiver, String message){
-    DatabaseReference reference = Database.DB_REFERENCE.child(Database.CHATS);
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("sender", sender);
-        hashMap.put("receiver", receiver);
-        hashMap.put("message", message);
-        hashMap.put("isseen", false);
-
-        reference.push().setValue(hashMap);
-
-        //Adding user to chat fragment: latest chat with contacts
-        final DatabaseReference chatRef = Database.DB_REFERENCE.child(Database.CHAT_LIST)
-                .child(currentUser.getUid())
-                .child(userid);
-
-        chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
-                    chatRef.child("id").setValue(userid);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void readMessages(String myid, String userid, String profileImage){
-        Log.d("Read Message", "Error");
-
-        mChat = new ArrayList<>();
-        reference = Database.DB_REFERENCE.child(Database.CHATS);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("Read Message1", "Error1");
-                mChat.clear();
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    /*if(chat!=null) {
-                        Log.d("Read Message2", "Chat is not null");
-                    } else{
-                        Log.d("Read Message2","chat is null");
-                    }
-                    if(myid!=null){Log.d("Read Message2", "myid is not null");
-                    } else{
-                        Log.d("Read Message2","myid is null");
-                    }
-                    if(userid!=null){Log.d("Read Message2", "userid is not null");
-                    } else{
-                        Log.d("Read Message2","userid is null");
-                    }
-
-                     */
-
-
-                    //assert chat != null;
-                    if (chat!=null && chat.getReceiver()!=null
-                            && chat.getReceiver().equals(myid) &&
-                            chat.getSender()!=null && chat.getSender().equals(userid)
-                            || chat!=null && chat.getReceiver()!=null
-                            && chat.getReceiver().equals(userid) &&
-                                    chat.getSender()!=null && chat.getSender().equals(myid)){
-                        mChat.add(chat);
-
-                        //messageAdapter.notifyDataSetChanged();
-                    }
-                    //messageNotification.sendMessageNotification(chat);
-                    messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
-                    recyclerView.setAdapter(messageAdapter);
-                    sendMessageNotification(chat);
-                }
-
-            }
-
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
-
-    /*private void CheckStatus(String status){
-        //reference = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
-        DatabaseReference reference = Database.DB_REFERENCE.child(Database.USERS).child(currentUser.getUid());
-
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", status);
-
-        reference.updateChildren(hashMap);
-    }
-     */
-
-
-
-    @Override
-    protected void onResume(){
-        super.onResume();
-        //CheckStatus("online");
-
-    }
-    @Override
-    protected void onPause(){
-        super.onPause();
-      /*  if (reference != null) {
-            reference.removeEventListener(seenListener);
-        }
-        CheckStatus("Offline");
-
-       */
-    }
 
 }
+
+
     /*
     // Call readMessages when user data is retrieved
     Database.DB_REFERENCE.child(Database.USERS).child(userid).addValueEventListener(new ValueEventListener() {

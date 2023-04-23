@@ -74,7 +74,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
                     .into(holder.profile_image);
         }
 
-       /* if (position == mChat.size() -1){
+        if (position == mChat.size() -1){
             if(chat.isIsseen()){
                 holder.txt_seen.setText("Seen");
             } else{
@@ -85,7 +85,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             holder.txt_seen.setVisibility(View.GONE);
         }
 
-        */
+
 
     }
 
