@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -55,6 +56,7 @@ public class CardsFragment extends Fragment {
     FirebaseUser currentUser;
     ArrayList<CardModel> items = new ArrayList<>();
     ProfileViewModel profileViewModel;
+    SearchViewModel searchModel;
 
 
     public CardsFragment() {
@@ -70,14 +72,12 @@ public class CardsFragment extends Fragment {
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
 
+        searchModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //searchInput = (SearchView)searchItem.getActionView();
-        //searchInput = (SearchView) searchInput.findViewById(R.id.search_view_dashboard);
-        // Log.d("searchInput",searchInput.toString());
-
         binding = DashboardRvBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -91,7 +91,7 @@ public class CardsFragment extends Fragment {
         Map<String, UserModel> allUsers = new HashMap<>();
         Map<String, UserModel> usersFollowing = new HashMap<>();
 
-        //ImageView image = getView().findViewById(R.id.dash_image);
+
         dbReference.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -118,7 +118,7 @@ public class CardsFragment extends Fragment {
                     for (final DataSnapshot inner : task.getResult().getChildren()) {
                         NewPost post = inner.getValue(NewPost.class);
                         UserModel user = users.get(post.getAuthorID());
-                        Log.d("user Info", user.getUserID());
+                        //Log.d("user Info", user.getUserID());
                         StorageReference userPic;
                         if (user.getProfileImage() == null ){
                             userPic= null;
@@ -138,7 +138,7 @@ public class CardsFragment extends Fragment {
 
                     Collections.reverse(items);
 
-                    adapter = new DashboardAdapter(items, requireActivity());
+                    adapter = new DashboardAdapter(items, requireActivity(), getParentFragmentManager());
                     adapter.setListener(new CardClickListener() {
                         @Override
                         public void onPositionCLicked(int position) {
@@ -162,9 +162,33 @@ public class CardsFragment extends Fragment {
                     });
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+                    Observer<String> searchObserver = new Observer<String>() {
+                        @Override
+                        public void onChanged(String s) {
+                            if (s.isEmpty()) {
+                                adapter.setItems(items);
+                                adapter.notifyDataSetChanged();
+                            } else {
+
+                                ArrayList<CardModel> filteredList = new ArrayList<>();
+                                for (CardModel item : items) {
+                                    if (item.getCardSummary().toLowerCase().contains(s.toLowerCase())) {
+                                        filteredList.add(item);
+                                    }
+                                }
+
+                                adapter.setItems(filteredList);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    };
+
+                    searchModel.getSearch().observe(requireActivity(), searchObserver);
                 }
             }
         });
+
     }
 
 }

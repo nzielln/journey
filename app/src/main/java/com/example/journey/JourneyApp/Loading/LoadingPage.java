@@ -23,6 +23,6 @@ public class LoadingPage extends AppCompatActivity {
       public void run() {
         startActivity(new Intent(LoadingPage.this, LoginPage.class));
       }
-    },0);
+    },1000);
   }
 }

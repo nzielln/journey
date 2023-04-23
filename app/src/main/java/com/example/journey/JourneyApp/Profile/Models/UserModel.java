@@ -23,6 +23,8 @@ public class UserModel {
     ArrayList<UserModel> followingList = new ArrayList<>();
     String profileImage;
     String status;
+    private String lastMessage;
+    private Long lastMessageTimeStamp;
 
     public UserModel() {
     }
@@ -82,6 +84,7 @@ public class UserModel {
             Integer following,
             String profileImage,
             String status
+
     ) {
         this.userID = userID;
         this.email = email;
@@ -93,6 +96,31 @@ public class UserModel {
         this.profileImage = profileImage;
         this.status = status;
 
+    }
+
+    //added new UserModel with lastMessage and lastMessageTimestamp
+    public UserModel(
+            String userID,
+            String email,
+            String firstName,
+            String lastName,
+            //Integer followers,
+            //Integer following,
+            String profileImage,
+            String status,
+            String lastMessage,
+            Long lastMessageTimeStamp
+    ) {
+        this.userID = userID;
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        //this.followers = followers;
+        //this.following = following;
+        this.profileImage = profileImage;
+        this.status = status;
+        this.lastMessage = lastMessage;
+        this.lastMessageTimeStamp = lastMessageTimeStamp;
     }
 
     public UserModel(
@@ -363,6 +391,14 @@ public class UserModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public Long getLastMessageTimeStamp() {
+        return lastMessageTimeStamp;
     }
 
 }

@@ -15,7 +15,9 @@ public class CardModel {
     private StorageReference cardImage;
     UserModel userModel;
 
-    public CardModel(UserModel cardUser, String cardDate, String cardSummary, StorageReference userPic,String postId, Boolean isLiked, UserModel userModel) {
+    public CardModel(UserModel cardUser, String cardDate, String cardSummary,
+                     StorageReference userPic,String postId, Boolean isLiked,
+                     UserModel userModel) {
         this.cardName = cardUser.getFirstName() + " " + cardUser.getLastName();
         this.cardDate = cardDate;
         this.cardPostContentSummary = cardSummary;

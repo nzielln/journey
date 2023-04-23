@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,26 +57,19 @@ public class DashboardFragment extends Fragment {
     UserModel currentUserModel;
     ShapeableImageView image;
     DashboardAdapter adapter;
-    //DatabaseReference dbReference;
-    //DashboardAdapter adapter;
-    //ArrayList<CardModel> items;
-    SearchView searchInput;
-
+    SearchViewModel searchModel;
 
 
     public DashboardFragment() {
         super(R.layout.fragment_dashboard);
-        // Required empty public constructor
-
-
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+        searchModel = new ViewModelProvider(requireActivity()).get(SearchViewModel.class);
     }
+
     public void displayFragment(Fragment fragment){
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.dashboard_rv_container, fragment).commit();
@@ -86,8 +80,6 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         fragmentManager = getChildFragmentManager();
-
-        //View view = inflater.inflate(R.layout.fragment_dashboard,container, false);
         displayFragment(new CardsFragment());
         return binding.getRoot();
     }
@@ -99,6 +91,26 @@ public class DashboardFragment extends Fragment {
 
         dbReference = FirebaseDatabase.getInstance(Database.JOURNEYDB).getReference();
         currentUser = Database.FIREBASE_AUTH.getCurrentUser();
+
+        SearchView searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
+
+        searchInput.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchModel.setSearch(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    searchModel.setSearch("");
+                    return true;
+                }
+                return false;
+            }
+        });
+
 
         dbReference.child("users").child(currentUser.getUid()).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -131,25 +143,11 @@ public class DashboardFragment extends Fragment {
                         });
                     }
 
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                    //Log.d("firebase", String.valueOf(task.getResult().getValue()));
                 }
             }
         });
 
     }
-//    public boolean onSearchChange() {
-//        searchInput = (SearchView) getView().findViewById(R.id.search_view_dashboard);
-//        //SearchView searchView = (SearchView) searchInput.getActionView();
-//
-//       // searchInput.setOnQueryTextListener();
-//        return true;
-//    }
-//
-//    public boolean onQueryTextChange(String query){
-//        return false;
-//    }
-//    public boolean onQueryTextSubmit(String query){
-//        return false;
-//    }
 
 }
