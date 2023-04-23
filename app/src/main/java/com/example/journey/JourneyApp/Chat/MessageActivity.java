@@ -289,10 +289,10 @@ public class MessageActivity extends AppCompatActivity {
                     //sendMessageNotification(chat);
                 }
                 // Send notification to receiver if there are new messages
-                if (!mChat.isEmpty()) {
-                    Chat chat = mChat.get(mChat.size() - 1);
-                    sendMessageNotification(chat);
-                }
+                //if (!mChat.isEmpty()) {
+                //    Chat chat = mChat.get(mChat.size() - 1);
+                //    sendMessageNotification(chat, currentUser.getUid());
+                //}
             }
             //Moved these lines inside for loop
             //messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
@@ -410,7 +410,14 @@ public class MessageActivity extends AppCompatActivity {
                 .addRemoteInput(remoteInput)
                 .build();
 
+        // Create a unique channel ID for the receiver
+        //String channelId = "channel_" + currentUser.getUid();
 
+        // Create a channel for the receiver
+        //NotificationChannel channel = new NotificationChannel(channelId, "Messages", NotificationManager.IMPORTANCE_HIGH);
+        //notificationManager.createNotificationChannel(channel);
+
+        // Build the notification for the receiver's channel
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, MESSAGE_CHANNEL_ID);
             Notification messageNotification = notificationBuilder
@@ -428,6 +435,8 @@ public class MessageActivity extends AppCompatActivity {
             notificationManager.notify(messageNotificationID, messageNotification);
         }
     }
+
+
 
 }
 
