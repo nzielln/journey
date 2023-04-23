@@ -54,6 +54,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -235,8 +236,10 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         // Send notification to receiver
+        // Send notification to receiver
         final Chat chat = new Chat(sender, receiver, message, false);
         sendMessageNotification(chat);
+
     }
 
     private void readMessages(String myid, String userid, String profileImage) {
@@ -262,6 +265,7 @@ public class MessageActivity extends AppCompatActivity {
                     messageAdapter = new MessageAdapter(MessageActivity.this, mChat, profileImage);
                     recyclerView.setAdapter(messageAdapter);
                     //messageNotification.sendMessageNotification(chat);
+
 
 
 
