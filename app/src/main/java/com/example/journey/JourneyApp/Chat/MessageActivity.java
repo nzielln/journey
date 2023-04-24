@@ -159,14 +159,6 @@ public class MessageActivity extends AppCompatActivity {
         });
 
         SeenMessage(userid);
-
-        // Notification Manager
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Create Message notification channel
-        createMessageNChannel(MESSAGE_CHANNEL_ID, MESSAGE_CHANNEL_NAME, MESSAGE_CHANNEL_DESCRIPTION);
-        // Handle the user text input
-        handleMessageInput();
     }
 
     private void SeenMessage(String userid) {
@@ -238,7 +230,7 @@ public class MessageActivity extends AppCompatActivity {
         // Send notification to receiver
         // Send notification to receiver
         final Chat chat = new Chat(sender, receiver, message, false);
-        sendMessageNotification(chat);
+        //sendMessageNotification(chat);
 
     }
 
@@ -337,105 +329,6 @@ public class MessageActivity extends AppCompatActivity {
         CheckStatus("Offline");
 
        */
-    }
-
-    // ************ Handle Message notifications Here ************ //
-
-    /**
-     * The createMessageNChannel() method creates a notification
-     * channel for message notifications and must be called before the notification is sent.
-     * Referenced the class videos/Android Studio Dolphin Essentials book
-     * to help write this code.
-     */
-    public void createMessageNChannel(String id, String name, String description) {
-
-        int mPriority = NotificationManager.IMPORTANCE_DEFAULT; // importance level
-        // Message Notification Channel
-        NotificationChannel messageNC = new NotificationChannel(id, name, mPriority);
-        messageNC.setDescription(description);
-        messageNC.enableLights(true);
-        messageNC.setLightColor(Color.BLUE);
-        messageNC.enableVibration(true);
-        messageNC.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-
-        notificationManager.createNotificationChannel(messageNC);
-
-    }
-
-    /**
-     * The handleMessageInput() method handles the
-     * user's written input message in the notification section.
-     * Referenced the "Android Studio Dolphin Essentials" book and the following website:
-     * https://developer.android.com/develop/ui/views/notifications/build-notification#java
-     */
-
-    private void handleMessageInput() {
-        Intent mInputIntent = this.getIntent();
-        Bundle remoteInput = RemoteInput.getResultsFromIntent(mInputIntent);
-
-        // if the remote user input exist
-        if (remoteInput != null) {
-            String userInputString = remoteInput.getCharSequence(KEY_TEXT_REPLY).toString();
-            // ********************** NEED TO CHANGE (textView5) ********************** //
-            binding.textView5.setText(userInputString);
-
-            // Notify user that the reply has been received
-            Notification replyReceivedNotification = new Notification.Builder(this, MESSAGE_CHANNEL_ID)
-                    .setSmallIcon(android.R.drawable.btn_star_big_off)
-                    .setContentText("Reply received")
-                    .build();
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-            //notificationManagerCompat.notify(messageNotificationID, replyReceivedNotification);
-        }
-    }
-
-    /**
-     * The sendMessageNotification() method handles sending the
-     * message notification.
-     * Referenced the class videos/Android Studio Dolphin Essentials book
-     * to help write this code.
-     */
-
-    public void sendMessageNotification(Chat chat) {
-
-        //String replyHeader = "Enter your reply here:";
-        //RemoteInput remoteInput = new RemoteInput.Builder(KEY_TEXT_REPLY).setLabel(replyHeader).build();
-
-        Intent messageIntent = new Intent(MessageActivity.this, ChatListFragment.class);
-        messageIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, messageIntent,
-                PendingIntent.FLAG_MUTABLE);
-
-        //NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder
-                //(android.R.drawable.ic_dialog_email, "Reply", pIntent)
-                //.addRemoteInput(remoteInput)
-                //.build();
-
-        // Create a unique channel ID for the receiver
-        //String channelId = "channel_" + currentUser.getUid();
-
-        // Create a channel for the receiver
-        //NotificationChannel channel = new NotificationChannel(channelId, "Messages", NotificationManager.IMPORTANCE_HIGH);
-        //notificationManager.createNotificationChannel(channel);
-
-        // Build the notification for the receiver's channel
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, MESSAGE_CHANNEL_ID);
-            Notification messageNotification = notificationBuilder
-                    .setContentTitle("Message Sent!")
-                    //.setContentText("You received a new message!")
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setSmallIcon(android.R.drawable.ic_dialog_email)
-                    .setColor(ContextCompat.getColor(this, R.color.burnt_orange))
-                    .setContentIntent(pIntent)
-                    //.addAction(replyAction)
-                    //.addAction(R.drawable.email_outline_icon, "Open Chat", chatIntent)
-                    .setChannelId(MESSAGE_CHANNEL_ID)
-                    .setAutoCancel(true)
-                    .build();
-            notificationManager.notify(messageNotificationID, messageNotification);
-        }
     }
 
 
