@@ -8,10 +8,6 @@ android {
     namespace 'com.example.journey'
     compileSdk 33
 
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
-    }
     defaultConfig {
         applicationId "com.example.journey"
         minSdk 27 //change back to 27 maybe?
